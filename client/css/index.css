@@ -1,0 +1,94 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Inter;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* ensures full viewport height */
+    margin: 0;
+}
+
+.background {
+    background: url('../assets/images/indexBackground.webp') no-repeat center center;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(4px);
+    z-index: -1;
+}
+
+.loginBox {
+    width: 24%;
+    min-width: 400px;
+    background-color: white;
+    border-style: none;
+    border-radius: 5px;
+    text-align: center;
+    padding-bottom: 5%;
+}
+
+h1 {
+    font-size: calc(30px + .9vw);
+    margin-top: 10%;
+}
+
+form {
+    text-align: left;
+    margin-top: 10%;
+}
+
+label {
+    margin-left: 5%;
+}
+
+input {
+    height: 30px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 2%;
+}
+
+input[type="submit"] {
+    display: block;
+    margin: 20px auto;
+    width: 35%;
+    height: auto;
+    background-color: #04aa6d;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    padding: 10px;
+    font-size: calc(10px + .9vw);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #04aa6d;
+}
