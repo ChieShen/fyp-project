@@ -31,9 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
     }
 
-    if ($role = 'student'){
+    if ($role === 'student'){
         $role = 1;
-    }else if($role = 'lecturer'){
+    }else if($role === 'lecturer'){
         $role = 2;
     }
 
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $signupSuccess = $userModel->createUser($username, $role, $fname,$lname, $password);
 
     if ($signupSuccess) {
-        $_SESSION['signup_success'] = "Account created successfully! Redirecting to Sign Up Page...";
+        $_SESSION['signup_success'] = "Account created successfully! Redirecting to Login Page...";
         header("Location: ../../client/pages/shared/SignUp.php"); // Redirect to login
         exit;
     } else {

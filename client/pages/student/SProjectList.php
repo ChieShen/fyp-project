@@ -29,7 +29,11 @@
                     <div class="data">Group Name</div>
                     <div class="data">Deadline</div>
                     <div class="data">Created By</div>
-                    <div class="data">Progress</div>
+                    <div class="data">
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar" data-progress="100"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="dataRow">
                     <div class="data">Project Name</div>
@@ -41,7 +45,7 @@
             </div>
         </div>
     </div>
-    <script src="../../js/SProjectList.js"></script>
+    <script src="../../js/SProjectList.js" defer></script>
 </body>
 
 </html>
