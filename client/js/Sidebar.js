@@ -8,12 +8,13 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const currentPath = window.location.pathname.split('/').pop(); // gets current page filename
+    const currentPath = window.location.pathname;
     const sidebarLinks = document.querySelectorAll('.sidebar a');
 
     sidebarLinks.forEach(link => {
-        const linkPath = link.getAttribute('href');
-        if (linkPath === currentPath) {
+        const linkPath = new URL(link.href, window.location.origin).pathname;
+
+        if (currentPath.includes(linkPath)) {
             link.classList.add('active');
         }
     });

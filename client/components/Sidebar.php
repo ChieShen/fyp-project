@@ -11,10 +11,10 @@
         <img src="../../assets/images/logo.png" class="logo"/>
     </div>
     <ul>
-        <li><a href="SProjectList.php"><span>Projects</span></a></li>
+        <li><a href="/FYP2025/SPAMS/client/pages/student/SProjectList.php"><span>Projects</span></a></li>
         <li><a href="projectList.php"><span>Chats</span></a></li>
         <li><a href="profile.php"><span>(StudentName)</span></a></li>
-        <li><a href="../../../server/controllers/LogoutController.php"><span>Logout</span></a></li>
+        <li><a href="/FYP2025/SPAMS/server/controllers/LogoutController.php"><span>Logout</span></a></li>
     </ul>
 </div>
 
