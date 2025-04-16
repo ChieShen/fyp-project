@@ -1,0 +1,101 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Inter;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #f2f2f2;
+}
+
+.page{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.listBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 2% 2% 2% 1%;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    min-height: 90%;
+    min-width: 80%;
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+}
+
+.titleBar{
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    padding-left: 1%;
+    margin-top: 20px;
+    align-items: center;
+}
+
+button{
+    height: 40px;
+    margin-right: 1%;
+    margin-left: auto;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #04aa6d;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+.listTable{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.columnNameRow{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 20px 15px auto 15px;
+    background-color: #e6f9ff;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.columnName{
+    text-align: left;
+    padding: 5px 5px 5px 5px;
+    width: 20%;
+}
+
+.dataRow{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 5px 15px auto 15px;
+    background-color: white;
+    border-bottom: 1px solid #d9d9d9;
+    border-radius: 5px;
+}
+
+.data{
+    text-align: left;
+    padding: 5px 5px 5px 5px;
+    width: 20%;
+}

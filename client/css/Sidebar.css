@@ -1,0 +1,125 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Inter;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #333;
+    color: white;
+    height: 100vh;
+    transition: width 0.3s ease;
+}
+
+.btnContainer{
+    margin-top: 1.5vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+}
+
+.toggle-btn {
+    display: flex;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    padding: 0;
+    margin:0;
+    width:50px;
+    height:50px;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-icon {
+    width: 30px;
+    height: 30px;
+    filter: brightness(0) invert(1); /* makes icon white */
+    transition: transform 0.3s ease, filter 0.3s ease; /* Added transform to transition */
+    transform-origin: center center;
+    transform: rotate(90deg);
+}
+
+.brand{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.logoContainer{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo{
+    width: 70px;
+    height: 70px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 15px 20px;
+}
+
+.sidebar a:hover {
+    background-color: #575757;
+}
+
+.sidebar.collapsed {
+    width: 60px;
+    background-color: transparent;
+}
+
+.sidebar.collapsed li span {
+    display: none;
+}
+
+.sidebar.collapsed .toggle-btn {
+    transform: rotate(180deg);
+    background-color: transparent;
+}
+
+.sidebar.collapsed .menu-icon {
+    filter: brightness(0.5); /* darkens icon */
+    transform: rotate(180deg);
+}
+
+.sidebar.collapsed .brand{
+    display: none;
+}
+
+.sidebar.collapsed .logo{
+    display: none;
+}
+
+.sidebar a.active {
+    background-color: #04aa6d;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.sidebar.collapsed .active{
+    background-color: transparent;
+}
