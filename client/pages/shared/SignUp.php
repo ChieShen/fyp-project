@@ -2,8 +2,10 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title>Sign Up</title>
     <link rel="stylesheet" href="../../css/SignUp.css" />
+    <link rel="icon" type="image/png" href="/FYP2025/SPAMS/client/assets/images/logo.png">
 </head>
 
 <body>

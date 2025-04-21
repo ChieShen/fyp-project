@@ -1,12 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const sidebar = document.getElementById("sidebar");
-    const toggleBtn = document.getElementById("toggleBtn");
-
-    toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("collapsed");
-    });
-});
-
 document.addEventListener('DOMContentLoaded', () => {
     const currentPath = window.location.pathname;
     const sidebarLinks = document.querySelectorAll('.sidebar a');
@@ -39,4 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (type === "join" || type === "logout") {
         showMessageBox(type);
     }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const page = document.querySelector(".page");
+
+    toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+        page.classList.toggle("sidebar-collapsed");
+    });
 });
