@@ -11,10 +11,30 @@
         <img src="../../assets/images/logo.png" class="logo"/>
     </div>
     <ul>
-        <li><a href="/FYP2025/SPAMS/client/pages/student/SProjectList.php"><span>Projects</span></a></li>
-        <li><a href="projectList.php"><span>Chats</span></a></li>
-        <li><a href="profile.php"><span>(StudentName)</span></a></li>
-        <li><a href="/FYP2025/SPAMS/server/controllers/LogoutController.php"><span>Logout</span></a></li>
+        <li>
+            <a href="/FYP2025/SPAMS/client/pages/student/SProjectList.php">
+                <img class ="icon" src="/FYP2025/SPAMS/client/assets/images/document.png" title ="Projects">
+                <span>Projects</span>
+            </a>
+        </li>
+        <li>
+            <a href="projectList.php">
+                <img class ="icon" src="/FYP2025/SPAMS/client/assets/images/messageicon.png" title ="Chats">
+                <span>Chats</span>
+            </a>
+        </li>
+        <li>
+            <a href="profile.php">
+                <img class ="icon" src="/FYP2025/SPAMS/client/assets/images/account icon.png" title ="Profile">
+                <span>(StudentName)</span>
+            </a>
+        </li>
+        <li>
+            <a href="/FYP2025/SPAMS/server/controllers/LogoutController.php" id="logoutBtn">
+                <img class ="icon" src="/FYP2025/SPAMS/client/assets/images/logout.png" title ="Logout">
+                <span>Logout</span>
+            </a>
+        </li>
     </ul>
 </div>
 

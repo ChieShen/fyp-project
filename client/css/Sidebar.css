@@ -53,6 +53,11 @@
     transform: rotate(90deg);
 }
 
+.icon{
+    width: 30px;
+    height: 30px;
+}
+
 .brand{
     font-size: 40px;
     font-weight: bold;
@@ -79,14 +84,20 @@
 .sidebar a {
     color: white;
     text-decoration: none;
-    display: block;
+    display: flex;
+    flex-direction: row;
     padding: 15px 20px;
     border-radius: 5px;
+    align-items: center;
 }
 
 .sidebar a:hover {
     background-color: #575757;
     width: 101%;
+}
+
+.sidebar span{
+    padding-left: 10px;
 }
 
 .sidebar.collapsed {
@@ -116,6 +127,14 @@
     display: none;
 }
 
+.sidebar.collapsed a{
+    padding-left: 10px;
+}
+
+.sidebar.collapsed .icon{
+    filter: brightness(0.1);
+}
+
 .sidebar a.active {
     background-color: #04aa6d;
     font-weight: bold;
@@ -124,4 +143,16 @@
 
 .sidebar.collapsed .active{
     background-color: transparent;
+}
+
+.sidebar.collapsed a.active{
+    background-color: #04aa6d;
+}
+
+.sidebar.collapsed a.active .icon{
+    filter: brightness(1);
+}
+
+.sidebar.collapsed a:hover .icon{
+    filter: brightness(1);
 }

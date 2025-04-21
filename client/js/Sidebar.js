@@ -19,3 +19,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent immediate navigation
+            showMessageBox("logout");
+
+            const url = new URL(window.location.href);
+            url.searchParams.set("type", "logout");
+            window.history.replaceState({}, '', url);
+        });
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("type");
+    if (type === "join" || type === "logout") {
+        showMessageBox(type);
+    }
+});

@@ -76,6 +76,14 @@ function validateConfirmPassword() {
     }
 }
 
+function clearError(input, errorElementId) {
+    const errorElement = document.getElementById(errorElementId);
+    if (input.value.trim() !== '') {
+        input.style.border = ''; // Reset border
+        errorElement.textContent = ''; // Clear error message
+    }
+}
+
 function validateForm(event) {
     const username = document.getElementById('username');
     const fname = document.getElementById('fname');

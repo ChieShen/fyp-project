@@ -13,7 +13,7 @@
         <div class="listBox">
             <div class="titleBar">
                 <h1>Project List</h1>
-                <button>Join Project</button>
+                <button id="joinProject">Join Project</button>
             </div>
 
             <div class="listTable">
@@ -46,6 +46,7 @@
         </div>
     </div>
     <script src="../../js/SProjectList.js" defer></script>
+    <?php include $_SERVER['DOCUMENT_ROOT'].'/FYP2025/SPAMS/client/components/MessageBox.php'; ?>
 </body>
 
 </html>
