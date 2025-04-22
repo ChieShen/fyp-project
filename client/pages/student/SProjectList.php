@@ -14,7 +14,7 @@
 
         <div class="listBox">
             <div class="titleBar">
-                <h1>Project List</h1>
+                <h1>Projects</h1>
                 <button id="joinProject">Join Project</button>
             </div>
 

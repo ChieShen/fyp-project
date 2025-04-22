@@ -54,7 +54,7 @@ body{
     align-items: center;
 }
 
-#joinProject{
+#createProject{
     height: 40px;
     margin-right: 1%;
     margin-left: auto;
@@ -70,7 +70,7 @@ body{
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-#joinProject:hover{
+#createProject:hover{
     background-color: #45a049;
     transform:scale(1.1)
 }
@@ -122,25 +122,4 @@ body{
     padding: 5px 5px 5px 5px;
     width: 20%;
 }
-
-.progress-container {
-    width: 80%;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    height: 20px;
-    overflow: hidden;
-    margin-left: 3%;
-    box-shadow: inset 0 0 5px #aaa;
-  }
-  
-  .progress-bar {
-    height: 100%;
-    width: 0%;
-    background-color: #aaff80;
-    text-align: center;
-    line-height: 20px;
-    color: black;
-    font-weight: bold;
-    transition: width 1s ease-in-out;
-  }
 

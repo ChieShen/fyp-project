@@ -1,0 +1,206 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Inter;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #f2f2f2;
+}
+
+.page{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.createBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 2% 2% 2% 1%;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    min-height: 90%;
+    min-width: 80%;
+    margin-left: 220px;
+    flex-grow: 1;
+    transition: width 0.3s ease, margin-left 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    padding-bottom: 50px;
+}
+
+.page.sidebar-collapsed .createBox {
+    margin-left: 80px;
+}
+
+.titleBar{
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    padding-left: 1%;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.contentBox{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 2%;
+}
+
+form {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 2%;
+}
+
+label {
+    margin-left: 5%;
+}
+
+input {
+    height: 30px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 2%;
+}
+
+input[type="datetime-local"] {
+    padding-right: 5px;
+}
+
+.detailsHalf{
+    width: 50%;
+}
+
+.fileHalf{
+    width: 50%;
+}
+
+.fileTitle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#addFile{
+    height: 40px;
+    margin-right: 1%;
+    margin-left: auto;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #04aa6d;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+#addFile:hover{
+    background-color: #45a049;
+    transform:scale(1.1);
+}
+
+.fileList{
+    margin-top: 20px;
+}
+
+.fileItem{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+}
+
+#removeFile{
+    height: 40px;
+    margin-right: 1%;
+    margin-left: auto;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: red;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+#removeFile:hover{
+    background-color:#cc0000;
+    transform:scale(1.1);
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#cancel{
+    height: 40px;
+    width: 100px;
+    margin-right: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #d9d9d9;
+    color: black;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+#cancel:hover{
+    background-color:#b0b0b0;
+    transform:scale(1.1);
+}
+
+#create{
+    height: 40px;
+    width: 100px;
+    margin-left: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #04aa6d;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+#create:hover{
+    background-color: #45a049;
+    transform:scale(1.1);
+}
+
+
+

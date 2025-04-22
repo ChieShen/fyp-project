@@ -22,7 +22,7 @@
             <p id="fnameError" style="color: red; margin-left:5%;"></p>
             <input type="text" id="fname" name="fname" placeholder="First Name"><br><br>
 
-            <label for="lname">First Name</label>
+            <label for="lname">Last Name</label>
             <p id="lnameError" style="color: red; margin-left:5%;"></p>
             <input type="text" id="lname" name="lname" placeholder="Last Name/Family Name"><br><br>
 
