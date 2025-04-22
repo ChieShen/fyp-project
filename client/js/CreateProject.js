@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fileEntry.className = 'fileItem';
             fileEntry.innerHTML = `
                 <label>${file.name}</label>
-                <button type="button" class="removeFile">Remove</button>
+                <button type="button" class="removeFile" id="removeFile">Remove</button>
             `;
 
             // Handle removal properly
