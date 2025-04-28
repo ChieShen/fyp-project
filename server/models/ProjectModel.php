@@ -11,8 +11,17 @@ class ProjectModel
 
     public function save($data)
     {
-        $stmt = $this->conn->prepare("INSERT INTO project (createdBy, title, description, deadline) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isss", $data['createdBy'], $data['title'], $data['description'], $data['deadline']);
+        $stmt = $this->conn->prepare(
+            "INSERT INTO project (createdBy, title, description, deadline, joinCode) VALUES (?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param(
+            "issss",
+            $data['createdBy'],
+            $data['title'],
+            $data['description'],
+            $data['deadline'],
+            $data['joinCode']
+        );
         $stmt->execute();
         return $stmt->insert_id;
     }
@@ -56,17 +65,47 @@ class ProjectModel
 
     public function update(int $projectID, string $title, ?string $description, string $deadline): bool
     {
-        $stmt = $this->conn->prepare("UPDATE project SET title = ?, description = ?, deadline = ? WHERE projectID = ?");
+        $stmt = $this->conn->prepare(
+            "UPDATE project SET title = ?, description = ?, deadline = ? WHERE projectID = ?"
+        );
         $stmt->bind_param("sssi", $title, $description, $deadline, $projectID);
         $result = $stmt->execute();
         $stmt->close();
         return $result;
     }
 
-    public function saveFile($projectID, $filename, $uploader) {
-        $stmt = $this->conn->prepare("INSERT INTO attachment (attachName, uploader, projectID) VALUES (?, ?, ?)");
+    public function saveFile($projectID, $filename, $uploader)
+    {
+        $stmt = $this->conn->prepare(
+            "INSERT INTO attachment (attachName, uploader, projectID) VALUES (?, ?, ?)"
+        );
         $stmt->bind_param("sii", $filename, $uploader, $projectID);
         $stmt->execute();
     }
-    
+
+    public function isJoinCodeExists(string $joinCode): bool
+    {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) as count FROM project WHERE joinCode = ?");
+        $stmt->bind_param("s", $joinCode);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $result['count'] > 0;
+    }
+
+    public function generateUniqueJoinCode(): string
+    {
+        do {
+            $joinCode = $this->generateJoinCode();
+        } while ($this->isJoinCodeExists($joinCode));
+        return $joinCode;
+    }
+
+    private function generateJoinCode(): string
+    {
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $charsArray = str_split($chars);
+        shuffle($charsArray);
+        return implode('', array_slice($charsArray, 0, 6));
+    }
 }

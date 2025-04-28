@@ -5,9 +5,9 @@ function validateCode(input) {
     if (value === '') {
         input.style.border = '2px solid red';
         errorElement.textContent = 'Project Code cannot be empty';
-    } else if (!/^\d{6}$/.test(value)) {
+    } else if (value.length != 6) {
         input.style.border = '2px solid red';
-        errorElement.textContent = 'Project Code must be exactly 6 digits (0-9)';
+        errorElement.textContent = 'Project Code must be exactly 6 characters';
     } else {
         input.style.border = '';
         errorElement.textContent = '';

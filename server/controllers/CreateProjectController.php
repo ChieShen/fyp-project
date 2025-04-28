@@ -18,11 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn = $user->getConnection();
 
     $projectModel = new ProjectModel($conn);
+    $joinCode = $projectModel->generateUniqueJoinCode();
+
     $projectID = $projectModel->save([
         'createdBy' => $createdBy,
         'title' => $projectName,
         'description' => $projectDesc,
-        'deadline' => $deadline
+        'deadline' => $deadline,
+        'joinCode' => $joinCode
     ]);
 
     // Save uploaded files

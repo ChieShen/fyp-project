@@ -49,17 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
             body: formData
         })
-        .then(res => {
-            if (res.redirected) {
-                window.location.href = res.url;
-            } else {
-                return res.text().then(alert);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("An error occurred while uploading.");
-        });
+            .then(res => {
+                if (res.redirected) {
+                    window.location.href = res.url;
+                } else {
+                    return res.text().then(alert);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("An error occurred while uploading.");
+            });
     });
 });
 
@@ -78,7 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('focusout', function () {
             if (field.id === 'groupCount' || field.id === 'maxMem') {
                 validateNumberInput(this, field.errorId, field.errorMessage);
-            } else {
+            }
+            else if (field.id === 'deadline') {
+                validateDateInput(this, field.errorId, field.errorMessage);
+            }
+            else {
                 validateInput(this, field.errorId, field.errorMessage);
             }
         });
@@ -94,6 +98,23 @@ function validateInput(input, errorElementId, errorMessage) {
     if (input.value.trim() === '') {
         input.style.border = '2px solid red';
         errorElement.textContent = errorMessage;
+    } else {
+        input.style.border = '';
+        errorElement.textContent = '';
+    }
+}
+
+function validateDateInput(input, errorElementId, errorMessage) {
+    const errorElement = document.getElementById(errorElementId);
+    const selectedDate = new Date(input.value.trim());
+    const currentDate = new Date();
+
+    if (input.value.trim() === '') {
+        input.style.border = '2px solid red';
+        errorElement.textContent = errorMessage;
+    } else if (selectedDate < currentDate) {
+        input.style.border = '2px solid red';
+        errorElement.textContent = 'Deadline cannot be in the past'; // Custom message for past date
     } else {
         input.style.border = '';
         errorElement.textContent = '';
@@ -156,6 +177,15 @@ function validateForm(event) {
         isValid = false;
         deadline.style.border = '2px solid red';
         deadlineError.textContent = 'Deadline cannot be empty';
+    } else {
+        // Check if the deadline is in the past
+        const currentDate = new Date();
+        const selectedDate = new Date(deadline.value);
+        if (selectedDate < currentDate) {
+            isValid = false;
+            deadline.style.border = '2px solid red';
+            deadlineError.textContent = 'Deadline cannot be in the past';
+        }
     }
 
     if (groupCount.value.trim() === '' || isNaN(groupCount.value) || parseInt(groupCount.value) <= 0) {

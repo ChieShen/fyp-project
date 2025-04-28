@@ -1,45 +1,41 @@
-// Event listener for the focusout event
-document.getElementById('username').addEventListener('focusout', function () {
-    validateInput(this, 'usernameError', 'Username cannot be empty');
-});
-document.getElementById('fname').addEventListener('focusout', function () {
-    validateInput(this, 'fnameError', 'First Name cannot be empty');
-});
-document.getElementById('lname').addEventListener('focusout', function () {
-    validateInput(this, 'lnameError', 'Last Name cannot be empty');
-});
-document.getElementById('password').addEventListener('focusout', function () {
-    validatePassword(this);
-});
-document.getElementById('confirmPassword').addEventListener('focusout', function () {
-    validateConfirmPassword();
+document.addEventListener('DOMContentLoaded', () => {
+    const fields = [
+        { id: 'username', errorId: 'usernameError', errorMessage: 'Username cannot be empty' },
+        { id: 'fname', errorId: 'fnameError', errorMessage: 'First Name cannot be empty' },
+        { id: 'lname', errorId: 'lnameError', errorMessage: 'Last Name cannot be empty' }
+    ];
+
+    // Set up input and focusout listeners for regular fields
+    fields.forEach(({ id, errorId, errorMessage }) => {
+        const input = document.getElementById(id);
+
+        input.addEventListener('focusout', () => {
+            validateInput(input, errorId, errorMessage);
+        });
+
+        input.addEventListener('input', () => {
+            clearError(input, errorId);
+        });
+    });
+
+    // Special handling for password fields
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+
+    password.addEventListener('focusout', () => validatePassword(password));
+    password.addEventListener('input', () => validatePassword(password));
+
+    confirmPassword.addEventListener('focusout', validateConfirmPassword);
+    confirmPassword.addEventListener('input', validateConfirmPassword);
 });
 
-// Event listeners for input to clear the red border and error message when the user types
-document.getElementById('username').addEventListener('input', function () {
-    clearError(this, 'usernameError');
-});
-document.getElementById('fname').addEventListener('input', function () {
-    clearError(this, 'fnameError');
-});
-document.getElementById('lname').addEventListener('input', function () {
-    clearError(this, 'lnameError');
-});
-document.getElementById('password').addEventListener('input', function () {
-    validatePassword(this); // Live check password length
-});
-document.getElementById('confirmPassword').addEventListener('input', function () {
-    validateConfirmPassword(); // Live check confirm password match
-});
-
+// Validation functions
 function validateInput(input, errorElementId, errorMessage) {
     const errorElement = document.getElementById(errorElementId);
     if (input.value.trim() === '') {
-        input.style.border = '2px solid red';
-        errorElement.textContent = errorMessage;
+        showError(input, errorElement, errorMessage);
     } else {
-        input.style.border = '';
-        errorElement.textContent = '';
+        clearError(input, errorElementId);
     }
 }
 
@@ -48,40 +44,37 @@ function validatePassword(input) {
     const value = input.value.trim();
 
     if (value === '') {
-        input.style.border = '2px solid red';
-        errorElement.textContent = 'Password cannot be empty';
+        showError(input, errorElement, 'Password cannot be empty');
     } else if (value.length < 8) {
-        input.style.border = '2px solid red';
-        errorElement.textContent = 'Password must be at least 8 characters';
+        showError(input, errorElement, 'Password must be at least 8 characters');
     } else {
-        input.style.border = '';
-        errorElement.textContent = '';
+        clearError(input, 'passwordError');
     }
 }
 
 function validateConfirmPassword() {
-    const password = document.getElementById('password').value.trim();
+    const passwordVal = document.getElementById('password').value.trim();
     const confirmPassword = document.getElementById('confirmPassword');
     const errorElement = document.getElementById('confirmError');
 
     if (confirmPassword.value.trim() === '') {
-        confirmPassword.style.border = '2px solid red';
-        errorElement.textContent = 'Confirm Password cannot be empty';
-    } else if (confirmPassword.value !== password) {
-        confirmPassword.style.border = '2px solid red';
-        errorElement.textContent = 'Passwords do not match';
+        showError(confirmPassword, errorElement, 'Confirm Password cannot be empty');
+    } else if (confirmPassword.value !== passwordVal) {
+        showError(confirmPassword, errorElement, 'Passwords do not match');
     } else {
-        confirmPassword.style.border = '';
-        errorElement.textContent = '';
+        clearError(confirmPassword, 'confirmError');
     }
+}
+
+function showError(input, errorElement, message) {
+    input.style.border = '2px solid red';
+    errorElement.textContent = message;
 }
 
 function clearError(input, errorElementId) {
     const errorElement = document.getElementById(errorElementId);
-    if (input.value.trim() !== '') {
-        input.style.border = ''; // Reset border
-        errorElement.textContent = ''; // Clear error message
-    }
+    input.style.border = '';
+    errorElement.textContent = '';
 }
 
 function validateForm(event) {
