@@ -18,7 +18,7 @@
             </div>
 
             <form action="/FYP2025/SPAMS/server/controllers/CreateProjectController.php" method="post"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data" onsubmit="validateForm(event)">
                 <div class="contentBox">
 
                     <div class="detailsHalf">
