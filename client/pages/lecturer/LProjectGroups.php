@@ -75,7 +75,18 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="groupSubmission">
+                    <p class="label">Submission:</p>
+                    <div class="submissionBar">
+                        <p class="files">Assignment2.pdf</p>
+                        <button class="download">Download</button>
+                    </div>
+                </div>
+
             </div>
+
+            <button id="downloadAll">Download All Submissions</button>
 
         </div>
 

@@ -68,7 +68,7 @@ body {
     flex-grow: 1;
     transition: width 0.3s ease, margin-left 0.3s ease;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    padding-bottom: 50px;
+    padding-bottom: 20px;
     margin-top: 20px;
 }
 
@@ -114,6 +114,8 @@ body {
 
 .files {
     padding-left: 1%;
+    text-decoration: none;
+    color: blue;
 }
 
 .deleteBtn {
@@ -251,4 +253,58 @@ body {
 
 #memberRole{
     color: #04aa6d;
+}
+
+.groupSubmission{
+    margin-top: 20px;
+}
+
+.submissionBar{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.download{
+    height: 40px;
+    width: 120px;
+    margin-right: 1%;
+    margin-left: auto;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #0099ff;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.download:hover{
+    background-color: #007acc;
+    transform: scale(1.1)
+}
+
+#downloadAll{
+    height: 40px;
+    width: 300px;
+    margin: 30px auto auto auto;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #0099ff;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+#downloadAll:hover{
+    background-color: #007acc;
+    transform: scale(1.1)
 }

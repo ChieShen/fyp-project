@@ -1,0 +1,124 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../assets/fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html,body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Inter;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #f2f2f2;
+}
+
+.page{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.listBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 2% 2% 2% 1%;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    min-height: 90%;
+    min-width: 80%;
+    margin-left: 220px;
+    flex-grow: 1;
+    transition: width 0.3s ease, margin-left 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    padding-bottom: 50px;
+}
+
+.page.sidebar-collapsed .listBox {
+    margin-left: 80px;
+}
+
+.titleBar{
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+    padding-left: 1%;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.listTable{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.columnNameRow{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 20px 15px auto 15px;
+    background-color: #e6f9ff;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.columnName{
+    text-align: left;
+    padding: 5px 5px 5px 5px;
+    width: 25%;
+}
+
+.dataRow{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 50px;
+    margin: 5px 15px auto 15px;
+    background-color: white;
+    border-bottom: 1px solid #d9d9d9;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.data{
+    text-align: left;
+    align-items: center;
+    padding: 5px 5px 5px 5px;
+    width: 25%;
+}
+
+.join{
+    height: 40px;
+    width: 120px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #0099ff;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.join:hover{
+    background-color: #007acc;
+    transform: scale(1.1)
+}
+
+#full{
+    color: red;
+    padding-left: 45px;
+}
