@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <script src="/FYP2025/SPAMS/client/js/SProjectList.js" defer></script>
+    <script src="/FYP2025/SPAMS/client/js/JoinGroup.js" defer></script>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/components/MessageBox.php'; ?>
 </body>
 

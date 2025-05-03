@@ -95,6 +95,7 @@ body{
 
 .columnName{
     text-align: left;
+    font-weight: bold;
     padding: 5px 5px 5px 5px;
     width: 20%;
 }
