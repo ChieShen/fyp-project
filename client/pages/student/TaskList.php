@@ -54,7 +54,7 @@
                         <div class="data">Task Name</div>
                         <div class="data">Student Name</div>
                         <div class="data">20/12/2025</div>
-                        <div class="data" id="ongoing">Ongoing</div>
+                        <div class="data ongoing">Ongoing</div>
                         <div class="data">
                             <button class="download">Download</button>
                         </div>
@@ -63,7 +63,7 @@
                         <div class="data">Task Name</div>
                         <div class="data">Student Name</div>
                         <div class="data">10/12/2025</div>
-                        <div class="data" id="done">Done</div>
+                        <div class="data done">Done</div>
                         <div class="data">
                             <button class="download">Download</button>
                         </div>
@@ -72,7 +72,7 @@
                         <div class="data">Task Name</div>
                         <div class="data">Student Name</div>
                         <div class="data">No data</div>
-                        <div class="data" id="notStarted">Not Started</div>
+                        <div class="data notStarted">Not Started</div>
                         <div class="data">
                             <button class="download">Download</button>
                         </div>

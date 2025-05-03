@@ -213,6 +213,19 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
+.data.ongoing{
+    color: #0099ff;
+}
+
+.data.done{
+    color: #04aa6d;
+}
+
+.data.notStarted{
+    color: red;
+    font-weight: bold;
+}
+
 .download{
     height: 40px;
     width: 120px;

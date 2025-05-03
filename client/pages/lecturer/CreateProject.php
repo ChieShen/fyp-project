@@ -24,12 +24,11 @@
                     <div class="detailsHalf">
                         <label for="projectName">Project Name</label>
                         <p id="pNameError" style="color: red; margin-left:5%;"></p>
-                        <input type="text" id="projectName" name="projectName" placeholder="ProjectName"><br><br><br>
+                        <input type="text" id="projectName" name="projectName" placeholder="Project Name"><br><br><br>
 
                         <label for="projectDesc">Project Description</label>
                         <p id="pDescError" style="color: red; margin-left:5%;"></p>
-                        <input type="text" id="projectDesc" name="projectDesc"
-                            placeholder="Brief Description"><br><br><br>
+                        <textarea id="projectDesc" name="projectDesc" placeholder="Brief Description"></textarea><br><br><br>
 
                         <label for="deadline">Deadline</label>
                         <p id="deadlineError" style="color: red; margin-left:5%;"></p>

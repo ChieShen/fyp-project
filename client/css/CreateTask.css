@@ -56,7 +56,7 @@ body{
 
 .contentBox{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
     margin-top: 2%;
 }
@@ -71,6 +71,7 @@ form {
 
 label {
     margin-left: 5%;
+    min-width: 100px;
 }
 
 input {
@@ -80,7 +81,7 @@ input {
     margin-right: 5%;
     border: 1px solid #d9d9d9;
     border-radius: 5px;
-    padding-left: 2%;
+    padding-left: 1%;
 }
 
 input[type="datetime-local"] {
@@ -94,83 +95,34 @@ textarea{
     margin-right: 5%;
     border: 1px solid #d9d9d9;
     border-radius: 5px;
-    padding-left: 2%;
+    padding-left: 1%;
     line-height: 30px;
     resize: none;
     overflow: hidden;
 }
 
-.detailsHalf{
-    width: 50%;
+.contributorList{
+    display: flex;
+    flex-direction: column;
 }
 
-.fileHalf{
-    width: 50%;
-}
-
-.fileTitle{
+.contributorRow{
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
-}
-
-#addFile{
-    height: 40px;
-    margin-right: 5%;
-    margin-left: auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #04aa6d;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-}
-
-#addFile:hover{
-    background-color: #45a049;
-    transform:scale(1.1);
-}
-
-.fileList{
     margin-top: 20px;
 }
 
-.fileItem{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 5px;
-}
-
-#removeFile{
-    height: 40px;
-    margin-right: 5%;
-    margin-left: auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: red;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-}
-
-#removeFile:hover{
-    background-color:#cc0000;
-    transform:scale(1.1);
+.spacer{
+    width: 50%;
 }
 
 .buttons{
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-top: 50px;
 }
 
 #cancel{
