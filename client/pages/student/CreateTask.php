@@ -29,6 +29,7 @@
                 </div>
 
                 <label>Contributor(s)</label>
+                <p id="contribError" style="color: red; margin-left:5%;"></p>
                 <div class="contributorList">
                     <div class="contributorRow">
                         <label>Alice Tan</label>
