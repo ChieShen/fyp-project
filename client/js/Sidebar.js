@@ -17,7 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", (e) => {
             e.preventDefault(); // Prevent immediate navigation
-            showMessageBox("logout");
+            showMessageBox({
+                titleText: "Logout",
+                messageText: "Are you sure you want to logout?",
+                confirmText: "Logout",
+                onConfirm: () => {
+                    console.log("Item deleted.");
+                }
+            });
 
             const url = new URL(window.location.href);
             url.searchParams.set("type", "logout");
@@ -27,8 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const params = new URLSearchParams(window.location.search);
     const type = params.get("type");
-    if (type === "join" || type === "logout") {
-        showMessageBox(type);
+    if (type) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("type");
+        window.history.replaceState({}, '', url);
     }
 });
 

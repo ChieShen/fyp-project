@@ -21,7 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (joinBtn) {
       joinBtn.addEventListener("click", () => {
-          showMessageBox("join");
+        showMessageBox({
+            type: "join",
+            titleText: "Join A Project",
+            messageText: "Enter Code to Join A Project",
+            confirmText: "Join",
+            inputType: "text",
+            onConfirm: (code) => {
+                if (!/^\d{6}$/.test(code)) return;
+                console.log("Joining with code:", code);
+            }
+        });
+                
           const url = new URL(window.location.href);
           url.searchParams.set("type", "join");
           window.history.replaceState({}, '', url);

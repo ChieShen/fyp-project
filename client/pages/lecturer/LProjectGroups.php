@@ -62,7 +62,8 @@
                         <div class="data">1</div>
                         <div class="data" id="leaderRole">Leader</div>
                         <div class="data">
-                            <button class="transferBtn">Transfer</button>
+                            <button class="transferBtn" data-group-id="group1"
+                                data-current-leader="stu1">Transfer</button>
                         </div>
                     </div>
                     <div class="dataRow">

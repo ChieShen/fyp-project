@@ -14,57 +14,63 @@ function validateCode(input) {
     }
 }
 
-function showMessageBox(type) {
+function showMessageBox(options) {
+    const { type, titleText, messageText, confirmText, onConfirm, inputType, inputOptions } = options;
+
     const title = document.getElementById("messageTitle");
     const message = document.getElementById("message");
     const confirmBtn = document.getElementById("confirm");
     const messageBox = document.getElementById("messageBox");
-    const messageBoxWrapper = document.getElementById('messageBoxWrapper');
+    const messageBoxWrapper = document.getElementById("messageBoxWrapper");
 
     messageBox.style.display = "flex";
     messageBoxWrapper.style.display = "flex";
 
-    // Clear old input if it exists
-    const existingInput = document.getElementById("projectCode");
-    if (existingInput) existingInput.remove();
+    // Remove any old dynamic inputs
+    const dynamicInput = document.getElementById("dynamicInput");
+    if (dynamicInput) dynamicInput.remove();
 
-    if (type === "join") {
-        title.textContent = "Join A Project";
-        message.textContent = "Enter Code to Join A Project";
+    title.textContent = titleText || "";
+    message.textContent = messageText || "";
+    confirmBtn.textContent = confirmText || "Confirm";
 
+    if (inputType === "text") {
         const input = document.createElement("input");
         input.type = "text";
-        input.id = "projectCode";
-        input.maxLength = 6;
-        input.placeholder = "Enter 6-digit code";
-
+        input.id = "dynamicInput";
+        input.placeholder = "Enter value";
         messageBox.insertBefore(input, confirmBtn);
-
-        input.addEventListener("input", function () {
-            validateCode(this);
+        input.addEventListener("input", () => {
+            if (type === "join") validateCode(input);
         });
-
-        confirmBtn.textContent = "Join";
-        confirmBtn.onclick = () => {
-            const code = input.value;
-            if (!/^\d{6}$/.test(code)) return;
-            console.log("Joining with code:", code);
-        };
-    } else if (type === "logout") {
-        title.textContent = "Logout";
-        message.textContent = "Are you sure you want to logout?";
-        confirmBtn.textContent = "Logout";
-        confirmBtn.onclick = () => {
-            window.location.href = "/FYP2025/SPAMS/server/controllers/LogoutController.php";
-        };
     }
+
+    if (inputType === "select" && Array.isArray(inputOptions)) {
+        const select = document.createElement("select");
+        select.id = "dynamicInput";
+        inputOptions.forEach(opt => {
+            const option = document.createElement("option");
+            option.value = opt.value;
+            option.textContent = opt.label;
+            select.appendChild(option);
+        });
+        messageBox.insertBefore(select, confirmBtn);
+    }
+
+    confirmBtn.onclick = () => {
+        const input = document.getElementById("dynamicInput");
+        const inputValue = input ? input.value : null;
+        if (onConfirm) onConfirm(inputValue);
+    };
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = document.getElementById("close");
     closeBtn.addEventListener("click", () => {
         document.getElementById("messageBox").style.display = "none";
         document.getElementById("messageBoxWrapper").style.display = "none";
+        document.getElementById("projectCodeError").textContent = "";
         const url = new URL(window.location.href);
         url.searchParams.delete("type");
         window.history.replaceState({}, '', url);
