@@ -37,6 +37,7 @@ function showMessageBox(options) {
     if (inputType === "text") {
         const input = document.createElement("input");
         input.type = "text";
+        input.class = "textInput"
         input.id = "dynamicInput";
         input.placeholder = "Enter value";
         messageBox.insertBefore(input, confirmBtn);

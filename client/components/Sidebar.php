@@ -18,13 +18,13 @@
             </a>
         </li>
         <li>
-            <a href="projectList.php">
+            <a href="/FYP2025/SPAMS/client/pages/shared/Chat.php">
                 <img class ="icon" src="/FYP2025/SPAMS/client/assets/images/messageicon.png" title ="Chats">
                 <span>Chats</span>
             </a>
         </li>
         <li>
-            <a href="profile.php">
+            <a href="/FYP2025/SPAMS/client/pages/shared/Profile.php">
                 <img class ="icon" src="/FYP2025/SPAMS/client/assets/images/account icon.png" title ="Profile">
                 <span>(StudentName)</span>
             </a>

@@ -24,7 +24,7 @@
                     <div class="detailsHalf">
                         <label for="projectName">Project Name</label>
                         <p id="pNameError" style="color: red; margin-left:5%;"></p>
-                        <input type="text" id="projectName" name="projectName" placeholder="Project Name"><br><br><br>
+                        <input class="createInput" type="text" id="projectName" name="projectName" placeholder="Project Name"><br><br><br>
 
                         <label for="projectDesc">Project Description</label>
                         <p id="pDescError" style="color: red; margin-left:5%;"></p>
@@ -32,15 +32,15 @@
 
                         <label for="deadline">Deadline</label>
                         <p id="deadlineError" style="color: red; margin-left:5%;"></p>
-                        <input type="datetime-local" id="deadline" name="deadline" placeholder="Deadline"><br><br><br>
+                        <input class="createInput" type="datetime-local" id="deadline" name="deadline" placeholder="Deadline"><br><br><br>
 
                         <label for="groupCount">Number of Groups</label>
                         <p id="gcError" style="color: red; margin-left:5%;"></p>
-                        <input type="text" id="groupCount" name="groupCount" placeholder="Number of groups"><br><br><br>
+                        <input class="createInput" type="text" id="groupCount" name="groupCount" placeholder="Number of groups"><br><br><br>
 
                         <label for="maxMem">Maximum Number of Members Per Group</label>
                         <p id="maxMemError" style="color: red; margin-left:5%;"></p>
-                        <input type="text" id="maxMem" name="maxMem" placeholder="Maximum Number"><br><br><br>
+                        <input class="createInput" type="text" id="maxMem" name="maxMem" placeholder="Maximum Number"><br><br><br>
                     </div>
 
                     <div class="fileHalf">

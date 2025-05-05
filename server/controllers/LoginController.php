@@ -1,20 +1,23 @@
 <?php
 session_start();
 
-// Include database connection or user model
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once '../models/UserModel.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    // Authenticate using model
-    $userModel = new UserModel();
+    $db = new Database();
+    $conn = $db->connect();
+
+    $userModel = new UserModel($conn);
     $user = $userModel->validateLogin($username, $password);
 
     if ($user) {
         $_SESSION['username'] = $user['username'];
-        $_SESSION['role_id'] = $user['roleID']; // ✅ Add roleID to session
+        $_SESSION['role_id'] = $user['roleID'];
+        $_SESSION['userID'] = $user['userID'];
 
         // ✅ Redirect based on roleID
         switch ($user['roleID']) {

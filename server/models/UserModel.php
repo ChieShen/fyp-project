@@ -4,18 +4,9 @@ class UserModel
     private $conn;
 
     // Constructor: Establish database connection
-    public function __construct()
+    public function __construct(mysqli $conn)
     {
-        $host = 'localhost';
-        $db = 'spams';
-        $user = 'root';  // Default XAMPP user
-        $pass = '';      // Default is no password
-
-        $this->conn = new mysqli($host, $user, $pass, $db);
-
-        if ($this->conn->connect_error) {
-            die("Database connection failed: " . $this->conn->connect_error);
-        }
+        $this->conn = $conn;
     }
 
     // Insert a new user

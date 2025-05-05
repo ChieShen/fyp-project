@@ -73,7 +73,7 @@ label {
     margin-left: 5%;
 }
 
-input {
+.createInput {
     height: 30px;
     width: 90%;
     margin-left: 5%;

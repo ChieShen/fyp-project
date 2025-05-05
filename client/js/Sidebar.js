@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 messageText: "Are you sure you want to logout?",
                 confirmText: "Logout",
                 onConfirm: () => {
-                    console.log("Item deleted.");
+                     window.location.href = "/FYP2025/SPAMS/server/controllers/LogoutController.php";
                 }
             });
 

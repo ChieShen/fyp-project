@@ -1,3 +1,21 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
+
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header($_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/index.php');
+    exit();
+}
+$userId = $_SESSION['user_id'];
+
+$db = new Database();
+$conn = $db->connect();
+
+$model = new ProjectModel($conn);
+$projects = $model->findByCreatedId($userId);
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -26,16 +44,15 @@
                     <div class="columnName">Participants</div>
                     <div class="columnName">Submitted</div>
                 </div>
-                <?php for ($i = 1; $i <= 100; $i++): ?>
-                    <?php $progress = rand(0, 100); ?>
+                <?php foreach ($projects as $project): ?>
                     <div class="dataRow">
-                        <div class="data">Assignment <?= $i ?></div>
-                        <div class="data"><?= date('Y-m-d', strtotime("+$i days")) ?></div>
-                        <div class="data">Group <?= ceil($i / 5) ?></div>
-                        <div class="data"><?= chr(65 + ($i % 26)) ?></div>
-                        <div class="data"><?= chr(65 + ($i % 26)) ?></div>
+                        <div class="data"><?= htmlspecialchars($project['title']) ?></div>
+                        <div class="data"><?= htmlspecialchars($project['deadline']) ?></div>
+                        <div class="data">TBD</div>
+                        <div class="data">TBD</div>
+                        <div class="data">TBD</div>
                     </div>
-                <?php endfor; ?>
+                <?php endforeach; ?>
 
             </div>
         </div>

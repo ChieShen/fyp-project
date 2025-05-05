@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../models/ProjectModel.php';
 require_once '../models/UserModel.php';
 
@@ -8,14 +9,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $deadline = $_POST['deadline'];
     $groupCount = $_POST['groupCount'];
     $maxMem = $_POST['maxMem'];
-    $createdBy = 1; // Replace with session user ID if using login
+    $createdBy = $_SESSION['userID'];
 
     if (empty($projectName) || empty($deadline) || empty($groupCount) || empty($maxMem)) {
         die("Missing required fields.");
     }
 
-    $user = new UserModel();
-    $conn = $user->getConnection();
+    $db = new Database();
+    $conn = $db->connect();
+
+    $user = new UserModel($conn);
 
     $projectModel = new ProjectModel($conn);
     $joinCode = $projectModel->generateUniqueJoinCode();
