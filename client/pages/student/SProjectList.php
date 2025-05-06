@@ -1,3 +1,20 @@
+<?php
+session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+
+if (!isset($_SESSION['userID'])) {
+    header("Location: /FYP2025/SPAMS/client/index.php");
+    exit;
+}
+
+$db = new Database();
+$conn = $db->connect();
+$groupModel = new GroupModel($conn);
+$userID = $_SESSION['userID'];
+$projects = $groupModel->getUserGroupsWithProjects($userID);
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -26,38 +43,27 @@
                     <div class="columnName">Created By</div>
                     <div class="columnName">Progress</div>
                 </div>
-                <div class="dataRow">
-                    <div class="data">Project Name</div>
-                    <div class="data">Group Name</div>
-                    <div class="data">Deadline</div>
-                    <div class="data">Created By</div>
-                    <div class="data">
-                        <div class="progress-container">
-                            <div class="progress-bar" id="progressBar" data-progress="100"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="dataRow">
-                    <div class="data">Project Name</div>
-                    <div class="data">Group Name</div>
-                    <div class="data">Deadline</div>
-                    <div class="data">Created By</div>
-                    <div class="data">Progress</div>
-                </div>
-                <?php for ($i = 1; $i <= 100; $i++): ?>
-                    <?php $progress = rand(0, 100); ?>
+
+                <?php if (empty($projects)): ?>
                     <div class="dataRow">
-                        <div class="data">Project <?= $i ?></div>
-                        <div class="data">Group <?= ceil($i / 5) ?></div>
-                        <div class="data"><?= date('Y-m-d', strtotime("+$i days")) ?></div>
-                        <div class="data">Creator <?= chr(65 + ($i % 26)) ?></div>
-                        <div class="data">
-                            <div class="progress-container">
-                                <div class="progress-bar" data-progress="<?= $progress ?>"></div>
+                        <div class="data" colspan="5">No joined projects found.</div>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($projects as $proj): ?>
+                        <div class="dataRow">
+                            <div class="data"><?= htmlspecialchars($proj['title']) ?></div>
+                            <div class="data"><?= htmlspecialchars($proj['groupName']) ?></div>
+                            <div class="data"><?= htmlspecialchars($proj['deadline']) ?></div>
+                            <div class="data"><?= htmlspecialchars($proj['createdBy']) ?></div>
+                            <div class="data">
+                                <div class="progress-container">
+                                    <div class="progress-bar" data-progress="<?= $proj['progress'] ?>"></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endfor; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
 
             </div>
         </div>

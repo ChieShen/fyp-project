@@ -35,7 +35,7 @@ $maxMem = $project['maxMem'] ?? 0;
 
         <div class="listBox">
             <div class="titleBar">
-                <h1><?php echo $projectName;?></h1>
+                <h1><?php echo $projectName; ?></h1>
             </div>
 
             <div class="listTable">
@@ -60,7 +60,7 @@ $maxMem = $project['maxMem'] ?? 0;
                             <?php if ($isFull): ?>
                                 FULL!!
                             <?php else: ?>
-                                <form method="post" action="JoinGroupAction.php">
+                                <form method="post" action="/FYP2025/SPAMS/server/controllers/JoinGroupController.php">
                                     <input type="hidden" name="groupID" value="<?= $groupID ?>">
                                     <button class="join" type="submit">Join</button>
                                 </form>

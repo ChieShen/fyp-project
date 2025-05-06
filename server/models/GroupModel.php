@@ -129,4 +129,59 @@ class GroupModel
         $stmt->close();
         return $result ? (int) $result['userID'] : null;
     }
+
+    public function getProjectIdByGroupId(int $groupID): ?int
+    {
+        $stmt = $this->conn->prepare("SELECT projectID FROM projectgroups WHERE groupID = ?");
+        $stmt->bind_param("i", $groupID);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $result ? (int) $result['projectID'] : null;
+    }
+
+    public function isUserInProject(int $userID, int $projectID): bool
+    {
+        $stmt = $this->conn->prepare("
+            SELECT gm.userID FROM groupmember gm
+            JOIN projectgroups pg ON gm.groupID = pg.groupID
+            WHERE gm.userID = ? AND pg.projectID = ?
+        ");
+        $stmt->bind_param("ii", $userID, $projectID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        return $result->num_rows > 0;
+    }
+
+    public function getUserGroupsWithProjects(int $userID): array
+    {
+        $query = "
+        SELECT 
+            p.projectID,
+            p.title,
+            p.deadline,
+            p.createdBy,
+            pg.groupName,
+            pg.groupID
+        FROM groupmember gm
+        JOIN projectgroups pg ON gm.groupID = pg.groupID
+        JOIN project p ON pg.projectID = p.projectID
+        WHERE gm.userID = ?
+    ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $userID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $projects = [];
+
+        while ($row = $result->fetch_assoc()) {
+            // Add progress placeholder for now (e.g. 0)
+            $row['progress'] = 0;
+            $projects[] = $row;
+        }
+
+        $stmt->close();
+        return $projects;
+    }
 }
