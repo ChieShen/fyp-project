@@ -3,11 +3,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header($_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/index.php');
+if (!isset($_SESSION['userID'])) {
+    header('Location: /FYP2025/SPAMS/client/index.php');
     exit();
 }
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['userID'];
 
 $db = new Database();
 $conn = $db->connect();
@@ -48,7 +48,7 @@ $projects = $model->findByCreatedId($userId);
                     <div class="dataRow">
                         <div class="data"><?= htmlspecialchars($project['title']) ?></div>
                         <div class="data"><?= htmlspecialchars($project['deadline']) ?></div>
-                        <div class="data">TBD</div>
+                        <div class="data"><?= htmlspecialchars($project['numGroup']) ?></div>
                         <div class="data">TBD</div>
                         <div class="data">TBD</div>
                     </div>

@@ -12,15 +12,18 @@ class ProjectModel
     public function save($data)
     {
         $stmt = $this->conn->prepare(
-            "INSERT INTO project (createdBy, title, description, deadline, joinCode) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO project (createdBy, title, description, deadline, joinCode, maxMem, numGroup) 
+             VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bind_param(
-            "issss",
+            "issssii",
             $data['createdBy'],
             $data['title'],
             $data['description'],
             $data['deadline'],
-            $data['joinCode']
+            $data['joinCode'],
+            $data['maxMem'],
+            $data['numGroup']
         );
         $stmt->execute();
         return $stmt->insert_id;
@@ -63,12 +66,19 @@ class ProjectModel
         return $result;
     }
 
-    public function update(int $projectID, string $title, ?string $description, string $deadline): bool
-    {
+
+    public function update(
+        int $projectID,
+        string $title,
+        ?string $description,
+        string $deadline,
+        int $maxMem,
+        int $numGroup
+    ): bool {
         $stmt = $this->conn->prepare(
-            "UPDATE project SET title = ?, description = ?, deadline = ? WHERE projectID = ?"
+            "UPDATE project SET title = ?, description = ?, deadline = ?, maxMem = ?, numGroup = ? WHERE projectID = ?"
         );
-        $stmt->bind_param("sssi", $title, $description, $deadline, $projectID);
+        $stmt->bind_param("sssiii", $title, $description, $deadline, $maxMem, $numGroup, $projectID);
         $result = $stmt->execute();
         $stmt->close();
         return $result;
@@ -108,4 +118,17 @@ class ProjectModel
         shuffle($charsArray);
         return implode('', array_slice($charsArray, 0, 6));
     }
+
+    public function findByJoinCode(string $joinCode): ?array
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM project WHERE joinCode = ?");
+        $stmt->bind_param("s", $joinCode);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $project = $result->fetch_assoc();
+        $stmt->close();
+
+        return $project ?: null;
+    }
+
 }

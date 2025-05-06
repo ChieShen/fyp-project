@@ -1,3 +1,24 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
+
+session_start();
+
+$projectID = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+$db = new Database();
+$conn = $db->connect();
+
+$groupModel = new GroupModel($conn);
+$projectModel = new ProjectModel($conn);
+
+$project = $projectModel->findByProjectId($projectID);
+$groups = $groupModel->getGroupsByProject($projectID);
+$projectName = $project['title'];
+$maxMem = $project['maxMem'] ?? 0;
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +35,7 @@
 
         <div class="listBox">
             <div class="titleBar">
-                <h1>Rmb Replace This</h1>
+                <h1><?php echo $projectName;?></h1>
             </div>
 
             <div class="listTable">
@@ -24,20 +45,29 @@
                     <div class="columnName">Members Allowed</div>
                     <div class="columnName">Action</div>
                 </div>
-                <div class="dataRow">
-                    <div class="data">Group 1</div>
-                    <div class="data">1</div>
-                    <div class="data">5</div>
-                    <div class="data">
-                        <button class="join">Join</button>
+
+                <?php foreach ($groups as $group): ?>
+                    <?php
+                    $groupID = $group['groupID'];
+                    $memberCount = $groupModel->countMembersInGroup($groupID);
+                    $isFull = $memberCount >= $maxMem;
+                    ?>
+                    <div class="dataRow">
+                        <div class="data"><?= htmlspecialchars($group['groupName']) ?></div>
+                        <div class="data"><?= $memberCount ?></div>
+                        <div class="data"><?= $maxMem ?></div>
+                        <div class="data <?= $isFull ? 'full' : '' ?>">
+                            <?php if ($isFull): ?>
+                                FULL!!
+                            <?php else: ?>
+                                <form method="post" action="JoinGroupAction.php">
+                                    <input type="hidden" name="groupID" value="<?= $groupID ?>">
+                                    <button class="join" type="submit">Join</button>
+                                </form>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                </div>
-                <div class="dataRow">
-                    <div class="data">Group 2</div>
-                    <div class="data">5</div>
-                    <div class="data">5</div>
-                    <div class="data" id="full">FULL!!</div>
-                </div>
+                <?php endforeach; ?>
 
             </div>
         </div>

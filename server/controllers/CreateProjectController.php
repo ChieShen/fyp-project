@@ -1,7 +1,9 @@
 <?php
 session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once '../models/ProjectModel.php';
 require_once '../models/UserModel.php';
+require_once '../models/GroupModel.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $projectName = $_POST['projectName'];
@@ -22,14 +24,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $projectModel = new ProjectModel($conn);
     $joinCode = $projectModel->generateUniqueJoinCode();
+    $groupModel = new GroupModel($conn);
 
     $projectID = $projectModel->save([
         'createdBy' => $createdBy,
         'title' => $projectName,
         'description' => $projectDesc,
         'deadline' => $deadline,
-        'joinCode' => $joinCode
+        'joinCode' => $joinCode,
+        'maxMem' => $maxMem,
+        'numGroup' => $groupCount
     ]);
+
+    for ($i = 1; $i <= $groupCount; $i++) {
+        $groupName = "Group $i";
+        $groupModel->createGroup($projectID, $groupName);
+    }
 
     // Save uploaded files
     $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/uploads/' . $createdBy . '/' . $projectID . '/';
