@@ -84,12 +84,12 @@ class ProjectModel
         return $result;
     }
 
-    public function saveFile($projectID, $filename, $uploader)
+    public function saveFile($projectID, $filename, $displayName, $uploader)
     {
         $stmt = $this->conn->prepare(
-            "INSERT INTO attachment (attachName, uploader, projectID) VALUES (?, ?, ?)"
+            "INSERT INTO attachment (attachName, displayName, uploader, projectID) VALUES (?, ?, ?)"
         );
-        $stmt->bind_param("sii", $filename, $uploader, $projectID);
+        $stmt->bind_param("ssii", $filename, $displayName, $uploader, $projectID);
         $stmt->execute();
     }
 
@@ -130,5 +130,19 @@ class ProjectModel
 
         return $project ?: null;
     }
+    public function getAttachmentsByProjectId(int $projectId): array
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM attachment WHERE projectID = ?");
+        $stmt->bind_param("i", $projectId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $attachments = [];
 
+        while ($row = $result->fetch_assoc()) {
+            $attachments[] = $row;
+        }
+
+        $stmt->close();
+        return $attachments;
+    }
 }

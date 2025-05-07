@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $destination = $uploadDir . '/' . $safeName;
 
         if (move_uploaded_file($tmpName, $destination)) {
-            $projectModel->saveFile($projectID, $safeName, $createdBy);
+            $projectModel->saveFile($projectID, $safeName, $originalName, $createdBy);
         }
     }
 

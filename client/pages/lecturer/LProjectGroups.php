@@ -1,3 +1,33 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
+
+session_start();
+if (!isset($_SESSION['userID']) || !isset($_GET['id'])) {
+    header("Location: /FYP2025/SPAMS/Client/index.php");
+    exit();
+}
+
+$conn = (new Database())->connect();
+$projectModel = new ProjectModel($conn);
+$groupModel = new GroupModel($conn);
+$userModel = new UserModel($conn);
+
+$projectId = intval($_GET['id']);
+$project = $projectModel->findByProjectId($projectId);
+
+if (!$project || ($project['createdBy'] != $_SESSION['userID'])) {
+    header("Location: /FYP2025/SPAMS/Client/Pages/lecturer/LProjectList.php");
+    exit();
+}
+
+$groups = $groupModel->getGroupsByProject($projectId);
+$creator = $userModel->getUserById($project['createdBy']);
+$attachments = $projectModel->getAttachmentsByProjectId($projectId);
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -15,28 +45,33 @@
         <div class="contentBox">
             <div class="projectDetails">
                 <div class="titleBar">
-                    <h1>Assignment 2</h1>
+                    <h1><?php echo $project['title'] ?></h1>
                     <button id="editBtn">Edit</button>
                 </div><br>
 
                 <p class="label">Project Description:</p>
                 <p class="details">
-                    In the spirit of togetherness and celebration, we warmly invite you to Rumah Terbuka Sunway a
-                    special gathering to celebrate Hari Raya with the entire Sunway University and Sunway College
-                    community! This is the perfect time to reconnect, enjoy delicious food, and immerse yourself in the
-                    rich traditions of this festive season.
+                    <?= htmlspecialchars($project['description']) ?>
                 </p><br><br>
 
                 <p class="label">Created By:</p>
-                <p class="details">David</p><br><br>
+                <p class="details"><?= htmlspecialchars($creator['username']) ?></p><br><br>
 
                 <p class="label">Join Code:</p>
-                <p class="details">123456</p><br><br>
+                <p class="details"><?= htmlspecialchars($project['joinCode']) ?></p><br><br>
 
                 <p class="label">Attached File(s)</p>
-                <a href="" class="files">Assignment2.pdf</a>
-                <a href="" class="files">Assignment2.pdf</a>
-                <a href="" class="files">Assignment2.pdf</a>
+                <?php if (!empty($attachments)): ?>
+                    <?php foreach ($attachments as $file): ?>
+                        <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?file=<?= urlencode($file['attachName']) ?>&name=<?= urlencode($file['displayName']) ?>&projectID=<?= $projectId ?>"
+                            class="files">
+                            <?= htmlspecialchars($file['displayName']) ?>
+                        </a>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="details">No files attached.</p>
+                <?php endif; ?>
+
             </div>
 
             <div class="groups">

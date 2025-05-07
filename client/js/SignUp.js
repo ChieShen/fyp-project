@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmPassword.addEventListener('focusout', validateConfirmPassword);
     confirmPassword.addEventListener('input', validateConfirmPassword);
+
+    const usernameInput = document.getElementById('username');
+    usernameInput.addEventListener('focusout', checkUsernameAvailability);
+    usernameInput.addEventListener('input', checkUsernameAvailability);
+
 });
 
 // Validation functions
@@ -77,7 +82,31 @@ function clearError(input, errorElementId) {
     errorElement.textContent = '';
 }
 
-function validateForm(event) {
+function checkUsernameAvailability() {
+    const username = document.getElementById('username').value.trim();
+    const errorElement = document.getElementById('usernameError');
+
+    return fetch('/FYP2025/SPAMS/server/controllers/SignUpController.php?action=checkUsername&username=' + encodeURIComponent(username))
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                showError(document.getElementById('username'), errorElement, 'Username already taken');
+                return false;
+            } else {
+                clearError(document.getElementById('username'), 'usernameError');
+                return true;
+            }
+        })
+        .catch((e) => {
+            showError(document.getElementById('username'), errorElement, 'Error checking username');
+            console.log(e);
+            return false;
+        });
+}
+
+async function validateForm(event) {
+    event.preventDefault();
+
     const username = document.getElementById('username');
     const fname = document.getElementById('fname');
     const lname = document.getElementById('lname');
@@ -91,7 +120,7 @@ function validateForm(event) {
 
     let isValid = true;
 
-    // Reset previous styles and errors
+    // Reset styles and messages
     usernameError.textContent = '';
     fnameError.textContent = '';
     lnameError.textContent = '';
@@ -103,7 +132,7 @@ function validateForm(event) {
     password.style.border = '';
     confirmPassword.style.border = '';
 
-    // Username validation
+    // Local validations
     if (username.value.trim() === '') {
         isValid = false;
         username.style.border = '2px solid red';
@@ -122,7 +151,6 @@ function validateForm(event) {
         lnameError.textContent = 'Last Name cannot be empty';
     }
 
-    // Password validation
     if (password.value.trim() === '') {
         isValid = false;
         password.style.border = '2px solid red';
@@ -133,7 +161,6 @@ function validateForm(event) {
         passwordError.textContent = 'Password must be at least 8 characters';
     }
 
-    // Confirm password validation
     if (confirmPassword.value.trim() === '') {
         isValid = false;
         confirmPassword.style.border = '2px solid red';
@@ -144,10 +171,13 @@ function validateForm(event) {
         confirmError.textContent = 'Passwords do not match';
     }
 
-    if (!isValid) {
-        event.preventDefault();
-        return false; // Important for inline onsubmit
+    // 🔁 Username check via AJAX
+    const usernameAvailable = await checkUsernameAvailability();
+    if (!usernameAvailable) {
+        isValid = false;
     }
 
-    return true;
+    if (isValid) {
+        event.target.submit(); // Submit only if all checks pass
+    }
 }

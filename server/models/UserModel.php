@@ -52,6 +52,23 @@ class UserModel
         return $user;
     }
 
+    public function getUserById($id)
+    {
+        $sql = "SELECT * FROM user WHERE userID = ?";
+        $stmt = $this->conn->prepare($sql);
+        if (!$stmt)
+            return false;
+
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        $stmt->close();
+        return $user;
+    }
+
     // Validate login
     public function validateLogin($username, $password)
     {

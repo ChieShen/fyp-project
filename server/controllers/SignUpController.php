@@ -1,6 +1,27 @@
 <?php
 session_start();
-require_once '../models/UserModel.php'; // Adjust the path as needed
+require_once $_SERVER['DOCUMENT_ROOT'] .'/FYP2025/SPAMS/server/models/UserModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
+
+if (isset($_GET['action']) && $_GET['action'] === 'checkUsername' && isset($_GET['username'])) {
+    header('Content-Type: application/json');
+
+    $username = $_GET['username'];
+    
+    $conn = (new Database())->connect();
+    $userModel = new UserModel($conn);
+
+    // Call getUserByUsername to check if the username exists in the database
+    $user = $userModel->getUserByUsername($username);
+
+    // Return response based on whether user exists
+    if ($user) {
+        echo json_encode(['exists' => true]);  // Username already taken
+    } else {
+        echo json_encode(['exists' => false]); // Username available
+    }
+    exit;
+}
 
 // Check if form is submitted via POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -37,8 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $role = 2;
     }
 
-    // Create a new User model instance
-    $userModel = new UserModel();
+    $conn = (new Database())->connect();
+    $userModel = new UserModel($conn);
 
     // Attempt to register the user
     $signupSuccess = $userModel->createUser($username, $role, $fname,$lname, $password);
