@@ -1,3 +1,41 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
+
+session_start();
+if (!isset($_SESSION['userID'])) {
+    header("Location: /FYP2025/SPAMS/Client/index.php");
+    exit();
+}
+elseif(!isset($_GET['projectID']) || !(isset($_GET['groupID']))){
+    header("Location: /FYP2025/SPAMS/Client/pages/stdent/SProjectList.php");
+    exit();
+}
+
+$conn = (new Database())->connect();
+$projectModel = new ProjectModel($conn);
+$groupModel = new GroupModel($conn);
+$userModel = new UserModel($conn);
+$userID = $_SESSION['userID'];
+
+$projectId = intval($_GET['projectID']);
+$project = $projectModel->findByProjectId($projectId);
+
+$groupId = intval($_GET['groupID']);
+$group = $groupModel->getGroupById($groupId);
+
+if (!$project || !($groupModel->isUserInProject($userID, $projectId))) {
+    header("Location: /FYP2025/SPAMS/Client/Pages/student/SProjectList.php");
+    exit();
+}
+
+$creator = $userModel->getUserById($project['createdBy']);
+$attachments = $projectModel->getAttachmentsByProjectId($projectId);
+
+?>
+
 <!DOCTYPE html>
 <html>
 

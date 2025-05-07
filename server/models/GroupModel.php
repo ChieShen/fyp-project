@@ -184,4 +184,22 @@ class GroupModel
         $stmt->close();
         return $projects;
     }
+
+    public function getUserGroupInProject(int $userID, int $projectID): ?array
+    {
+        $query = "
+        SELECT pg.* FROM groupmember gm
+        JOIN projectgroups pg ON gm.groupID = pg.groupID
+        WHERE gm.userID = ? AND pg.projectID = ?
+        LIMIT 1
+    ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("ii", $userID, $projectID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $group = $result->fetch_assoc();
+        $stmt->close();
+        return $group ?: null;
+    }
+
 }

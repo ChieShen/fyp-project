@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectMo
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
 
 session_start();
-if (!isset($_SESSION['userID']) || !isset($_GET['id'])) {
+if (!isset($_SESSION['userID'])) {
     header("Location: /FYP2025/SPAMS/Client/index.php");
     exit();
 }
@@ -23,7 +23,7 @@ if (!$project || ($project['createdBy'] != $_SESSION['userID'])) {
     exit();
 }
 
-$groups = $groupModel->getGroupsByProject($projectId);
+$group = $groupModel->getGroupsByProject($projectId);
 $creator = $userModel->getUserById($project['createdBy']);
 $attachments = $projectModel->getAttachmentsByProjectId($projectId);
 ?>

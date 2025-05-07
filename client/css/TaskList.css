@@ -162,6 +162,11 @@ body {
     transform: scale(1.1);
 }
 
+#addBtn a{
+    text-decoration: none;
+    color: white;
+}
+
 .memberTable {
     display: flex;
     flex-direction: column;
