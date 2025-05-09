@@ -50,18 +50,22 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
                     </div>
                 <?php else: ?>
                     <?php foreach ($projects as $proj): ?>
-                        <div class="dataRow">
-                            <div class="data"><?= htmlspecialchars($proj['title']) ?></div>
-                            <div class="data"><?= htmlspecialchars($proj['groupName']) ?></div>
-                            <div class="data"><?= htmlspecialchars($proj['deadline']) ?></div>
-                            <div class="data"><?= htmlspecialchars($proj['createdBy']) ?></div>
-                            <div class="data">
-                                <div class="progress-container">
-                                    <div class="progress-bar" data-progress="<?= $proj['progress'] ?>"></div>
+                        <a href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($proj['projectID']) ?>&groupID=<?= urlencode($proj['groupID']) ?>"
+                            class="dataRowLink">
+                            <div class="dataRow">
+                                <div class="data"><?= htmlspecialchars($proj['title']) ?></div>
+                                <div class="data"><?= htmlspecialchars($proj['groupName']) ?></div>
+                                <div class="data"><?= htmlspecialchars($proj['deadline']) ?></div>
+                                <div class="data"><?= htmlspecialchars($proj['createdBy']) ?></div>
+                                <div class="data">
+                                    <div class="progress-container">
+                                        <div class="progress-bar" data-progress="<?= $proj['progress'] ?>"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     <?php endforeach; ?>
+
                 <?php endif; ?>
 
 

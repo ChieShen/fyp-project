@@ -204,6 +204,11 @@ body {
     transition: transform 0.3s ease;
 }
 
+.dataRowLink{
+    color: black;
+    text-decoration: none;
+}
+
 .data {
     display: flex;
     text-align: left;

@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $memberCount = $groupModel->countMembersInGroup($groupID);
 
     // Assign role
-    $isLeader = ($memberCount === 0) ? true : 'false';
+    $isLeader = ($memberCount === 0) ? true : false;
 
     // Add to group
     $groupModel->assignUserToGroup($groupID, $userID, $isLeader);

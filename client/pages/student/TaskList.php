@@ -3,13 +3,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
 
 session_start();
 if (!isset($_SESSION['userID'])) {
     header("Location: /FYP2025/SPAMS/Client/index.php");
     exit();
-}
-elseif(!isset($_GET['projectID']) || !(isset($_GET['groupID']))){
+} elseif (!isset($_GET['projectID']) || !isset($_GET['groupID'])) {
     header("Location: /FYP2025/SPAMS/Client/pages/stdent/SProjectList.php");
     exit();
 }
@@ -18,6 +18,7 @@ $conn = (new Database())->connect();
 $projectModel = new ProjectModel($conn);
 $groupModel = new GroupModel($conn);
 $userModel = new UserModel($conn);
+$taskModel = new TaskModel($conn);
 $userID = $_SESSION['userID'];
 
 $projectId = intval($_GET['projectID']);
@@ -33,7 +34,8 @@ if (!$project || !($groupModel->isUserInProject($userID, $projectId))) {
 
 $creator = $userModel->getUserById($project['createdBy']);
 $attachments = $projectModel->getAttachmentsByProjectId($projectId);
-
+$leaderID = $groupModel->getLeaderId($groupId);
+$taskArray = $taskModel->getTasksByProjectAndGroup($projectId, $groupId);
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +56,9 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
             <div class="projectDetails">
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>
-                    <button id="transferBtn">Transfer Role</button>
+                    <?php if ($leaderID === $userID): ?>
+                        <button id="transferBtn">Transfer Role</button>
+                    <?php endif; ?>
                 </div><br>
 
                 <p class="label">Project Description:</p>
@@ -63,7 +67,7 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                 </p><br><br>
 
                 <p class="label">Created By:</p>
-                <a href="" class="creator"><?= htmlspecialchars($creator['username'])?></a><br><br>
+                <a href="" class="creator"><?= htmlspecialchars($creator['username']) ?></a><br><br>
 
                 <p class="label">Attached File(s)</p>
                 <?php if (!empty($attachments)): ?>
@@ -82,11 +86,14 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
             <div class="groups">
                 <div class="titleBar">
                     <h1>Tasks</h1>
-                    <button id="addBtn">
-                        <a href="/FYP2025/SPAMS/client/pages/student/CreateTask.php?groupID=<?= urlencode($groupId) ?>">
-                            Add Task
-                        </a>
-                    </button>
+                    <?php if ($leaderID === $userID): ?>
+                        <button id="addBtn">
+                            <a
+                                href="/FYP2025/SPAMS/client/pages/student/CreateTask.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>">
+                                Add Task
+                            </a>
+                        </button>
+                    <?php endif; ?>
                 </div>
 
                 <div class="memberTable">
@@ -97,34 +104,64 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                         <div class="columnName">Status</div>
                         <div class="columnName">Action</div>
                     </div>
-                    <div class="dataRow">
-                        <div class="data">Task Name</div>
-                        <div class="data">Student Name</div>
-                        <div class="data">20/12/2025</div>
-                        <div class="data ongoing">Ongoing</div>
-                        <div class="data">
-                            <button class="download">Download</button>
+
+                    <?php if (!empty($taskArray)): ?>
+                        <?php foreach ($taskArray as $task):
+                            $statusClass = '';
+                            switch ($task['status']) {
+                                case 0:
+                                    $statusText = 'Not Started';
+                                    $statusClass = 'notStarted';
+                                    break;
+                                case 1:
+                                    $statusText = 'Ongoing';
+                                    $statusClass = 'ongoing';
+                                    break;
+                                case 2:
+                                    $statusText = 'Done';
+                                    $statusClass = 'done';
+                                    break;
+                                default:
+                                    $statusText = 'Unknown';
+                                    $statusClass = '';
+                                    break;
+                            }
+
+                            $contributors = $taskModel->getContributorsByTask($task['taskID']);
+                            $assignedTo = 'No Contributor';
+
+                            if (!empty($contributors)) {
+                                if (count($contributors) === 1) {
+                                    $userInfo = $userModel->getUserById($contributors[0]['userID']);
+                                    $assignedTo = htmlspecialchars($userInfo['firstName'] . ' ' . $userInfo['lastName']);
+                                } else {
+                                    $assignedTo = count($contributors) . ' Contributors';
+                                }
+                            }
+                            ?>
+                            <a class="dataRowLink"
+                                href="/FYP2025/SPAMS/client/pages/student/TaskDetails.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>&taskID=<?= urlencode($task['taskID']) ?>">
+                                <div class="dataRow">
+                                    <div class="data"><?= htmlspecialchars($task['taskName']) ?></div>
+                                    <div class="data"><?= $assignedTo ?></div>
+                                    <div class="data">
+                                        <?= $task['lastUpdated'] ? date("d/m/Y", strtotime($task['lastUpdated'])) : 'No data' ?>
+                                    </div>
+                                    <div class="data <?= $statusClass ?>"><?= $statusText ?></div>
+                                    <div class="data">
+                                        <button class="download">Download</button>
+                                    </div>
+                                </div>
+                            </a>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="dataRow">
+                            <div class="data" colspan="5">No tasks found.</div>
                         </div>
-                    </div>
-                    <div class="dataRow">
-                        <div class="data">Task Name</div>
-                        <div class="data">Student Name</div>
-                        <div class="data">10/12/2025</div>
-                        <div class="data done">Done</div>
-                        <div class="data">
-                            <button class="download">Download</button>
-                        </div>
-                    </div>
-                    <div class="dataRow">
-                        <div class="data">Task Name</div>
-                        <div class="data">Student Name</div>
-                        <div class="data">No data</div>
-                        <div class="data notStarted">Not Started</div>
-                        <div class="data">
-                            <button class="download">Download</button>
-                        </div>
-                    </div>
+                    <?php endif; ?>
+
                 </div>
+
                 <button id="downloadAll">Download All Lastest Files</button>
             </div>
 

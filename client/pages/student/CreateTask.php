@@ -8,8 +8,7 @@ session_start();
 if (!isset($_SESSION['userID'])) {
     header("Location: /FYP2025/SPAMS/Client/index.php");
     exit();
-}
-elseif(!isset($_GET['projectID']) || !(isset($_GET['groupID']))){
+} elseif (!isset($_GET['projectID']) || !isset($_GET['groupID'])) {
     header("Location: /FYP2025/SPAMS/Client/pages/stdent/SProjectList.php");
     exit();
 }
@@ -33,7 +32,7 @@ if (!$project || !($groupModel->isUserInProject($userID, $projectId))) {
 
 $creator = $userModel->getUserById($project['createdBy']);
 $attachments = $projectModel->getAttachmentsByProjectId($projectId);
-
+$groupMembers = $groupModel->getMembersByGroup($groupId);
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +54,10 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                 <h1>New Task</h1>
             </div>
 
-            <form action="" method="post" onsubmit="validateForm(event)">
+            <form action="/FYP2025/SPAMS/server/controllers/TaskController.php" method="post" onsubmit="validateForm(event)">
+                <input type="hidden" name="action" value="create">
+                <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId)?>">
+                <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId)?>">
                 <div class="contentBox">
                     <label for="taskName">Task Name</label>
                     <p id="tNameError" style="color: red; margin-left:5%;"></p>
@@ -69,16 +71,13 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                 <label>Contributor(s)</label>
                 <p id="contribError" style="color: red; margin-left:5%;"></p>
                 <div class="contributorList">
-                    <div class="contributorRow">
-                        <label>Alice Tan</label>
-                        <input type="checkbox" name="contributors[]" value="student1">
-                        <div class="spacer"></div>
-                    </div>
-                    <div class="contributorRow">
-                        <label>John Lim</label>
-                        <input type="checkbox" name="contributors[]" value="student2">
-                        <div class="spacer"></div>
-                    </div>
+                    <?php foreach ($groupMembers as $member): ?>
+                        <div class="contributorRow">
+                            <label><?= htmlspecialchars($member['firstName'] . ' ' . $member['lastName']) ?></label>
+                            <input type="checkbox" name="contributors[]" value="<?= htmlspecialchars($member['userID']) ?>">
+                            <div class="spacer"></div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
 
                 <div class="buttons">
