@@ -56,6 +56,7 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
                         <?php 
                             $creator = $userModel->getUserById($proj['createdBy']);
                             $submitted = ($proj['submitted'] == '1') ? "Submitted" : "Not Submitted";
+                            $progress = $groupModel->calculateProjectProgress($proj['projectID'], $proj['groupID']);
                         ?>
                         <a href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($proj['projectID']) ?>&groupID=<?= urlencode($proj['groupID']) ?>"
                             class="dataRowLink">
@@ -66,7 +67,7 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
                                 <div class="data"><?= htmlspecialchars($creator['username']) ?></div>
                                 <div class="data">
                                     <div class="progress-container">
-                                        <div class="progress-bar" data-progress="<?= $proj['progress'] ?>"></div>
+                                        <div class="progress-bar" data-progress="<?= $progress ?>"></div>
                                     </div>
                                 </div>
                                 <div class="data"><?= htmlspecialchars($submitted) ?></div>

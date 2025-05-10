@@ -53,6 +53,8 @@ foreach ($contributors as $contributor) {
         break;
     }
 }
+$isSubmitted = $groupModel->getSubmitted($groupId);
+$isTaskDone = $taskModel->isTaskDone($taskId);
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +75,7 @@ foreach ($contributors as $contributor) {
             <div class="taskDetails">
                 <div class="titleBar">
                     <h1><?php echo $task['taskName'] ?></h1>
-                    <?php if ($leaderID === $userID): ?>
+                    <?php if ($leaderID === $userID && !$isSubmitted): ?>
                         <button id="editBtn">Edit Task</button>
                     <?php endif; ?>
                 </div><br>
@@ -131,7 +133,8 @@ foreach ($contributors as $contributor) {
 
                 </div>
 
-                <?php if ($isContributor): ?>
+                <?php if ($isContributor && !$isSubmitted): ?>
+                    <?php if(!$isTaskDone): ?>
                     <form action="/FYP2025/SPAMS/server/controllers/TaskUploadController.php" method="post"
                         enctype="multipart/form-data" class="uploadForm">
                         <input type="hidden" name="action" value="upload">
@@ -148,6 +151,7 @@ foreach ($contributors as $contributor) {
                             <button id="uploadFile" type="submit">Upload</button>
                         </div>
                     </form>
+                    <?php endif; ?>
 
                     <form class="statusUpdate" method="post"
                         action="/FYP2025/SPAMS/server/controllers/TaskController.php">
@@ -157,9 +161,9 @@ foreach ($contributors as $contributor) {
                         <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($task['status']) ?>">
 
                         <?php if ($task['status'] == 0 || $task['status'] == 1): ?>
-                            <button type="submit" name="newStatus" value="2">Mark As Done</button>
+                            <button type="submit" name="newStatus" value="2" id="markDone">Mark As Done</button>
                         <?php elseif ($task['status'] == 2): ?>
-                            <button type="submit" name="newStatus" value="1">Update Task</button>
+                            <button type="submit" name="newStatus" value="1" id="markUndone">Update Task</button>
                         <?php endif; ?>
                     </form>
 

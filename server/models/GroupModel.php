@@ -223,4 +223,25 @@ class GroupModel
         return isset($result['submitted']) ? (bool) $result['submitted'] : null;
     }
 
+    public function calculateProjectProgress($projectID, $groupID)
+    {
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
+        $taskModel = new TaskModel($this->conn);
+        $tasks = $taskModel->getTasksByProjectAndGroup($projectID, $groupID);
+
+        $total = count($tasks);
+        if ($total === 0)
+            return 0;
+
+        $completed = 0;
+        foreach ($tasks as $task) {
+            if ((int) $task['status'] === 2) {
+                $completed++;
+            }
+        }
+
+        return round(($completed / $total) * 100);
+    }
+
+
 }

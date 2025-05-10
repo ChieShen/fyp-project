@@ -36,6 +36,7 @@ $creator = $userModel->getUserById($project['createdBy']);
 $attachments = $projectModel->getAttachmentsByProjectId($projectId);
 $leaderID = $groupModel->getLeaderId($groupId);
 $taskArray = $taskModel->getTasksByProjectAndGroup($projectId, $groupId);
+$isSubmitted = $groupModel->getSubmitted($groupId);
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +57,7 @@ $taskArray = $taskModel->getTasksByProjectAndGroup($projectId, $groupId);
             <div class="projectDetails">
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>
-                    <?php if ($leaderID === $userID): ?>
+                    <?php if ($leaderID === $userID && !$isSubmitted): ?>
                         <button id="transferBtn">Transfer Role</button>
                     <?php endif; ?>
                 </div><br>
@@ -164,7 +165,7 @@ $taskArray = $taskModel->getTasksByProjectAndGroup($projectId, $groupId);
 
                 <button id="downloadAll">Download All Lastest Files</button>
             </div>
-            <?php if ($leaderID === $userID): ?>
+            <?php if ($leaderID === $userID &&!$isSubmitted): ?>
                 <form action="/FYP2025/SPAMS/server/controllers/SubmissionController.php" method="post"
                     enctype="multipart/form-data" class="submission">
                     <h1>Submission</h1>

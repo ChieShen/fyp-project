@@ -74,7 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $taskModel->updateTaskStatus($taskID, $newStatus);
         }
 
-        header("Location: /FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=$projectID&groupID=$groupID");
+        if($newStatus === 2){
+            header("Location: /FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=$projectID&groupID=$groupID");
+        }
+        elseif($newStatus === 1){
+            header("Location: /FYP2025/SPAMS/client/pages/student/TaskDetails.php?projectID=$projectID&groupID=$groupID&taskID=$taskID");
+        }
         exit();
     }
 }

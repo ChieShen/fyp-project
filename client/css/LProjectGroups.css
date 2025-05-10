@@ -249,11 +249,11 @@ body {
     transition: width 1s ease-in-out;
 }
 
-#leaderRole{
+.leader{
     color: #0099ff;
 }
 
-#memberRole{
+.member{
     color: #04aa6d;
 }
 

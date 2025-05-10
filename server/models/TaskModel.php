@@ -119,6 +119,43 @@ class TaskModel
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
+    // Check if a task is marked as done
+    public function isTaskDone($taskID)
+    {
+        $stmt = $this->conn->prepare("SELECT status FROM task WHERE taskID = ?");
+        $stmt->bind_param("i", $taskID);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return isset($result['status']) && $result['status'] == 2;
+    }
+
+    public function countAssignedTasksByUserAndGroup($userID, $projectID, $groupID)
+    {
+        $stmt = $this->conn->prepare("
+        SELECT COUNT(*) as total 
+        FROM task t
+        JOIN taskcontributor tc ON t.taskID = tc.taskID
+        WHERE tc.userID = ? AND t.projectID = ? AND t.groupID = ?
+    ");
+        $stmt->bind_param("iii", $userID, $projectID, $groupID);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['total'] ?? 0;
+    }
+
+    public function countCompletedTasksByUserAndGroup($userID, $projectID, $groupID)
+    {
+        $stmt = $this->conn->prepare("
+        SELECT COUNT(*) as completed 
+        FROM task t
+        JOIN taskcontributor tc ON t.taskID = tc.taskID
+        WHERE tc.userID = ? AND t.projectID = ? AND t.groupID = ? AND t.status = 2
+    ");
+        $stmt->bind_param("iii", $userID, $projectID, $groupID);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['completed'] ?? 0;
+    }
 
 }
 ?>

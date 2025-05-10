@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
 
 session_start();
 if (!isset($_SESSION['userID'])) {
@@ -11,6 +12,13 @@ $userId = $_SESSION['userID'];
 
 $db = new Database();
 $conn = $db->connect();
+$userModel = new UserModel($conn);
+
+$user = $userModel->getUserById($userId);
+if ($user['roleID'] != 2){
+    header('Location: /FYP2025/SPAMS/client/pages/student/SProjectList.php');
+    exit();
+}
 
 $model = new ProjectModel($conn);
 $projects = $model->findByCreatedId($userId);

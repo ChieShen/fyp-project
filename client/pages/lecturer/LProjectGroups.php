@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
 
 session_start();
 if (!isset($_SESSION['userID'])) {
@@ -14,8 +15,9 @@ $conn = (new Database())->connect();
 $projectModel = new ProjectModel($conn);
 $groupModel = new GroupModel($conn);
 $userModel = new UserModel($conn);
+$taskModel = new TaskModel($conn);
 
-$projectId = intval($_GET['id']);
+$projectId = intval($_GET['projectID']);
 $project = $projectModel->findByProjectId($projectId);
 
 if (!$project || ($project['createdBy'] != $_SESSION['userID'])) {
@@ -23,7 +25,7 @@ if (!$project || ($project['createdBy'] != $_SESSION['userID'])) {
     exit();
 }
 
-$group = $groupModel->getGroupsByProject($projectId);
+$groups = $groupModel->getGroupsByProject($projectId);
 $creator = $userModel->getUserById($project['createdBy']);
 $attachments = $projectModel->getAttachmentsByProjectId($projectId);
 ?>
@@ -74,53 +76,65 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
 
             </div>
 
-            <div class="groups">
-                <div class="titleBar">
-                    <h1>Group 1</h1>
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progressBar" data-progress="100"></div>
-                    </div>
-                    <button class="deleteBtn">Delete</button>
-                </div>
+            <?php foreach ($groups as $grp): ?>
+                <?php
+                $progress = $groupModel->calculateProjectProgress($projectId, $grp['groupID']);
+                $members = $groupModel->getMembersByGroup($grp['groupID']);
+                ?>
 
-                <div class="memberTable">
-                    <div class="columnNameRow">
-                        <div class="columnName">Name</div>
-                        <div class="columnName">Assigned Parts</div>
-                        <div class="columnName">Completed Parts</div>
-                        <div class="columnName">Role</div>
-                        <div class="columnName">Action</div>
+                <div class="groups">
+                    <div class="titleBar">
+                        <h1><?= htmlspecialchars($grp['groupName']) ?></h1>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar" data-progress="<?= $progress ?>"></div>
+                        </div>
+                        <button class="deleteBtn">Delete</button>
                     </div>
-                    <div class="dataRow">
-                        <div class="data">Student Name</div>
-                        <div class="data">10</div>
-                        <div class="data">1</div>
-                        <div class="data" id="leaderRole">Leader</div>
-                        <div class="data">
-                            <button class="transferBtn" data-group-id="group1"
-                                data-current-leader="stu1">Transfer</button>
+
+                    <div class="memberTable">
+                        <div class="columnNameRow">
+                            <div class="columnName">Name</div>
+                            <div class="columnName">Assigned Parts</div>
+                            <div class="columnName">Completed Parts</div>
+                            <div class="columnName">Role</div>
+                            <div class="columnName">Action</div>
+                        </div>
+                        <?php foreach ($members as $member): ?>
+                            <?php
+                            $name = $member['firstName'] . ' ' . $member['lastName'];
+                            $assignedTask = $taskModel->countAssignedTasksByUserAndGroup($member['userID'], $projectId, $grp['groupID']);
+                            $completedTask = $taskModel->countCompletedTasksByUserAndGroup($member['userID'], $projectId, $grp['groupID']);
+                            $leaderID = $groupModel->getLeaderId($grp['groupID']);
+                            ?>
+                            <div class="dataRow">
+                                <div class="data"><?= htmlspecialchars($name) ?></div>
+                                <div class="data"><?= $assignedTask ?></div>
+                                <div class="data"><?= $completedTask ?></div>
+                                <div class="data <?= ($member['userID'] == $leaderID) ? 'leader' : 'member' ?>">
+                                    <?= ($member['userID'] == $leaderID) ? 'Leader' : 'Member' ?>
+                                </div>
+                                <div class="data">
+                                    <?php if ($member['userID'] == $leaderID): ?>
+                                        <button class="transferBtn" data-group-id="<?= $grp['groupID'] ?>"
+                                            data-current-leader="<?= $member['userID'] ?>">Transfer</button>
+                                    <?php else: ?>
+                                        <button class="removeBtn" data-user-id="<?= $member['userID'] ?>"
+                                            data-group-id="<?= $grp['groupID'] ?>">Remove</button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="groupSubmission">
+                        <p class="label">Submission:</p>
+                        <div class="submissionBar">
+                            <p class="files">Assignment2.pdf</p>
+                            <button class="download">Download</button>
                         </div>
                     </div>
-                    <div class="dataRow">
-                        <div class="data">Student Name</div>
-                        <div class="data">10</div>
-                        <div class="data">1</div>
-                        <div class="data" id="memberRole">Member</div>
-                        <div class="data">
-                            <button class="removeBtn">Remove</button>
-                        </div>
-                    </div>
                 </div>
-
-                <div class="groupSubmission">
-                    <p class="label">Submission:</p>
-                    <div class="submissionBar">
-                        <p class="files">Assignment2.pdf</p>
-                        <button class="download">Download</button>
-                    </div>
-                </div>
-
-            </div>
+            <?php endforeach; ?>
 
             <button id="downloadAll">Download All Submissions</button>
 
