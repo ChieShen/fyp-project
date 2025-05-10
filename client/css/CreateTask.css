@@ -146,6 +146,11 @@ textarea{
     transform:scale(1.1);
 }
 
+a{
+    color: black;
+    text-decoration: none;
+}
+
 #create{
     height: 40px;
     width: 100px;

@@ -39,6 +39,7 @@ body {
     flex-grow: 1;
     transition: width 0.3s ease, margin-left 0.3s ease;
     padding-bottom: 50px;
+    min-width: 1000px;
 }
 
 .page.sidebar-collapsed .contentBox {

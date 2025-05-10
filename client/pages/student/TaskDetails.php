@@ -1,3 +1,60 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
+
+session_start();
+if (!isset($_SESSION['userID'])) {
+    header("Location: /FYP2025/SPAMS/Client/index.php");
+    exit();
+} elseif (!isset($_GET['projectID']) || !isset($_GET['groupID']) || !isset($_GET['taskID'])) {
+    header("Location: /FYP2025/SPAMS/Client/pages/stdent/SProjectList.php");
+    exit();
+}
+
+$conn = (new Database())->connect();
+$projectModel = new ProjectModel($conn);
+$groupModel = new GroupModel($conn);
+$userModel = new UserModel($conn);
+$taskModel = new TaskModel($conn);
+$userID = $_SESSION['userID'];
+
+$conn = (new Database())->connect();
+$projectModel = new ProjectModel($conn);
+$groupModel = new GroupModel($conn);
+$userModel = new UserModel($conn);
+$taskModel = new TaskModel($conn);
+$userID = $_SESSION['userID'];
+
+$projectId = intval($_GET['projectID']);
+$project = $projectModel->findByProjectId($projectId);
+
+$groupId = intval($_GET['groupID']);
+$group = $groupModel->getGroupById($groupId);
+
+$taskId = intval($_GET['taskID']);
+$task = $taskModel->getTaskById($taskId);
+
+if (!$project || !($groupModel->isUserInProject($userID, $projectId))) {
+    header("Location: /FYP2025/SPAMS/Client/Pages/student/SProjectList.php");
+    exit();
+}
+
+$leaderID = $groupModel->getLeaderId($groupId);
+$contributors = $taskModel->getContributorsByTask($taskId);
+$uploadedFiles = $taskModel->getUploadedFilesByTask($taskId);
+
+$isContributor = false;
+foreach ($contributors as $contributor) {
+    if ($contributor['userID'] == $userID) {
+        $isContributor = true;
+        break;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -15,21 +72,30 @@
         <div class="contentBox">
             <div class="taskDetails">
                 <div class="titleBar">
-                    <h1>Replace This</h1>
-                    <button id="editBtn">Edit Task</button>
+                    <h1><?php echo $task['taskName'] ?></h1>
+                    <?php if ($leaderID === $userID): ?>
+                        <button id="editBtn">Edit Task</button>
+                    <?php endif; ?>
                 </div><br>
 
                 <p class="label">Task Description:</p>
                 <p class="details">
-                    In the spirit of togetherness and celebration, we warmly invite you to Rumah Terbuka Sunway a
-                    special gathering to celebrate Hari Raya with the entire Sunway University and Sunway College
-                    community! This is the perfect time to reconnect, enjoy delicious food, and immerse yourself in the
-                    rich traditions of this festive season.
+                    <?= htmlspecialchars($task['description']) ?>
                 </p><br><br>
 
                 <p class="label">Contributors</p>
-                <a href="" class="contributor">David (Click to Message)</a>
-                <a href="" class="contributor">John (Click to Message)</a>
+                <?php if (!empty($contributors)): ?>
+                    <?php foreach ($contributors as $contributor):
+                        $user = $userModel->getUserById($contributor['userID']);
+                        if ($user): ?>
+                            <a href="" class="contributor">
+                                <?= htmlspecialchars($user['firstName'] . ' ' . $user['lastName']) ?> (Click to Message)
+                            </a>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="details">No contributors assigned.</p>
+                <?php endif; ?>
             </div>
 
             <div class="uploads">
@@ -44,52 +110,56 @@
                         <div class="columnName">Time Uploaded</div>
                         <div class="columnName">Action</div>
                     </div>
-                    <div class="dataRow">
-                        <div class="data">Waterfall Model.pdf</div>
-                        <div class="data">Student Name</div>
-                        <div class="data">20/12/2025</div>
-                        <div class="data">
-                            <button class="download">Download</button>
-                        </div>
-                    </div>
-                    <div class="dataRow">
-                        <div class="data">Waterfall Model.docx</div>
-                        <div class="data">Student Name</div>
-                        <div class="data">10/12/2025</div>
-                        <div class="data">
-                            <button class="download">Download</button>
-                        </div>
-                    </div>
+                    <?php if (!empty($uploadedFiles)): ?>
+                        <?php foreach ($uploadedFiles as $file): ?>
+                            <div class="dataRow">
+                                <div class="data"><?= htmlspecialchars($file['displayName']) ?></div>
+                                <div class="data"><?= htmlspecialchars($file['firstName'] . ' ' . $file['lastName']) ?></div>
+                                <div class="data"><?= date('d/m/Y H:i', strtotime($file['uploadedAt'])) ?></div>
+                                <div class="data">
+                                    <a
+                                        href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=task&projectID=<?= urlencode($projectId) ?>&taskID=<?= urlencode($taskId) ?>&userID=<?= urlencode($file['userID']) ?>&file=<?= urlencode($file['fileName']) ?>&name=<?= urlencode($file['displayName']) ?>">
+                                        <button class="download">Download</button>
+                                    </a>
+
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="dataRow">No files uploded yet</div>
+                    <?php endif; ?>
+
                 </div>
 
-                <form class="uploadForm">
-                    <div class="uploadBar">
-                        <input type="file" id="fileInput" style="display: none;" />
+                <?php if ($isContributor): ?>
+                    <form action="/FYP2025/SPAMS/server/controllers/TaskUploadController.php" method="post"
+                        enctype="multipart/form-data" class="uploadForm">
+                        <input type="hidden" name="action" value="upload">
+                        <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
+                        <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
+                        <input type="hidden" name="taskID" value="<?= htmlspecialchars($taskId) ?>">
 
-                        <label for="fileInput">
-                            <img class="icon" src="/FYP2025/SPAMS/client/assets/images/attach file.png">
-                        </label>
+                        <div class="uploadBar">
+                            <input type="file" id="fileInput" name="file" style="display: none;" />
+                            <label for="fileInput">
+                                <img class="icon" src="/FYP2025/SPAMS/client/assets/images/attach file.png">
+                            </label>
+                            <span id="fileName">No file selected</span>
+                            <button id="uploadFile" type="submit">Upload</button>
+                        </div>
+                    </form>
 
-                        <span id="fileName">No file selected</span>
-
-                        <button id="uploadFile" type="submit">Upload</button>
-                    </div>
-                </form>
-
-
+                    <form class="statusUpdate">
+                        <!-- <button id="markUndone" type="submit" name="action" value="undone">Update</button> -->
+                        <button id="markDone" type="submit" name="action" value="done">Mark As Done</button>
+                    </form>
+                <?php endif; ?>
             </div>
-            
-            <form class="statusUpdate">
-                    <!-- <button id="markUndone" type="submit" name="action" value="undone">Update</button> -->
-                    <button id="markDone" type="submit" name="action" value="done">Mark As Done</button>
-                </form>
 
         </div>
 
-    </div>
-
-    <script src="/FYP2025/SPAMS/client/js/TaskList.js" defer></script>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/components/MessageBox.php'; ?>
+        <script src="/FYP2025/SPAMS/client/js/TaskDetails.js" defer></script>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/components/MessageBox.php'; ?>
 </body>
 
 </html>

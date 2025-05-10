@@ -63,7 +63,7 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                 <p class="label">Attached File(s)</p>
                 <?php if (!empty($attachments)): ?>
                     <?php foreach ($attachments as $file): ?>
-                        <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?file=<?= urlencode($file['attachName']) ?>&name=<?= urlencode($file['displayName']) ?>&projectID=<?= $projectId ?>"
+                        <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=attachment&file=<?= urlencode($file['attachName']) ?>&name=<?= urlencode($file['displayName']) ?>&projectID=<?= $projectId ?>"
                             class="files">
                             <?= htmlspecialchars($file['displayName']) ?>
                         </a>

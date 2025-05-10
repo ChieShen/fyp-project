@@ -5,28 +5,61 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectMo
 $conn = (new Database())->connect();
 $projectModel = new ProjectModel($conn);
 
-if (!isset($_GET['file'], $_GET['name'], $_GET['projectID'])) {
+$type = $_GET['type'] ?? null;
+$filename = basename($_GET['file'] ?? '');
+$displayName = basename($_GET['name'] ?? '');
+
+if (!$type || !$filename || !$displayName) {
     http_response_code(400);
-    exit('Invalid request');
+    exit('Missing required parameters.');
 }
 
-$filename = basename($_GET['file']);
-$displayName = basename($_GET['name']);
-$projectID = intval($_GET['projectID']);
+$filePath = '';
+switch ($type) {
+    case 'attachment':
+        $projectID = intval($_GET['projectID'] ?? 0);
+        if (!$projectID) {
+            http_response_code(400);
+            exit('Missing project ID.');
+        }
+        $project = $projectModel->findByProjectId($projectID);
+        if (!$project) {
+            http_response_code(404);
+            exit('Project not found.');
+        }
+        $creatorID = $project['createdBy'];
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/attachments/{$creatorID}/{$projectID}/{$filename}";
+        break;
 
-// Get the project so we can find creator ID
-$project = $projectModel->findByProjectId($projectID);
-if (!$project) {
-    http_response_code(404);
-    exit('Project not found');
+    case 'submission':
+        $projectID = intval($_GET['projectID'] ?? 0);
+        $groupID = intval($_GET['groupID'] ?? 0);
+        if (!$projectID || !$groupID) {
+            http_response_code(400);
+            exit('Missing project or group ID.');
+        }
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$groupID}/{$filename}";
+        break;
+
+    case 'task':
+        $projectID = intval($_GET['projectID'] ?? 0);
+        $taskID = intval($_GET['taskID'] ?? 0);
+        $userID = intval($_GET['userID'] ?? 0);
+        if (!$projectID || !$taskID || !$userID) {
+            http_response_code(400);
+            exit('Missing project, task, or user ID.');
+        }
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$taskID}/{$userID}/{$filename}";
+        break;
+
+    default:
+        http_response_code(400);
+        exit('Invalid file type.');
 }
-
-$creatorID = $project['createdBy'];
-$filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/{$creatorID}/{$projectID}/{$filename}";
 
 if (!file_exists($filePath)) {
     http_response_code(404);
-    exit('File not found');
+    exit('File not found.'. $filePath);
 }
 
 header('Content-Description: File Transfer');

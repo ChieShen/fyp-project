@@ -6,3 +6,10 @@ document.getElementById('fileInput').addEventListener('change', function () {
         fileNameSpan.textContent = 'No file selected';
     }
 });
+
+document.querySelector('.uploadForm').addEventListener('submit', function (e) {
+    const fileInput = document.getElementById('fileInput');
+    if (!fileInput.files.length) {
+        e.preventDefault();
+    }
+});

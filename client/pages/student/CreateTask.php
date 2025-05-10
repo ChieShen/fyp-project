@@ -54,10 +54,11 @@ $groupMembers = $groupModel->getMembersByGroup($groupId);
                 <h1>New Task</h1>
             </div>
 
-            <form action="/FYP2025/SPAMS/server/controllers/TaskController.php" method="post" onsubmit="validateForm(event)">
+            <form action="/FYP2025/SPAMS/server/controllers/TaskController.php" method="post"
+                onsubmit="validateForm(event)">
                 <input type="hidden" name="action" value="create">
-                <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId)?>">
-                <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId)?>">
+                <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
+                <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
                 <div class="contentBox">
                     <label for="taskName">Task Name</label>
                     <p id="tNameError" style="color: red; margin-left:5%;"></p>
@@ -81,7 +82,12 @@ $groupMembers = $groupModel->getMembersByGroup($groupId);
                 </div>
 
                 <div class="buttons">
-                    <button type="button" id="cancel">Cancel</button>
+                    <button type="button" id="cancel">
+                        <a
+                            href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>">
+                            Cancel
+                        </a>
+                    </button>
                     <button type="submit" id="create">Create</button>
                 </div>
 
