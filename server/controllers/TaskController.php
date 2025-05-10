@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $taskDesc = trim($_POST['taskDesc'] ?? '');
     $status = intval($_POST['status'] ?? 0);
     $contributors = $_POST['contributors'] ?? [];
-    
+
     if (!$groupModel->isUserInProject($userID, $projectID)) {
         header("Location: /FYP2025/SPAMS/client/pages/student/SProjectList.php");
         exit();
@@ -58,6 +58,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'delete') {
         $taskID = intval($_POST['taskID'] ?? 0);
         $taskModel->deleteTask($taskID);
+        header("Location: /FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=$projectID&groupID=$groupID");
+        exit();
+    }
+
+    // UPDATE TASK STATUS
+    if (isset($_POST['newStatus']) && isset($_POST['taskID'])) {
+        $taskID = intval($_POST['taskID']);
+        $newStatus = intval($_POST['newStatus']);
+        $projectID = intval($_POST['projectID'] ?? 0);
+        $groupID = intval($_POST['groupID'] ?? 0);
+
+        // Verify that user is in the project
+        if ($groupModel->isUserInProject($userID, $projectID)) {
+            $taskModel->updateTaskStatus($taskID, $newStatus);
+        }
+
         header("Location: /FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=$projectID&groupID=$groupID");
         exit();
     }

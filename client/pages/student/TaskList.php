@@ -164,22 +164,25 @@ $taskArray = $taskModel->getTasksByProjectAndGroup($projectId, $groupId);
 
                 <button id="downloadAll">Download All Lastest Files</button>
             </div>
+            <?php if ($leaderID === $userID): ?>
+                <form action="/FYP2025/SPAMS/server/controllers/SubmissionController.php" method="post"
+                    enctype="multipart/form-data" class="submission">
+                    <h1>Submission</h1>
+                    <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
+                    <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
+                    <div class="submissionBar">
+                        <input type="file" id="fileInput" name="file" style="display: none;" />
 
-            <form class="submission">
-                <h1>Submission</h1>
-                <div class="submissionBar">
-                    <input type="file" id="fileInput" style="display: none;" />
+                        <label for="fileInput">
+                            <img class="icon" src="/FYP2025/SPAMS/client/assets/images/attach file.png">
+                        </label>
 
-                    <label for="fileInput">
-                        <img class="icon" src="/FYP2025/SPAMS/client/assets/images/attach file.png">
-                    </label>
+                        <span id="fileName">No file selected</span>
 
-                    <span id="fileName">No file selected</span>
-
-                    <button id="submission" type="submit">Submit</button>
-                </div>
-            </form>
-
+                        <button id="submission" type="submit">Submit</button>
+                    </div>
+                </form>
+            <?php endif; ?>
         </div>
 
     </div>

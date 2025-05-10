@@ -2,6 +2,7 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
 
 if (!isset($_SESSION['userID'])) {
     header("Location: /FYP2025/SPAMS/client/index.php");
@@ -11,6 +12,7 @@ if (!isset($_SESSION['userID'])) {
 $db = new Database();
 $conn = $db->connect();
 $groupModel = new GroupModel($conn);
+$userModel = new UserModel($conn);
 $userID = $_SESSION['userID'];
 $projects = $groupModel->getUserGroupsWithProjects($userID);
 ?>
@@ -42,6 +44,7 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
                     <div class="columnName">Deadline</div>
                     <div class="columnName">Created By</div>
                     <div class="columnName">Progress</div>
+                    <div class="columnName">Status</div>
                 </div>
 
                 <?php if (empty($projects)): ?>
@@ -50,18 +53,23 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
                     </div>
                 <?php else: ?>
                     <?php foreach ($projects as $proj): ?>
+                        <?php 
+                            $creator = $userModel->getUserById($proj['createdBy']);
+                            $submitted = ($proj['submitted'] == '1') ? "Submitted" : "Not Submitted";
+                        ?>
                         <a href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($proj['projectID']) ?>&groupID=<?= urlencode($proj['groupID']) ?>"
                             class="dataRowLink">
                             <div class="dataRow">
                                 <div class="data"><?= htmlspecialchars($proj['title']) ?></div>
                                 <div class="data"><?= htmlspecialchars($proj['groupName']) ?></div>
                                 <div class="data"><?= htmlspecialchars($proj['deadline']) ?></div>
-                                <div class="data"><?= htmlspecialchars($proj['createdBy']) ?></div>
+                                <div class="data"><?= htmlspecialchars($creator['username']) ?></div>
                                 <div class="data">
                                     <div class="progress-container">
                                         <div class="progress-bar" data-progress="<?= $proj['progress'] ?>"></div>
                                     </div>
                                 </div>
+                                <div class="data"><?= htmlspecialchars($submitted) ?></div>
                             </div>
                         </a>
                     <?php endforeach; ?>

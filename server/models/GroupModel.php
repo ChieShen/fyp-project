@@ -163,7 +163,8 @@ class GroupModel
             p.deadline,
             p.createdBy,
             pg.groupName,
-            pg.groupID
+            pg.groupID,
+            pg.submitted
         FROM groupmember gm
         JOIN projectgroups pg ON gm.groupID = pg.groupID
         JOIN project p ON pg.projectID = p.projectID
@@ -200,6 +201,26 @@ class GroupModel
         $group = $result->fetch_assoc();
         $stmt->close();
         return $group ?: null;
+    }
+
+    public function setSubmitted(int $groupID, bool $submitted): bool
+    {
+        $stmt = $this->conn->prepare("UPDATE projectgroups SET submitted = ? WHERE groupID = ?");
+        $submittedInt = $submitted ? 1 : 0;
+        $stmt->bind_param("ii", $submittedInt, $groupID);
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
+
+    public function getSubmitted(int $groupID): ?bool
+    {
+        $stmt = $this->conn->prepare("SELECT submitted FROM projectgroups WHERE groupID = ?");
+        $stmt->bind_param("i", $groupID);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return isset($result['submitted']) ? (bool) $result['submitted'] : null;
     }
 
 }

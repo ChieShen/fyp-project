@@ -149,10 +149,20 @@ foreach ($contributors as $contributor) {
                         </div>
                     </form>
 
-                    <form class="statusUpdate">
-                        <!-- <button id="markUndone" type="submit" name="action" value="undone">Update</button> -->
-                        <button id="markDone" type="submit" name="action" value="done">Mark As Done</button>
+                    <form class="statusUpdate" method="post"
+                        action="/FYP2025/SPAMS/server/controllers/TaskController.php">
+                        <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
+                        <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
+                        <input type="hidden" name="taskID" value="<?= htmlspecialchars($taskId) ?>">
+                        <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($task['status']) ?>">
+
+                        <?php if ($task['status'] == 0 || $task['status'] == 1): ?>
+                            <button type="submit" name="newStatus" value="2">Mark As Done</button>
+                        <?php elseif ($task['status'] == 2): ?>
+                            <button type="submit" name="newStatus" value="1">Update Task</button>
+                        <?php endif; ?>
                     </form>
+
                 <?php endif; ?>
             </div>
 
