@@ -310,3 +310,8 @@ body {
     background-color: #007acc;
     transform: scale(1.1)
 }
+
+.downloadLink {
+    text-decoration: none;
+    color: white;
+}

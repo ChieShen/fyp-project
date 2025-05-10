@@ -1,20 +1,18 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
 
 $conn = (new Database())->connect();
 $projectModel = new ProjectModel($conn);
+$groupModel = new GroupModel($conn);
 
 $type = $_GET['type'] ?? null;
 $filename = basename($_GET['file'] ?? '');
 $displayName = basename($_GET['name'] ?? '');
 
-if (!$type || !$filename || !$displayName) {
-    http_response_code(400);
-    exit('Missing required parameters.');
-}
-
 $filePath = '';
+
 switch ($type) {
     case 'attachment':
         $projectID = intval($_GET['projectID'] ?? 0);
@@ -29,6 +27,7 @@ switch ($type) {
         }
         $creatorID = $project['createdBy'];
         $filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/attachments/{$creatorID}/{$projectID}/{$filename}";
+        $displayName = $displayName ?: $filename;
         break;
 
     case 'submission':
@@ -39,6 +38,7 @@ switch ($type) {
             exit('Missing project or group ID.');
         }
         $filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$groupID}/{$filename}";
+        $displayName = $displayName ?: $filename;
         break;
 
     case 'task':
@@ -50,7 +50,51 @@ switch ($type) {
             exit('Missing project, task, or user ID.');
         }
         $filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$taskID}/{$userID}/{$filename}";
+        $displayName = $displayName ?: $filename;
         break;
+
+    case 'allSubmissions':
+        $projectID = intval($_GET['projectID'] ?? 0);
+        if (!$projectID) {
+            http_response_code(400);
+            exit('Missing project ID.');
+        }
+
+        $groups = $groupModel->getGroupsByProject($projectID);
+        $project = $projectModel->findByProjectId($projectID);
+        $zip = new ZipArchive();
+        $zipFilename = "Project_{$project['title']}_Submissions.zip";
+        $tempPath = sys_get_temp_dir() . "/$zipFilename";
+
+        if ($zip->open($tempPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
+            http_response_code(500);
+            exit('Could not create ZIP file.');
+        }
+
+        foreach ($groups as $grp) {
+            $submission = $groupModel->getSubmissionByGroup($projectID, $grp['groupID']);
+            if ($submission) {
+                $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$grp['groupID']}/{$submission['submissionName']}";
+                if (file_exists($file)) {
+                    $safeName = "Group_{$grp['groupID']}_{$submission['displayName']}";
+                    $zip->addFile($file, $safeName);
+                }
+            }
+        }
+
+        $zip->close();
+
+        if (!file_exists($tempPath)) {
+            http_response_code(500);
+            exit('Failed to create ZIP file.');
+        }
+
+        header('Content-Type: application/zip');
+        header("Content-Disposition: attachment; filename=\"$zipFilename\"");
+        header('Content-Length: ' . filesize($tempPath));
+        readfile($tempPath);
+        unlink($tempPath);
+        exit;
 
     default:
         http_response_code(400);
@@ -59,7 +103,7 @@ switch ($type) {
 
 if (!file_exists($filePath)) {
     http_response_code(404);
-    exit('File not found.'. $filePath);
+    exit('File not found: ' . $filePath);
 }
 
 header('Content-Description: File Transfer');

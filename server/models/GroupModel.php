@@ -243,5 +243,51 @@ class GroupModel
         return round(($completed / $total) * 100);
     }
 
+    public function saveSubmission(int $projectID, int $groupID, string $fileURL, string $submissionName, string $displayName): bool
+    {
+        $stmt = $this->conn->prepare("
+        INSERT INTO submission (projectID, groupID, fileURL, submissionName, displayName)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+        $stmt->bind_param("iisss", $projectID, $groupID, $fileURL, $submissionName, $displayName);
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
 
+    public function getSubmissionByGroup(int $projectID, int $groupID): ?array
+    {
+        $stmt = $this->conn->prepare("
+        SELECT * FROM submission
+        WHERE projectID = ? AND groupID = ?
+        ORDER BY submissionTime DESC
+        LIMIT 1
+    ");
+        $stmt->bind_param("ii", $projectID, $groupID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $submission = $result->fetch_assoc();
+        $stmt->close();
+        return $submission ?: null;
+    }
+
+    public function getAllSubmissionsByProject(int $projectID): array
+    {
+        $stmt = $this->conn->prepare("
+        SELECT * FROM submission
+        WHERE projectID = ?
+        ORDER BY submissionTime DESC
+    ");
+        $stmt->bind_param("i", $projectID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $submissions = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $submissions[] = $row;
+        }
+
+        $stmt->close();
+        return $submissions;
+    }
 }

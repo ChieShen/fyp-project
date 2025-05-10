@@ -31,6 +31,10 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $targetPath)) {
     $conn = (new Database())->connect();
     $groupModel = new GroupModel($conn);
     $groupModel->setSubmitted($groupID,true);
+
+    $relativePath = "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$groupID}/{$safeName}";
+    $groupModel->saveSubmission($projectID, $groupID, $relativePath, $safeName, $originalName);
+
     header("Location: /FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=$projectID&groupID=$groupID");
     exit();
 } else {

@@ -80,6 +80,8 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                 <?php
                 $progress = $groupModel->calculateProjectProgress($projectId, $grp['groupID']);
                 $members = $groupModel->getMembersByGroup($grp['groupID']);
+                $submitted = $groupModel->getSubmitted($grp['groupID']);
+                $submission = $groupModel->getSubmissionByGroup($projectId, $grp['groupID']);
                 ?>
 
                 <div class="groups">
@@ -129,14 +131,30 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                     <div class="groupSubmission">
                         <p class="label">Submission:</p>
                         <div class="submissionBar">
-                            <p class="files">Assignment2.pdf</p>
-                            <button class="download">Download</button>
+                            <?php if ($submission): ?>
+                                <?php
+                                $fileName = htmlspecialchars($submission['submissionName']);
+                                $displayName = htmlspecialchars($submission['displayName']);
+                                ?>
+                                <p class="files"><?= htmlspecialchars($submission['displayName']) ?></p>
+                                <button class="download">
+                                    <a class="downloadLink"
+                                        href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=submission&file=<?= urlencode($fileName) ?>&name=<?= urlencode($displayName) ?>&projectID=<?= $projectId ?>&groupID=<?= $grp['groupID'] ?>">
+                                        Download
+                                    </a>
+                                </button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
 
-            <button id="downloadAll">Download All Submissions</button>
+            <button id="downloadAll">
+                <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=allSubmissions&projectID=<?= $projectId ?>"
+                    class="downloadLink">
+                    Download All Submissions
+                </a>
+            </button>
 
         </div>
 
