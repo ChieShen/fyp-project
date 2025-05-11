@@ -26,38 +26,57 @@ document.addEventListener("DOMContentLoaded", () => {
             const groupId = button.getAttribute("data-group-id");
             const currentLeaderId = button.getAttribute("data-current-leader");
 
-            // Fetch options dynamically per group (hardcoded for now)
-            const groupOptions = {
-                group1: [
-                    { value: "stu2", label: "Ben Lim" },
-                    { value: "stu3", label: "Chloe Wong" },
-                    { value: "stu4", label: "Lengthy Name Checking how the box handles" }
-                ],
-                group2: [
-                    { value: "stu4", label: "Daniel Lee" },
-                    { value: "stu5", label: "Eva Ng" }
-                ]
-            };
-
-            const options = groupOptions[groupId] || [];
+            const membersJson = button.getAttribute("data-members");
+            const options = JSON.parse(membersJson || "[]");
 
             showMessageBox({
                 type: "transfer",
                 titleText: "Transfer Leader Role",
-                messageText: `Select a student from ${groupId} to transfer leadership`,
+                messageText: `Select a student from Group ${groupId} to transfer leadership`,
                 confirmText: "Transfer",
                 inputType: "select",
                 inputOptions: options,
                 onConfirm: (studentId) => {
-                    console.log(`Transferring leader of ${groupId} from ${currentLeaderId} to ${studentId}`);
-                    // TODO: Send API call or perform action
+                    fetch('/FYP2025/SPAMS/server/controllers/LeaderTransferController.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            groupID: groupId,
+                            newLeaderID: studentId
+                        }),
+                    })
+                        .then(response => {
+                            // Check if the response is valid JSON
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Failed to fetch data');
+                            }
+                        })
+                        .then(data => {
+                            console.log(data);
+                            if (data.status === 'success') {
+                                location.reload(); // Or update UI dynamically
+                            } else {
+                                alert("Failed to transfer leadership: " + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error); // Log the full error for debugging
+                            alert("An error occurred: " + error.message);
+                        });
+
                 }
+
             });
 
-            // Optional: remove `?type=logout` if you reused it
+            // Clean up URL query if needed
             const url = new URL(window.location.href);
             url.searchParams.delete("type");
             window.history.replaceState({}, '', url);
         });
     });
 });
+

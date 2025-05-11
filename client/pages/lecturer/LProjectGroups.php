@@ -83,6 +83,7 @@ $hasSubmission = false;
                 $members = $groupModel->getMembersByGroup($grp['groupID']);
                 $submitted = $groupModel->getSubmitted($grp['groupID']);
                 $submission = $groupModel->getSubmissionByGroup($projectId, $grp['groupID']);
+                $leaderID = $groupModel->getLeaderId($grp['groupID']);
                 if ($submission)
                     $hasSubmission = true;
                 ?>
@@ -109,7 +110,6 @@ $hasSubmission = false;
                             $name = $member['firstName'] . ' ' . $member['lastName'];
                             $assignedTask = $taskModel->countAssignedTasksByUserAndGroup($member['userID'], $projectId, $grp['groupID']);
                             $completedTask = $taskModel->countCompletedTasksByUserAndGroup($member['userID'], $projectId, $grp['groupID']);
-                            $leaderID = $groupModel->getLeaderId($grp['groupID']);
                             ?>
                             <div class="dataRow">
                                 <div class="data"><?= htmlspecialchars($name) ?></div>
@@ -120,8 +120,23 @@ $hasSubmission = false;
                                 </div>
                                 <div class="data">
                                     <?php if ($member['userID'] == $leaderID): ?>
+                                        <?php
+                                        // Prepare member list for this group
+                                        $membersForJS = array_filter($members, function ($m) use ($leaderID) {
+                                            return $m['userID'] != $leaderID; //exclude current leader
+                                        });
+                                        $membersData = array_values(array_map(function ($m) {
+                                            return [
+                                                'value' => $m['userID'],
+                                                'label' => $m['firstName'] . ' ' . $m['lastName']
+                                            ];
+                                        }, $membersForJS));
+                                        ?>
                                         <button class="transferBtn" data-group-id="<?= $grp['groupID'] ?>"
-                                            data-current-leader="<?= $member['userID'] ?>">Transfer</button>
+                                            data-current-leader="<?= $member['userID'] ?>"
+                                            data-members='<?= htmlspecialchars(json_encode($membersData), ENT_QUOTES, 'UTF-8') ?>'>
+                                            Transfer
+                                        </button>
                                     <?php else: ?>
                                         <button class="removeBtn" data-user-id="<?= $member['userID'] ?>"
                                             data-group-id="<?= $grp['groupID'] ?>">Remove</button>
