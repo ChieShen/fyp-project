@@ -2,10 +2,14 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
 
 $conn = (new Database())->connect();
 $projectModel = new ProjectModel($conn);
 $groupModel = new GroupModel($conn);
+$taskModel = new TaskModel($conn);
+$userModel = new UserModel($conn);
 
 $type = $_GET['type'] ?? null;
 $filename = basename($_GET['file'] ?? '');
@@ -77,6 +81,110 @@ switch ($type) {
                 $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$grp['groupID']}/{$submission['submissionName']}";
                 if (file_exists($file)) {
                     $safeName = "Group_{$grp['groupID']}_{$submission['displayName']}";
+                    $zip->addFile($file, $safeName);
+                }
+            }
+        }
+
+        $zip->close();
+
+        if (!file_exists($tempPath)) {
+            http_response_code(500);
+            exit('Failed to create ZIP file.');
+        }
+
+        header('Content-Type: application/zip');
+        header("Content-Disposition: attachment; filename=\"$zipFilename\"");
+        header('Content-Length: ' . filesize($tempPath));
+        readfile($tempPath);
+        unlink($tempPath);
+        exit;
+
+    case 'allLatestTaskUploads':
+        $projectID = intval($_GET['projectID'] ?? 0);
+        $groupID = intval($_GET['groupID'] ?? 0);
+
+        if (!$projectID || !$groupID) {
+            http_response_code(400);
+            exit('Missing project or group ID.');
+        }
+
+        $project = $projectModel->findByProjectId($projectID);
+        $tasks = $taskModel->getTasksByProjectAndGroup($projectID, $groupID);
+
+        $zip = new ZipArchive();
+        $zipFilename = "Latest_Task_Uploads_Project_{$project['title']}_Group_{$groupID}.zip";
+        $tempPath = sys_get_temp_dir() . "/$zipFilename";
+
+        if ($zip->open($tempPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
+            http_response_code(500);
+            exit('Could not create ZIP file.');
+        }
+
+        foreach ($tasks as $task) {
+            $contributors = $taskModel->getContributorsByTask($task['taskID']);
+            foreach ($contributors as $contributor) {
+                $latestFile = $taskModel->getLatestUpload($task['taskID'], $contributor['userID']);
+                if ($latestFile) {
+                    $user = $userModel->getUserById($contributor['userID']);
+                    $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$task['taskID']}/{$contributor['userID']}/{$latestFile['fileName']}";
+                    if (file_exists($file)) {
+                        $safeName = "Task_{$task['taskName']}_{$user['firstName']}_{$user['lastName']}_{$latestFile['displayName']}";
+                        $zip->addFile($file, $safeName);
+                    }
+                }
+            }
+        }
+
+        $zip->close();
+
+        if (!file_exists($tempPath)) {
+            http_response_code(500);
+            exit('Failed to create ZIP file.');
+        }
+
+        header('Content-Type: application/zip');
+        header("Content-Disposition: attachment; filename=\"$zipFilename\"");
+        header('Content-Length: ' . filesize($tempPath));
+        readfile($tempPath);
+        unlink($tempPath);
+        exit;
+
+    case 'latestUploadsByTask':
+        $projectID = intval($_GET['projectID'] ?? 0);
+        $taskID = intval($_GET['taskID'] ?? 0);
+
+        if (!$projectID || !$taskID) {
+            http_response_code(400);
+            exit('Missing project or task ID.');
+        }
+
+        $project = $projectModel->findByProjectId($projectID);
+        $task = $taskModel->getTaskById($taskID);
+
+        if (!$task) {
+            http_response_code(404);
+            exit('Task not found.');
+        }
+
+        $contributors = $taskModel->getContributorsByTask($taskID);
+
+        $zip = new ZipArchive();
+        $zipFilename = "Latest_Uploads_Task_{$task['taskName']}_Project_{$project['title']}.zip";
+        $tempPath = sys_get_temp_dir() . "/$zipFilename";
+
+        if ($zip->open($tempPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== TRUE) {
+            http_response_code(500);
+            exit('Could not create ZIP file.');
+        }
+
+        foreach ($contributors as $contributor) {
+            $latestFile = $taskModel->getLatestUpload($taskID, $contributor['userID']);
+            if ($latestFile) {
+                $user = $userModel->getUserById($contributor['userID']);
+                $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$taskID}/{$contributor['userID']}/{$latestFile['fileName']}";
+                if (file_exists($file)) {
+                    $safeName = "{$user['firstName']}_{$user['lastName']}_{$latestFile['displayName']}";
                     $zip->addFile($file, $safeName);
                 }
             }

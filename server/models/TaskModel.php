@@ -157,5 +157,17 @@ class TaskModel
         return $result['completed'] ?? 0;
     }
 
+    public function getLatestUpload($taskID, $userID)
+    {
+        $stmt = $this->conn->prepare("
+        SELECT * FROM taskuploads
+        WHERE taskID = ? AND userID = ?
+        ORDER BY uploadedAt DESC
+        LIMIT 1
+    ");
+        $stmt->bind_param("ii", $taskID, $userID);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
 }
 ?>

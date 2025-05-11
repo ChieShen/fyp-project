@@ -14,6 +14,12 @@ $conn = $db->connect();
 $groupModel = new GroupModel($conn);
 $userModel = new UserModel($conn);
 $userID = $_SESSION['userID'];
+
+$user = $userModel->getUserById($userID);
+if ($user['roleID'] == 2){
+    header("Location: /FYP2025/SPAMS/client/pages/lecturer/LProjectList.php");
+}
+
 $projects = $groupModel->getUserGroupsWithProjects($userID);
 ?>
 

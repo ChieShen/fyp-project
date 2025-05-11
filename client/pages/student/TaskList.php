@@ -37,6 +37,7 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
 $leaderID = $groupModel->getLeaderId($groupId);
 $taskArray = $taskModel->getTasksByProjectAndGroup($projectId, $groupId);
 $isSubmitted = $groupModel->getSubmitted($groupId);
+$members = $groupModel->getMembersByGroup($groupId);
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +71,7 @@ $isSubmitted = $groupModel->getSubmitted($groupId);
                 <p class="label">Created By:</p>
                 <a href="" class="creator"><?= htmlspecialchars($creator['username']) ?></a><br><br>
 
-                <p class="label">Attached File(s)</p>
+                <p class="label">Attached File(s):</p>
                 <?php if (!empty($attachments)): ?>
                     <?php foreach ($attachments as $file): ?>
                         <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=attachment&file=<?= urlencode($file['attachName']) ?>&name=<?= urlencode($file['displayName']) ?>&projectID=<?= $projectId ?>"
@@ -81,6 +82,14 @@ $isSubmitted = $groupModel->getSubmitted($groupId);
                 <?php else: ?>
                     <p class="details">No files attached.</p>
                 <?php endif; ?>
+                <br><br>
+
+                <p class="label"><?= htmlspecialchars($group['groupName']) ?>:</p>
+                <?php foreach ($members as $member): ?>
+                    <p class="details">
+                        <?= htmlspecialchars($member['firstName'] . ' ' . $member['lastName']) ?>
+                    </p>
+                <?php endforeach; ?>
 
             </div>
 
@@ -140,20 +149,28 @@ $isSubmitted = $groupModel->getSubmitted($groupId);
                                 }
                             }
                             ?>
-                            <a class="dataRowLink"
-                                href="/FYP2025/SPAMS/client/pages/student/TaskDetails.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>&taskID=<?= urlencode($task['taskID']) ?>">
-                                <div class="dataRow">
+
+                            <div class="dataRow">
+                                <a class="dataRowLink"
+                                    href="/FYP2025/SPAMS/client/pages/student/TaskDetails.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>&taskID=<?= urlencode($task['taskID']) ?>">
                                     <div class="data"><?= htmlspecialchars($task['taskName']) ?></div>
                                     <div class="data"><?= $assignedTo ?></div>
                                     <div class="data">
                                         <?= $task['lastUpdated'] ? date("d/m/Y", strtotime($task['lastUpdated'])) : 'No data' ?>
                                     </div>
                                     <div class="data <?= $statusClass ?>"><?= $statusText ?></div>
-                                    <div class="data">
-                                        <button class="download">Download</button>
-                                    </div>
+                                </a>
+                                <div class="downloadColumn">
+                                    <button class="download">
+                                        <a class="downloadLink"
+                                            href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=latestUploadsByTask&projectID=<?= urlencode($projectId) ?>&taskID=<?= urlencode($task['taskID']) ?>"
+                                            download>
+                                            Download
+                                        </a>
+                                    </button>
                                 </div>
-                            </a>
+                            </div>
+
                         <?php endforeach; ?>
                     <?php else: ?>
                         <div class="dataRow">
@@ -163,9 +180,15 @@ $isSubmitted = $groupModel->getSubmitted($groupId);
 
                 </div>
 
-                <button id="downloadAll">Download All Lastest Files</button>
+                <button id="downloadAll">
+                    <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=allLatestTaskUploads&projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>"
+                        class="downloadLink" download>
+                        Download All Latest Files
+                    </a>
+                </button>
             </div>
-            <?php if ($leaderID === $userID &&!$isSubmitted): ?>
+
+            <?php if ($leaderID === $userID && !$isSubmitted): ?>
                 <form action="/FYP2025/SPAMS/server/controllers/SubmissionController.php" method="post"
                     enctype="multipart/form-data" class="submission">
                     <h1>Submission</h1>
