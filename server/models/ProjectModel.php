@@ -145,4 +145,51 @@ class ProjectModel
         $stmt->close();
         return $attachments;
     }
+
+    public function getProjectStats(int $projectId): array
+    {
+        // Get number of participants
+        $stmt1 = $this->conn->prepare("
+        SELECT COUNT(*) AS participantCount 
+        FROM groupmember gm
+        JOIN projectgroups pg ON gm.groupID = pg.groupID
+        WHERE pg.projectID = ?
+    ");
+        $stmt1->bind_param("i", $projectId);
+        $stmt1->execute();
+        $result1 = $stmt1->get_result()->fetch_assoc();
+        $participantCount = $result1['participantCount'];
+        $stmt1->close();
+
+        // Get number of groups that submitted (assuming column `hasSubmitted`)
+        $stmt2 = $this->conn->prepare("
+        SELECT COUNT(*) AS submittedCount 
+        FROM projectgroups 
+        WHERE projectID = ? AND submitted = 1
+    ");
+        $stmt2->bind_param("i", $projectId);
+        $stmt2->execute();
+        $result2 = $stmt2->get_result()->fetch_assoc();
+        $submittedCount = $result2['submittedCount'];
+        $stmt2->close();
+
+        // Get total number of groups
+        $stmt3 = $this->conn->prepare("
+        SELECT COUNT(*) AS groupCount 
+        FROM projectgroups
+        WHERE projectID = ?
+    ");
+        $stmt3->bind_param("i", $projectId);
+        $stmt3->execute();
+        $result3 = $stmt3->get_result()->fetch_assoc();
+        $groupCount = $result3['groupCount'];
+        $stmt3->close();
+
+        return [
+            'participants' => $participantCount,
+            'submittedGroups' => $submittedCount,
+            'totalGroups' => $groupCount,
+        ];
+    }
+
 }

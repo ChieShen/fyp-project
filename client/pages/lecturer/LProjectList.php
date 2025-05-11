@@ -15,7 +15,7 @@ $conn = $db->connect();
 $userModel = new UserModel($conn);
 
 $user = $userModel->getUserById($userId);
-if ($user['roleID'] != 2){
+if ($user['roleID'] != 2) {
     header('Location: /FYP2025/SPAMS/client/pages/student/SProjectList.php');
     exit();
 }
@@ -50,16 +50,20 @@ $projects = $model->findByCreatedId($userId);
                     <div class="columnName">Deadline</div>
                     <div class="columnName">Groups</div>
                     <div class="columnName">Participants</div>
-                    <div class="columnName">Submitted</div>
+                    <div class="columnName">Submitted Groups</div>
                 </div>
                 <?php foreach ($projects as $project): ?>
-                    <div class="dataRow">
+                    <?php
+                    $stats = $model->getProjectStats($project['projectID']);
+                    ?>
+                    <a class="dataRow"
+                    href="/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=<?= urlencode($project['projectID']) ?>">
                         <div class="data"><?= htmlspecialchars($project['title']) ?></div>
-                        <div class="data"><?= htmlspecialchars($project['deadline']) ?></div>
+                        <div class="data"><?= date("d/m/Y h:i A", strtotime($project['deadline'])) ?></div>
                         <div class="data"><?= htmlspecialchars($project['numGroup']) ?></div>
-                        <div class="data">TBD</div>
-                        <div class="data">TBD</div>
-                    </div>
+                        <div class="data"><?= htmlspecialchars($stats['participants']) ?></div>
+                        <div class="data"><?= htmlspecialchars($stats['submittedGroups']) ?></div>
+                    </a>
                 <?php endforeach; ?>
 
             </div>

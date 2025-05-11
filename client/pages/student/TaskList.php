@@ -38,6 +38,11 @@ $leaderID = $groupModel->getLeaderId($groupId);
 $taskArray = $taskModel->getTasksByProjectAndGroup($projectId, $groupId);
 $isSubmitted = $groupModel->getSubmitted($groupId);
 $members = $groupModel->getMembersByGroup($groupId);
+$showBtn = false;
+
+if (($leaderID === $userID) && !$isSubmitted) {
+    $showBtn = true;
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +63,7 @@ $members = $groupModel->getMembersByGroup($groupId);
             <div class="projectDetails">
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>
-                    <?php if ($leaderID === $userID && !$isSubmitted): ?>
+                    <?php if ($showBtn): ?>
                         <button id="transferBtn">Transfer Role</button>
                     <?php endif; ?>
                 </div><br>
@@ -96,7 +101,7 @@ $members = $groupModel->getMembersByGroup($groupId);
             <div class="groups">
                 <div class="titleBar">
                     <h1>Tasks</h1>
-                    <?php if ($leaderID === $userID): ?>
+                    <?php if ($showBtn): ?>
                         <button id="addBtn">
                             <a
                                 href="/FYP2025/SPAMS/client/pages/student/CreateTask.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>">
@@ -188,7 +193,7 @@ $members = $groupModel->getMembersByGroup($groupId);
                 </button>
             </div>
 
-            <?php if ($leaderID === $userID && !$isSubmitted): ?>
+            <?php if ($showBtn): ?>
                 <form action="/FYP2025/SPAMS/server/controllers/SubmissionController.php" method="post"
                     enctype="multipart/form-data" class="submission">
                     <h1>Submission</h1>

@@ -28,6 +28,7 @@ if (!$project || ($project['createdBy'] != $_SESSION['userID'])) {
 $groups = $groupModel->getGroupsByProject($projectId);
 $creator = $userModel->getUserById($project['createdBy']);
 $attachments = $projectModel->getAttachmentsByProjectId($projectId);
+$hasSubmission = false;
 ?>
 
 <!DOCTYPE html>
@@ -82,6 +83,8 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                 $members = $groupModel->getMembersByGroup($grp['groupID']);
                 $submitted = $groupModel->getSubmitted($grp['groupID']);
                 $submission = $groupModel->getSubmissionByGroup($projectId, $grp['groupID']);
+                if ($submission)
+                    $hasSubmission = true;
                 ?>
 
                 <div class="groups">
@@ -149,12 +152,14 @@ $attachments = $projectModel->getAttachmentsByProjectId($projectId);
                 </div>
             <?php endforeach; ?>
 
-            <button id="downloadAll">
-                <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=allSubmissions&projectID=<?= $projectId ?>"
-                    class="downloadLink">
-                    Download All Submissions
-                </a>
-            </button>
+            <?php if ($hasSubmission): ?>
+                <button id="downloadAll">
+                    <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=allSubmissions&projectID=<?= $projectId ?>"
+                        class="downloadLink">
+                        Download All Submissions
+                    </a>
+                </button>
+            <?php endif; ?>
 
         </div>
 
