@@ -37,7 +37,7 @@ $group = $groupModel->getGroupById($groupId);
 $taskId = intval($_GET['taskID']);
 $task = $taskModel->getTaskById($taskId);
 
-if (!$groupModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID ) {
+if (!$groupModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID) {
     header("Location: /FYP2025/SPAMS/Client/Pages/student/SProjectList.php");
     exit();
 }
@@ -76,7 +76,11 @@ $isTaskDone = $taskModel->isTaskDone($taskId);
                 <div class="titleBar">
                     <h1><?php echo $task['taskName'] ?></h1>
                     <?php if ($leaderID === $userID && !$isSubmitted): ?>
-                        <button id="editBtn">Edit Task</button>
+                        <button id="editBtn">
+                            <a href="/FYP2025/SPAMS/client/pages/student/EditTask.php?taskID=<?= urlencode($taskId) ?>" class="editLink">
+                                Edit Task
+                            </a>
+                        </button>
                     <?php endif; ?>
                 </div><br>
 
@@ -134,27 +138,26 @@ $isTaskDone = $taskModel->isTaskDone($taskId);
                 </div>
 
                 <?php if ($isContributor && !$isSubmitted): ?>
-                    <?php if(!$isTaskDone): ?>
-                    <form action="/FYP2025/SPAMS/server/controllers/TaskUploadController.php" method="post"
-                        enctype="multipart/form-data" class="uploadForm">
-                        <input type="hidden" name="action" value="upload">
-                        <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
-                        <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
-                        <input type="hidden" name="taskID" value="<?= htmlspecialchars($taskId) ?>">
+                    <?php if (!$isTaskDone): ?>
+                        <form action="/FYP2025/SPAMS/server/controllers/TaskUploadController.php" method="post"
+                            enctype="multipart/form-data" class="uploadForm">
+                            <input type="hidden" name="action" value="upload">
+                            <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
+                            <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
+                            <input type="hidden" name="taskID" value="<?= htmlspecialchars($taskId) ?>">
 
-                        <div class="uploadBar">
-                            <input type="file" id="fileInput" name="file" style="display: none;" />
-                            <label for="fileInput">
-                                <img class="icon" src="/FYP2025/SPAMS/client/assets/images/attach file.png">
-                            </label>
-                            <span id="fileName">No file selected</span>
-                            <button id="uploadFile" type="submit">Upload</button>
-                        </div>
-                    </form>
+                            <div class="uploadBar">
+                                <input type="file" id="fileInput" name="file" style="display: none;" />
+                                <label for="fileInput">
+                                    <img class="icon" src="/FYP2025/SPAMS/client/assets/images/attach file.png">
+                                </label>
+                                <span id="fileName">No file selected</span>
+                                <button id="uploadFile" type="submit">Upload</button>
+                            </div>
+                        </form>
                     <?php endif; ?>
 
-                    <form class="statusUpdate" method="post"
-                        action="/FYP2025/SPAMS/server/controllers/TaskController.php">
+                    <form class="statusUpdate" method="post" action="/FYP2025/SPAMS/server/controllers/TaskController.php">
                         <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
                         <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
                         <input type="hidden" name="taskID" value="<?= htmlspecialchars($taskId) ?>">

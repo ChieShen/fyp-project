@@ -295,3 +295,8 @@ body {
     background-color: #e0a800;
     transform: scale(1.1)
 }
+
+.editLink{
+    text-decoration: none;
+    color: white;
+}

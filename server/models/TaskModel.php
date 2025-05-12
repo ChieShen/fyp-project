@@ -56,13 +56,53 @@ class TaskModel
     // Delete a task
     public function deleteTask($taskID)
     {
-        // First, delete contributors
+        // Step 1: Get projectID and groupID from task
+        $stmt = $this->conn->prepare("SELECT projectID, groupID FROM task WHERE taskID = ?");
+        $stmt->bind_param("i", $taskID);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if (!$result) {
+            return false; // Task not found
+        }
+
+        $projectID = (int) $result['projectID'];
+        $groupID = (int) $result['groupID'];
+
+        // Step 2: Remove all contributors
         $this->removeAllContributors($taskID);
 
-        // Then, delete the task
+        // Step 3: Delete all files and the task directory
+        $taskDir = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$groupID}/{$taskID}";
+        $this->deleteDirectory($taskDir);
+
+        // Step 4: Delete the task
         $stmt = $this->conn->prepare("DELETE FROM task WHERE taskID = ?");
         $stmt->bind_param("i", $taskID);
-        return $stmt->execute();
+        $result = $stmt->execute();
+        $stmt->close();
+
+        return $result;
+    }
+
+    private function deleteDirectory($dir)
+    {
+        if (!is_dir($dir))
+            return;
+
+        $items = scandir($dir);
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..')
+                continue;
+            $path = $dir . DIRECTORY_SEPARATOR . $item;
+            if (is_dir($path)) {
+                $this->deleteDirectory($path); // Recursively delete subdirectories
+            } else {
+                unlink($path); // Delete file
+            }
+        }
+        rmdir($dir); // Remove the directory itself
     }
 
     // Assign contributors to a task

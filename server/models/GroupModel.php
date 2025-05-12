@@ -109,6 +109,8 @@ class GroupModel
         }
 
         $projectID = (int) $result['projectID'];
+        $subTFilePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$groupID}";
+        $upFilePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$groupID}";
 
         // Step 2: Delete group members to avoid FK constraint issues
         $this->conn->query("DELETE FROM groupmember WHERE groupID = $groupID");
@@ -125,6 +127,9 @@ class GroupModel
 
         // Step 4: Decrement numGroup in project table
         $this->conn->query("UPDATE project SET numGroup = numGroup - 1 WHERE projectID = $projectID");
+
+        $this->deleteDirectory($subTFilePath);
+        $this->deleteDirectory($upFilePath);
 
         return true;
     }
@@ -320,5 +325,23 @@ class GroupModel
 
         $stmt->close();
         return $submissions;
+    }
+
+    private function deleteDirectory(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        $items = array_diff(scandir($dir), ['.', '..']);
+        foreach ($items as $item) {
+            $path = "$dir/$item";
+            if (is_dir($path)) {
+                $this->deleteDirectory($path); // Recursive call
+            } else {
+                unlink($path);
+            }
+        }
+        rmdir($dir);
     }
 }

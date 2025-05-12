@@ -21,7 +21,7 @@ if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
 $originalName = basename($_FILES['file']['name']);
 $safeName = time() . "_" . preg_replace('/[^a-zA-Z0-9\._-]/', '_', $originalName);
 
-$uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$taskID}/{$userID}";
+$uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/$groupID/{$taskID}/{$userID}";
 if (!file_exists($uploadDir)) {
     mkdir($uploadDir, 0777, true);
 }

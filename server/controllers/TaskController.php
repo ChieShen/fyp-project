@@ -44,13 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // EDIT TASK
     if ($action === 'edit') {
-        $taskID = intval($_POST['taskID'] ?? 0);
+        $taskID = intval($_POST['taskID']);
         $taskModel->updateTask($taskID, $status, $taskName, $taskDesc);
         $taskModel->removeAllContributors($taskID);
         if (!empty($contributors)) {
             $taskModel->addContributors($taskID, $contributors);
         }
-        header("Location: /FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=$projectID&groupID=$groupID");
+        header("Location: /FYP2025/SPAMS/client/pages/student/TaskDetails.php?projectID=$projectID&groupID=$groupID&taskID=$taskID");
         exit();
     }
 

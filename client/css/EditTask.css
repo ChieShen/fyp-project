@@ -82,7 +82,7 @@ body{
     margin-top: 2%;
 }
 
-form {
+.editform {
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -186,4 +186,9 @@ textarea{
 #create:hover{
     background-color: #45a049;
     transform:scale(1.1);
+}
+
+.cancelLink{
+    text-decoration: none;
+    color: black;
 }

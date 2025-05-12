@@ -71,3 +71,50 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!valid) event.preventDefault();
     };
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteBtn = document.getElementById("deleteBtn");
+
+    deleteBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const taskId = deleteBtn.getAttribute("data-taskid");
+        const taskName = deleteBtn.getAttribute("data-taskname");
+        const projectId = deleteBtn.getAttribute("data-projectid");
+        const groupId = deleteBtn.getAttribute("data-groupid");
+
+        showMessageBox({
+            titleText: "Delete Task",
+            messageText: `Are you sure you want to delete task "${taskName}"?`,
+            confirmText: "Delete",
+            onConfirm: () => {
+                const formData = new URLSearchParams();
+                formData.append("action", "delete");
+                formData.append("taskID", taskId);
+                formData.append("projectID", projectId);
+                formData.append("groupID", groupId);
+
+                fetch("/FYP2025/SPAMS/server/controllers/TaskController.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: formData.toString()
+                })
+                .then(() => {
+                    // Redirect user manually after deletion
+                    window.location.href = `/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=${projectId}&groupID=${groupId}`;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("An error occurred while deleting the task.");
+                });
+            }
+        });
+
+        // Clean up URL query if needed
+        const url = new URL(window.location.href);
+        url.searchParams.delete("type");
+        window.history.replaceState({}, '', url);
+    });
+});
