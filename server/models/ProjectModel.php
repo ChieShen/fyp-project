@@ -192,4 +192,39 @@ class ProjectModel
         ];
     }
 
+    // Delete an attachment by its ID
+    public function deleteAttachment(int $attachID): bool
+    {
+        $stmt = $this->conn->prepare("DELETE FROM attachment WHERE attachID = ?");
+        $stmt->bind_param("i", $attachID);
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
+
+    // Get a single attachment by its ID
+    public function getAttachmentById(int $attachID): ?array
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM attachment WHERE attachID = ?");
+        $stmt->bind_param("i", $attachID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $attachment = $result->fetch_assoc();
+        $stmt->close();
+
+        return $attachment ?: null;
+    }
+
+    // Add a new attachment (alias of saveFile for naming consistency)
+    public function addAttachment(int $projectID, string $filename, string $displayName, int $uploader): bool
+    {
+        $stmt = $this->conn->prepare(
+            "INSERT INTO attachment (attachName, displayName, uploader, projectID) VALUES (?, ?, ?, ?)"
+        );
+        $stmt->bind_param("ssii", $filename, $displayName, $uploader, $projectID);
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
+
 }

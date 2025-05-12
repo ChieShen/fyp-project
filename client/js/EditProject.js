@@ -13,8 +13,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const addFileBtn = document.getElementById('addFile');
     const form = document.querySelector('form');
 
-    let files = [];
+    let newFiles = [];
+    let removedFileIds = [];
 
+    const fileTitleDiv = document.querySelector('.fileTitle');
+    const existingFiles = JSON.parse(fileTitleDiv.getAttribute('data-existingfiles'));
+
+    existingFiles.forEach(file => {
+        const fileEntry = document.createElement('div');
+        fileEntry.className = 'fileItem';
+        fileEntry.innerHTML = `
+            <label>${file.displayName}</label>
+            <button type="button" class="removeFile">Remove</button>
+        `;
+
+        fileEntry.querySelector('.removeFile').addEventListener('click', () => {
+            removedFileIds.push(file.id);
+            fileList.removeChild(fileEntry);
+        });
+
+        fileList.appendChild(fileEntry);
+    });
+
+    // Add new files dynamically
     addFileBtn.addEventListener('click', () => {
         fileInput.click();
     });
@@ -22,9 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInput.addEventListener('change', () => {
         Array.from(fileInput.files).forEach(file => {
             // Prevent duplicates
-            if (files.some(f => f.name === file.name && f.size === file.size)) return;
+            if (newFiles.some(f => f.name === file.name && f.size === file.size)) return;
 
-            files.push(file);
+            newFiles.push(file);
+            console.log('file added: ', file);
 
             const fileEntry = document.createElement('div');
             fileEntry.className = 'fileItem';
@@ -33,26 +55,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button type="button" class="removeFile">Remove</button>
             `;
 
-            // Handle removal properly
             fileEntry.querySelector('.removeFile').addEventListener('click', () => {
-                files = files.filter(f => f !== file);
                 fileEntry.remove();
             });
 
             fileList.appendChild(fileEntry);
         });
 
-        fileInput.value = ''; // allow re-selecting the same file
+        fileInput.value = ''; // reset to allow re-adding same file
     });
 
+    // Handle form submission
     form.addEventListener('submit', (e) => {
-        e.preventDefault(); // prevent normal form submission
+        e.preventDefault();
 
         const formData = new FormData(form);
 
-        files.forEach(file => {
+        newFiles.forEach(file => {
             formData.append('files[]', file);
         });
+
+        removedFileIds.forEach(id => {
+            formData.append('removeFiles[]', id);
+        });
+
+        for (const [key, value] of formData.entries()) {
+            if (key === 'files[]' && value instanceof File) {
+                alert(`File: ${value.name}, size: ${value.size}, type: ${value.type}`);
+            }
+        }
 
         fetch(form.action, {
             method: 'POST',
@@ -76,9 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fields = [
         { id: 'projectName', errorId: 'pNameError', errorMessage: 'Project Name cannot be empty' },
         { id: 'projectDesc', errorId: 'pDescError', errorMessage: 'Project Description cannot be empty' },
-        { id: 'deadline', errorId: 'deadlineError', errorMessage: 'Deadline cannot be empty' },
-        { id: 'groupCount', errorId: 'gcError', errorMessage: 'Enter a valid number of groups' },
-        { id: 'maxMem', errorId: 'maxMemError', errorMessage: 'Enter a valid maximum number of members' }
+        { id: 'deadline', errorId: 'deadlineError', errorMessage: 'Deadline cannot be empty' }
     ];
 
     fields.forEach(field => {
@@ -155,20 +184,16 @@ function validateForm(event) {
     const projectName = document.getElementById('projectName');
     const projectDesc = document.getElementById('projectDesc');
     const deadline = document.getElementById('deadline');
-    const groupCount = document.getElementById('groupCount');
-    const maxMem = document.getElementById('maxMem');
 
     const pNameError = document.getElementById('pNameError');
     const pDescError = document.getElementById('pDescError');
     const deadlineError = document.getElementById('deadlineError');
-    const gcError = document.getElementById('gcError');
-    const maxMemError = document.getElementById('maxMemError');
 
     let isValid = true;
 
     // Reset errors
-    [pNameError, pDescError, deadlineError, gcError, maxMemError].forEach(err => err.textContent = '');
-    [projectName, projectDesc, deadline, groupCount, maxMem].forEach(input => input.style.border = '');
+    [pNameError, pDescError, deadlineError].forEach(err => err.textContent = '');
+    [projectName, projectDesc, deadline].forEach(input => input.style.border = '');
 
     if (projectName.value.trim() === '') {
         isValid = false;
@@ -195,18 +220,6 @@ function validateForm(event) {
             deadline.style.border = '2px solid red';
             deadlineError.textContent = 'Deadline cannot be in the past';
         }
-    }
-
-    if (groupCount.value.trim() === '' || isNaN(groupCount.value) || parseInt(groupCount.value) <= 0) {
-        isValid = false;
-        groupCount.style.border = '2px solid red';
-        gcError.textContent = 'Enter a valid number of groups';
-    }
-
-    if (maxMem.value.trim() === '' || isNaN(maxMem.value) || parseInt(maxMem.value) <= 0) {
-        isValid = false;
-        maxMem.style.border = '2px solid red';
-        maxMemError.textContent = 'Enter a valid maximum number of members';
     }
 
     if (!isValid) {

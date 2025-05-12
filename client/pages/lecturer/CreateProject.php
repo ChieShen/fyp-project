@@ -1,5 +1,13 @@
 <?php
 session_start();
+if (!isset($_SESSION['userID'])) {
+    header("Location: /FYP2025/SPAMS/client/index.php");
+    exit;
+}
+if ($_SESSION['role_id'] != 2){
+        header("Location: /FYP2025/SPAMS/client/pages/student/SProjectList.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>

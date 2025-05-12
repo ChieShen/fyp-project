@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Save uploaded files
-    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/uploads/' . $createdBy . '/' . $projectID . '/';
+    $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/uploads/attachments/' . $createdBy . '/' . $projectID . '/';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
