@@ -29,6 +29,11 @@ $groups = $groupModel->getGroupsByProject($projectId);
 $creator = $userModel->getUserById($project['createdBy']);
 $attachments = $projectModel->getAttachmentsByProjectId($projectId);
 $hasSubmission = false;
+
+$deadlineRaw = $project['deadline'];
+
+$deadline = new DateTime($deadlineRaw);
+$formattedDeadline = $deadline->format('Y-m-d h:i A');
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +54,12 @@ $hasSubmission = false;
             <div class="projectDetails">
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>
-                    <button id="editBtn">Edit</button>
+                    <button id="editBtn">
+                        <a href="/FYP2025/SPAMS/client/pages/lecturer/EditProject.php?projectID=<?= urldecode($projectId) ?>"
+                            class="editLink">
+                            Edit
+                        </a>
+                    </button>
                 </div><br>
 
                 <p class="label">Project Description:</p>
@@ -59,6 +69,9 @@ $hasSubmission = false;
 
                 <p class="label">Created By:</p>
                 <p class="details"><?= htmlspecialchars($creator['username']) ?></p><br><br>
+
+                <p class="label">Deadline:</p>
+                <p class="details"><?= htmlspecialchars($formattedDeadline) ?></p><br><br>
 
                 <p class="label">Join Code:</p>
                 <p class="details"><?= htmlspecialchars($project['joinCode']) ?></p><br><br>
@@ -90,13 +103,15 @@ $hasSubmission = false;
 
                 <div class="groups">
                     <div class="titleBar">
-                        <a href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($grp['groupID']) ?>" class="groupLink">
+                        <a href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($grp['groupID']) ?>"
+                            class="groupLink">
                             <h1><?= htmlspecialchars($grp['groupName']) ?></h1>
                         </a>
                         <div class="progress-container">
                             <div class="progress-bar" id="progressBar" data-progress="<?= $progress ?>"></div>
                         </div>
-                        <button class="deleteBtn" data-group-id="<?= $grp['groupID'] ?>" data-grpname="<?= htmlspecialchars($grp['groupName']) ?>">Delete</button>
+                        <button class="deleteBtn" data-group-id="<?= $grp['groupID'] ?>"
+                            data-grpname="<?= htmlspecialchars($grp['groupName']) ?>">Delete</button>
                     </div>
 
                     <div class="memberTable">

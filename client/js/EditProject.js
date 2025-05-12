@@ -79,12 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('removeFiles[]', id);
         });
 
-        for (const [key, value] of formData.entries()) {
-            if (key === 'files[]' && value instanceof File) {
-                alert(`File: ${value.name}, size: ${value.size}, type: ${value.type}`);
-            }
-        }
-
         fetch(form.action, {
             method: 'POST',
             body: formData
