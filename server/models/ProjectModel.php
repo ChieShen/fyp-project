@@ -87,7 +87,7 @@ class ProjectModel
     public function saveFile($projectID, $filename, $displayName, $uploader)
     {
         $stmt = $this->conn->prepare(
-            "INSERT INTO attachment (attachName, displayName, uploader, projectID) VALUES (?, ?, ?)"
+            "INSERT INTO attachment (attachName, displayName, uploader, projectID) VALUES (?, ?, ?, ?)"
         );
         $stmt->bind_param("ssii", $filename, $displayName, $uploader, $projectID);
         $stmt->execute();

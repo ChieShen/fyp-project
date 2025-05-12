@@ -39,6 +39,7 @@ $taskArray = $taskModel->getTasksByProjectAndGroup($projectId, $groupId);
 $isSubmitted = $groupModel->getSubmitted($groupId);
 $members = $groupModel->getMembersByGroup($groupId);
 $showBtn = false;
+$downloadAll = false;
 
 if (($leaderID === $userID) && !$isSubmitted) {
     $showBtn = true;
@@ -92,7 +93,11 @@ if (($leaderID === $userID) && !$isSubmitted) {
                 <p class="label"><?= htmlspecialchars($group['groupName']) ?>:</p>
                 <?php foreach ($members as $member): ?>
                     <p class="details">
-                        <?= htmlspecialchars($member['firstName'] . ' ' . $member['lastName']) ?>
+                        <?php if ($member['userID'] == $leaderID): ?>
+                            <?= htmlspecialchars($member['firstName'] . ' ' . $member['lastName']) ?> (Leader)
+                        <?php else: ?>
+                            <?= htmlspecialchars($member['firstName'] . ' ' . $member['lastName']) ?>
+                        <?php endif; ?>
                     </p>
                 <?php endforeach; ?>
 
@@ -123,6 +128,7 @@ if (($leaderID === $userID) && !$isSubmitted) {
                     <?php if (!empty($taskArray)): ?>
                         <?php foreach ($taskArray as $task):
                             $statusClass = '';
+                            $downloadShow = false;
                             switch ($task['status']) {
                                 case 0:
                                     $statusText = 'Not Started';
@@ -131,10 +137,14 @@ if (($leaderID === $userID) && !$isSubmitted) {
                                 case 1:
                                     $statusText = 'Ongoing';
                                     $statusClass = 'ongoing';
+                                    $downloadShow = true;
+                                    $downloadAll = true;
                                     break;
                                 case 2:
                                     $statusText = 'Done';
                                     $statusClass = 'done';
+                                    $downloadShow = true;
+                                    $downloadAll = true;
                                     break;
                                 default:
                                     $statusText = 'Unknown';
@@ -165,15 +175,17 @@ if (($leaderID === $userID) && !$isSubmitted) {
                                     </div>
                                     <div class="data <?= $statusClass ?>"><?= $statusText ?></div>
                                 </a>
-                                <div class="downloadColumn">
-                                    <button class="download">
-                                        <a class="downloadLink"
-                                            href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=latestUploadsByTask&projectID=<?= urlencode($projectId) ?>&taskID=<?= urlencode($task['taskID']) ?>"
-                                            download>
-                                            Download
-                                        </a>
-                                    </button>
-                                </div>
+                                <?php if ($downloadShow): ?>
+                                    <div class="downloadColumn">
+                                        <button class="download">
+                                            <a class="downloadLink"
+                                                href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=latestUploadsByTask&projectID=<?= urlencode($projectId) ?>&taskID=<?= urlencode($task['taskID']) ?>"
+                                                download>
+                                                Download
+                                            </a>
+                                        </button>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                         <?php endforeach; ?>
@@ -185,12 +197,14 @@ if (($leaderID === $userID) && !$isSubmitted) {
 
                 </div>
 
-                <button id="downloadAll">
-                    <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=allLatestTaskUploads&projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>"
-                        class="downloadLink" download>
-                        Download All Latest Files
-                    </a>
-                </button>
+                <?php if ($downloadAll): ?>
+                    <button id="downloadAll">
+                        <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=allLatestTaskUploads&projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>"
+                            class="downloadLink" download>
+                            Download All Latest Files
+                        </a>
+                    </button>
+                <?php endif; ?>
             </div>
 
             <?php if ($showBtn): ?>

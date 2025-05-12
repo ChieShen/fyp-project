@@ -76,6 +76,8 @@
 .message{
     text-align: center;
     margin-top: 10px;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 #projectCode{

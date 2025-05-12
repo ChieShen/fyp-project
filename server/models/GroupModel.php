@@ -56,6 +56,15 @@ class GroupModel
         return $result;
     }
 
+    public function removeUserFromGroup(int $groupID, int $userID): bool
+    {
+        $stmt = $this->conn->prepare("DELETE FROM groupmember WHERE groupID = ? AND userID = ?");
+        $stmt->bind_param("ii", $groupID, $userID);
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
+
     public function getMembersByGroup(int $groupID): array
     {
         $stmt = $this->conn->prepare("

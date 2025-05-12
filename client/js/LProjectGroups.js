@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
             showMessageBox({
                 type: "transfer",
                 titleText: "Transfer Leader Role",
-                messageText: `Select a student from Group ${groupId} to transfer leadership`,
+                messageText: `Select a student to transfer leadership`,
                 confirmText: "Transfer",
                 inputType: "select",
                 inputOptions: options,
@@ -48,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         }),
                     })
                         .then(response => {
-                            // Check if the response is valid JSON
                             if (response.ok) {
                                 return response.json();
                             } else {
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         .then(data => {
                             console.log(data);
                             if (data.status === 'success') {
-                                location.reload(); // Or update UI dynamically
+                                location.reload();
                             } else {
                                 alert("Failed to transfer leadership: " + data.message);
                             }
@@ -80,3 +79,58 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const removeBtns = document.querySelectorAll(".removeBtn");
+
+    removeBtns.forEach(button => {
+        button.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const groupId = button.getAttribute("data-group-id");
+            const userId = button.getAttribute("data-user-id");
+            const username = button.getAttribute("data-username");
+            const grpname = button.getAttribute("data-grpname")
+
+            showMessageBox({
+                titleText: "Remove User From Group",
+                messageText: `Are you sure you want to remove ${username} from ${grpname}?`,
+                confirmText: "Confirm",
+                onConfirm: () => {
+                    fetch("/FYP2025/SPAMS/server/controllers/RemoveMemberController.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `groupID=${groupId}&userID=${userId}`
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                console.log('response is not ok')
+                                throw new Error('Failed to fetch data');
+                            }
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                console.log(`${username} has been removed`);
+                                location.reload();
+                            } else {
+                                alert("Failed to remove user: " + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            alert("An unexpected error occurred.");
+                        });
+                }
+
+            });
+
+            // Clean up URL query if needed
+            const url = new URL(window.location.href);
+            url.searchParams.delete("type");
+            window.history.replaceState({}, '', url);
+        });
+    });
+});

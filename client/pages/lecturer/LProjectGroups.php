@@ -139,7 +139,8 @@ $hasSubmission = false;
                                         </button>
                                     <?php else: ?>
                                         <button class="removeBtn" data-user-id="<?= $member['userID'] ?>"
-                                            data-group-id="<?= $grp['groupID'] ?>">Remove</button>
+                                            data-group-id="<?= $grp['groupID'] ?>" data-username="<?= htmlspecialchars($name) ?>"
+                                            data-grpname="<?= htmlspecialchars($grp['groupName']) ?>">Remove</button>
                                     <?php endif; ?>
                                 </div>
                             </div>
