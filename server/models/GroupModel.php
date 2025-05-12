@@ -97,14 +97,36 @@ class GroupModel
 
     public function deleteGroup(int $groupID): bool
     {
-        // Delete members first to prevent FK issues
+        // Step 1: Get projectID for the group
+        $stmt = $this->conn->prepare("SELECT projectID FROM projectgroups WHERE groupID = ?");
+        $stmt->bind_param("i", $groupID);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if (!$result) {
+            return false; // Group not found
+        }
+
+        $projectID = (int) $result['projectID'];
+
+        // Step 2: Delete group members to avoid FK constraint issues
         $this->conn->query("DELETE FROM groupmember WHERE groupID = $groupID");
 
+        // Step 3: Delete the group
         $stmt = $this->conn->prepare("DELETE FROM projectgroups WHERE groupID = ?");
         $stmt->bind_param("i", $groupID);
         $result = $stmt->execute();
         $stmt->close();
-        return $result;
+
+        if (!$result) {
+            return false;
+        }
+
+        // Step 4: Decrement numGroup in project table
+        $this->conn->query("UPDATE project SET numGroup = numGroup - 1 WHERE projectID = $projectID");
+
+        return true;
     }
 
     public function updateGroup(int $groupID, string $groupName): bool

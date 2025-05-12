@@ -90,11 +90,13 @@ $hasSubmission = false;
 
                 <div class="groups">
                     <div class="titleBar">
-                        <h1><?= htmlspecialchars($grp['groupName']) ?></h1>
+                        <a href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($grp['groupID']) ?>" class="groupLink">
+                            <h1><?= htmlspecialchars($grp['groupName']) ?></h1>
+                        </a>
                         <div class="progress-container">
                             <div class="progress-bar" id="progressBar" data-progress="<?= $progress ?>"></div>
                         </div>
-                        <button class="deleteBtn">Delete</button>
+                        <button class="deleteBtn" data-group-id="<?= $grp['groupID'] ?>" data-grpname="<?= htmlspecialchars($grp['groupName']) ?>">Delete</button>
                     </div>
 
                     <div class="memberTable">

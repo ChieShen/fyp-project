@@ -107,7 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             if (response.ok) {
                                 return response.json();
                             } else {
-                                console.log('response is not ok')
                                 throw new Error('Failed to fetch data');
                             }
                         })
@@ -123,6 +122,52 @@ document.addEventListener("DOMContentLoaded", () => {
                             console.error("Error:", error);
                             alert("An unexpected error occurred.");
                         });
+                }
+
+            });
+
+            // Clean up URL query if needed
+            const url = new URL(window.location.href);
+            url.searchParams.delete("type");
+            window.history.replaceState({}, '', url);
+        });
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const removeBtns = document.querySelectorAll(".deleteBtn");
+
+    removeBtns.forEach(button => {
+        button.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const groupId = button.getAttribute("data-group-id");
+            const userId = button.getAttribute("data-user-id");
+            const username = button.getAttribute("data-username");
+            const grpname = button.getAttribute("data-grpname")
+
+            showMessageBox({
+                titleText: "Delete Group",
+                messageText: `Are you sure you want to delete ${grpname}?`,
+                confirmText: "Confirm",
+                onConfirm: () => {
+                    fetch('/FYP2025/SPAMS/server/controllers/DeleteGroupController.php', {
+                        method: 'POST',
+                        body: new URLSearchParams({ groupId }),
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                location.reload();
+                            } else {
+                                alert('Server error: ' + data.message);
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Unexpected server error. Please try again later.');
+                        });
+
                 }
 
             });

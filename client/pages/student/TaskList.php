@@ -10,7 +10,7 @@ if (!isset($_SESSION['userID'])) {
     header("Location: /FYP2025/SPAMS/Client/index.php");
     exit();
 } elseif (!isset($_GET['projectID']) || !isset($_GET['groupID'])) {
-    header("Location: /FYP2025/SPAMS/Client/pages/stdent/SProjectList.php");
+    header("Location: /FYP2025/SPAMS/Client/pages/student/SProjectList.php");
     exit();
 }
 
@@ -27,8 +27,8 @@ $project = $projectModel->findByProjectId($projectId);
 $groupId = intval($_GET['groupID']);
 $group = $groupModel->getGroupById($groupId);
 
-if (!$project || !($groupModel->isUserInProject($userID, $projectId))) {
-    header("Location: /FYP2025/SPAMS/Client/Pages/student/SProjectList.php");
+if (!$groupModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID ) {
+    header("Location: /FYP2025/SPAMS/client/Pages/student/SProjectList.php");
     exit();
 }
 
