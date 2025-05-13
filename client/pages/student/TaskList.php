@@ -27,7 +27,7 @@ $project = $projectModel->findByProjectId($projectId);
 $groupId = intval($_GET['groupID']);
 $group = $groupModel->getGroupById($groupId);
 
-if (!$groupModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID ) {
+if (!$groupModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID) {
     header("Location: /FYP2025/SPAMS/client/Pages/student/SProjectList.php");
     exit();
 }
@@ -44,6 +44,17 @@ $downloadAll = false;
 if (($leaderID === $userID) && !$isSubmitted) {
     $showBtn = true;
 }
+
+$membersForJS = array_filter($members, function ($m) use ($leaderID) {
+    return $m['userID'] != $leaderID;
+});
+$membersData = array_values(array_map(function ($m) {
+    return [
+        'value' => $m['userID'],
+        'label' => $m['firstName'] . ' ' . $m['lastName']
+    ];
+}, $membersForJS));
+
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +76,11 @@ if (($leaderID === $userID) && !$isSubmitted) {
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>
                     <?php if ($showBtn): ?>
-                        <button id="transferBtn">Transfer Role</button>
+                        <button id="transferBtn" data-group-id="<?= $groupId ?>"
+                            data-current-leader="<?= $leaderID ?>"
+                            data-members='<?= htmlspecialchars(json_encode($membersData), ENT_QUOTES, 'UTF-8') ?>'>
+                            Transfer Role
+                        </button>
                     <?php endif; ?>
                 </div><br>
 

@@ -59,5 +59,5 @@ if (!$deleteSuccess) {
     exit('Failed to delete the project.');
 }
 
-header("Location: /FYP2025/SPAMS/client/pages/lecturer/LProjects.php?");
+header("Location: /FYP2025/SPAMS/client/pages/lecturer/LProjectList.php?");
 exit();
