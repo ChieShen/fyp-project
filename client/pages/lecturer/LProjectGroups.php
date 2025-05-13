@@ -54,12 +54,10 @@ $formattedDeadline = $deadline->format('Y-m-d h:i A');
             <div class="projectDetails">
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>
-                    <button id="editBtn">
                         <a href="/FYP2025/SPAMS/client/pages/lecturer/EditProject.php?projectID=<?= urldecode($projectId) ?>"
                             class="editLink">
-                            Edit
+                            <button id="editBtn">Edit</button>
                         </a>
-                    </button>
                 </div><br>
 
                 <p class="label">Project Description:</p>

@@ -46,6 +46,9 @@ if (!empty($deadline)) {
         <div class="createBox">
             <div class="titleBar">
                 <h1>Edit Project</h1>
+                <a href="/FYP2025/SPAMS/server/controllers/DeleteProjectController.php?projectID=<?=urldecode($projectID)?>" class="deleteLink">
+                    <button class="deleteBtn">Delete</button>
+                </a>
             </div>
 
             <form action="/FYP2025/SPAMS/server/controllers/EditProjectController.php" method="post" enctype="multipart/form-data" onsubmit="validateForm(event)">
