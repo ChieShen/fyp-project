@@ -57,7 +57,6 @@ $chats = $chatModel->getUserChatrooms($userID);
 
                     <div class="chatHalf">
                         <div class="chatTitle">
-                            <p class="title">Assignment Group 1</p>
                         </div>
 
                         <div class="chatHistory">

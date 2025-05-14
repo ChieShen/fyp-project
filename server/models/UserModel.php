@@ -79,9 +79,48 @@ class UserModel
         return false;
     }
 
-    public function getConnection(): mysqli
+    // Update user's profile information
+    public function updateUserProfile($userID, $firstName, $lastName, $curPass = null, $newPass = null)
     {
-        return $this->conn;
+        // Get current user to check password
+        $user = $this->getUserById($userID);
+        if (!$user)
+            return false;
+
+        // If any password is provided, validate and update password
+        if ($curPass !== null && $newPass !== null && $curPass !== "" && $newPass !== "") {
+            // Validate current password
+            if (!password_verify($curPass, $user['password'])) {
+                return "wrong_password";
+            }
+
+            // Hash the new password
+            $hashedNewPassword = password_hash($newPass, PASSWORD_BCRYPT);
+
+            // Update name and password
+            $sql = "UPDATE user SET firstName = ?, lastName = ?, password = ? WHERE userID = ?";
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt)
+                return false;
+
+            $stmt->bind_param("sssi", $firstName, $lastName, $hashedNewPassword, $userID);
+        } else {
+            // Update only name
+            $sql = "UPDATE user SET firstName = ?, lastName = ? WHERE userID = ?";
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt)
+                return false;
+
+            $stmt->bind_param("ssi", $firstName, $lastName, $userID);
+        }
+
+        if ($stmt->execute()) {
+            $stmt->close();
+            return true;
+        } else {
+            $stmt->close();
+            return false;
+        }
     }
 }
 ?>

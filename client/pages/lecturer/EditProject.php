@@ -46,13 +46,15 @@ if (!empty($deadline)) {
         <div class="createBox">
             <div class="titleBar">
                 <h1>Edit Project</h1>
-                <a href="/FYP2025/SPAMS/server/controllers/DeleteProjectController.php?projectID=<?=urldecode($projectID)?>" class="deleteLink">
+                <a href="/FYP2025/SPAMS/server/controllers/DeleteProjectController.php?projectID=<?= urldecode($projectID) ?>"
+                    class="deleteLink">
                     <button class="deleteBtn">Delete</button>
                 </a>
             </div>
 
-            <form action="/FYP2025/SPAMS/server/controllers/EditProjectController.php" method="post" enctype="multipart/form-data" onsubmit="validateForm(event)">
-                <input type="hidden" name="projectID" value='<?= $projectID?>'>
+            <form action="/FYP2025/SPAMS/server/controllers/EditProjectController.php" method="post"
+                enctype="multipart/form-data" onsubmit="validateForm(event)">
+                <input type="hidden" name="projectID" value='<?= $projectID ?>'>
                 <div class="contentBox">
                     <div class="detailsHalf">
                         <label for="projectName">Project Name</label>
@@ -85,7 +87,11 @@ if (!empty($deadline)) {
                 </div>
 
                 <div class="buttons">
-                    <button type="button" id="cancel">Cancel</button>
+                    <button type="button" id="cancel">
+                        <a href="/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=<?= urldecode($projectID) ?>" class="cancelLink">
+                            Cancel
+                        </a>
+                    </button>
                     <button type="submit" id="create">Save</button>
                 </div>
 
