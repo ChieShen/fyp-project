@@ -66,27 +66,28 @@ body {
     height: 90vh;
 }
 
-.divider{
+.divider {
     display: flex;
+    flex-grow: 1;
     flex-direction: row;
     overflow: hidden;
     margin-top: 20px;
 }
 
-.chatList{
+.chatList {
     width: 30%;
     border-top: 2px solid #d9d9d9;
     border-right: 2px solid #d9d9d9;
 }
 
-.chatHalf{
+.chatHalf {
     display: flex;
     flex-direction: column;
     width: 70%;
     height: 100%;
 }
 
-.chatTitle{
+.chatTitle {
     font-weight: bold;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -94,7 +95,7 @@ body {
     border-top: 2px solid #d9d9d9;
 }
 
-.title{
+.title {
     padding-left: 1%;
 }
 
@@ -108,13 +109,13 @@ body {
     padding-bottom: 20px;
 }
 
-.sendBar{
+.sendBar {
     display: flex;
     flex-direction: row;
     padding-bottom: 20px;
 }
 
-textarea{
+textarea {
     height: 30px;
     width: 90%;
     margin-left: 1%;
@@ -127,7 +128,7 @@ textarea{
     overflow: hidden;
 }
 
-#sendMessage{
+#sendMessage {
     height: 30px;
     width: 100px;
     margin-left: 5px;
@@ -144,55 +145,61 @@ textarea{
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-#sendMessage:hover{
+#sendMessage:hover {
     background-color: #45a049;
-    transform:scale(1.1);
+    transform: scale(1.1);
 }
 
-.chatSelection li{
-    padding-top: 15px;
-    padding-bottom: 15px;
+.chatSelection li {
     cursor: pointer;
     list-style-type: none;
-    padding-left: calc(1% * (100/30));
 }
 
-.chatSelection li:hover{
+.chatSelection li:hover {
     width: 101%;
     background-color: #f2f2f2;
 }
 
-.chatSelection a{
+.chatSelection a {
     text-decoration: none;
     font-weight: bold;
     color: black;
 }
 
-#currentChat{
+.chatLink {
+    display: block;
+    padding: 15px;
+    width: 100%;
+    text-decoration: none;
+    padding-left: calc(1% * (100/30));
+    color: inherit;
+}
+
+.chatLink.active {
     background-color: #e6f9ff;
 }
 
-.userName{
+.userName {
     padding-right: 2%;
 }
 
-.otherName{
+.otherName {
     padding-left: 2%
 }
 
-.userMessage{
+.userMessage {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
-.otherMessage{
+.otherMessage {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-.userMsgContent{
+.userMsgContent {
     display: flex;
     align-items: center;
     padding: 15px 15px 15px 15px;
@@ -203,7 +210,7 @@ textarea{
     min-height: 30px;
 }
 
-.otherMsgContent{
+.otherMsgContent {
     display: flex;
     align-items: center;
     padding: 15px 15px 15px 15px;

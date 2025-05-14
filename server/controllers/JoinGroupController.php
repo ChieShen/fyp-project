@@ -2,6 +2,8 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ChatModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['userID'])) {
@@ -18,12 +20,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = new Database();
     $conn = $db->connect();
     $groupModel = new GroupModel($conn);
+    $chatModel = new ChatModel($conn);
+    $projectModel = new ProjectModel($conn);
 
     // Check if user is already in a group for this project
     $projectID = $groupModel->getProjectIdByGroupId($groupID);
     if ($groupModel->isUserInProject($userID, $projectID)) {
         die("You are already in a group for this project.");
     }
+
+    $project = $projectModel->findByProjectId($projectID);
+    $projectName = $project['title'];
+
+    $group = $groupModel->getGroupById($groupID);
+    $groupName = $group['groupName'];
+
+    $chatName = $projectName . ' ' . $groupName;
 
     // Count members
     $memberCount = $groupModel->countMembersInGroup($groupID);
@@ -33,6 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Add to group
     $groupModel->assignUserToGroup($groupID, $userID, $isLeader);
+
+    if($chatModel->chatroomExists($chatName)){
+        $chatID = $chatModel->getChatIDByName($chatName);
+    }
+    else{
+        $chatID = $chatModel->createChatroom($chatName);
+    }
+
+    $chatModel->addUserToChatroom($chatID,$userID);
 
     header("Location: /FYP2025/SPAMS/client/pages/student/SProjectList.php");
     exit();

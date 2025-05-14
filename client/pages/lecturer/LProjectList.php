@@ -52,20 +52,25 @@ $projects = $model->findByCreatedId($userId);
                     <div class="columnName">Participants</div>
                     <div class="columnName">Submitted Groups</div>
                 </div>
-                <?php foreach ($projects as $project): ?>
-                    <?php
-                    $stats = $model->getProjectStats($project['projectID']);
-                    ?>
-                    <a class="dataRow"
-                    href="/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=<?= urlencode($project['projectID']) ?>">
-                        <div class="data"><?= htmlspecialchars($project['title']) ?></div>
-                        <div class="data"><?= date("d/m/Y h:i A", strtotime($project['deadline'])) ?></div>
-                        <div class="data"><?= htmlspecialchars($project['numGroup']) ?></div>
-                        <div class="data"><?= htmlspecialchars($stats['participants']) ?></div>
-                        <div class="data"><?= htmlspecialchars($stats['submittedGroups']) ?></div>
-                    </a>
-                <?php endforeach; ?>
-
+                <?php if ($projects): ?>
+                    <?php foreach ($projects as $project): ?>
+                        <?php
+                        $stats = $model->getProjectStats($project['projectID']);
+                        ?>
+                        <a class="dataRow"
+                            href="/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=<?= urlencode($project['projectID']) ?>">
+                            <div class="data"><?= htmlspecialchars($project['title']) ?></div>
+                            <div class="data"><?= date("d/m/Y h:i A", strtotime($project['deadline'])) ?></div>
+                            <div class="data"><?= htmlspecialchars($project['numGroup']) ?></div>
+                            <div class="data"><?= htmlspecialchars($stats['participants']) ?></div>
+                            <div class="data"><?= htmlspecialchars($stats['submittedGroups']) ?></div>
+                        </a>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="dataRow">
+                        <div class="data">Click the create project button to start creating a project now!</div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

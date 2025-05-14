@@ -1,3 +1,24 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ChatModel.php';
+
+session_start();
+
+if (!isset($_SESSION['userID'])) {
+    header("Location: /FYP2025/SPAMS/Client/index.php");
+    exit();
+}
+
+$userID = $_SESSION['userID'];
+
+$conn = (new Database())->connect();
+$chatModel = new ChatModel($conn);
+
+$chats = $chatModel->getUserChatrooms($userID);
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -21,17 +42,17 @@
                 <div class="divider">
                     <div class="chatList">
                         <ul class="chatSelection">
-                            <li id="currentChat">
-                                <a href="">
-                                    <span>Assignment Group 1</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <span>Assignment Group 2</span>
-                                </a>
-                            </li>
+                            <?php foreach ($chats as $index => $chat): ?>
+                                <li>
+                                    <a href="#" class="chatLink<?= $index === 0 ? ' active' : '' ?>"
+                                        data-chatid="<?= htmlspecialchars($chat['chatID']) ?>"
+                                        data-userid="<?= htmlspecialchars($userID) ?>">
+                                        <span><?= htmlspecialchars($chat['name']) ?></span>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
                         </ul>
+
                     </div>
 
                     <div class="chatHalf">
@@ -40,64 +61,13 @@
                         </div>
 
                         <div class="chatHistory">
-                            <div class="userMessage">
-                                <span class="userName">User Name</span>
-                                <span class="userMsgContent">Testing 1 2 3 and 4</span>
-                            </div>
-
-                            <div class="otherMessage">
-                                <span class="otherName">User Name</span>
-                                <span class="otherMsgContent">Testing 1 2 3 and 4</span>
-                            </div>
-
-                            <?php
-                            $userNames = ['Alice', 'Ben', 'Chloe'];
-                            $messages = [
-                                "Hey there!",
-                                "Did you finish the assignment?",
-                                "I'll check it tonight.",
-                                "We should meet up to discuss this.",
-                                "Great job!",
-                                "Need help?",
-                                "Almost done.",
-                                "Let's submit by tonight.",
-                                "I added my part to the doc.",
-                                "See you later!",
-                            ];
-
-                            $chat = [];
-
-                            // Generate 30 messages, randomly choosing user or other
-                            for ($i = 0; $i < 30; $i++) {
-                                $isUser = rand(0, 1) === 0; // 0 = userMessage, 1 = otherMessage
-                                $name = $userNames[array_rand($userNames)];
-                                $text = $messages[array_rand($messages)];
-
-                                $chat[] = [
-                                    'type' => $isUser ? 'userMessage' : 'otherMessage',
-                                    'name' => $name,
-                                    'text' => $text,
-                                ];
-                            }
-
-                            // Shuffle messages to mix order
-                            shuffle($chat);
-
-                            // Output chat
-                            foreach ($chat as $msg) {
-                                echo "<div class=\"{$msg['type']}\">";
-                                echo "<span class=\"" . ($msg['type'] === 'userMessage' ? 'userName' : 'otherName') . "\">{$msg['name']}</span>";
-                                echo "<span class=\"" . ($msg['type'] === 'userMessage' ? 'userMsgContent' : 'otherMsgContent') . "\">{$msg['text']}</span>";
-                                echo "</div>";
-                            }
-                            ?>
                         </div>
 
                         <form class="messageForm">
-                                <div class="sendBar">                                   
-                                    <textarea id="newMessage" name="newMessage" placeholder="Aa"></textarea>
-                                    <button id="sendMessage" type="submit">Send</button>
-                                </div>
+                            <div class="sendBar">
+                                <textarea id="newMessage" name="newMessage" placeholder="Aa"></textarea>
+                                <button id="sendMessage" type="submit">Send</button>
+                            </div>
                         </form>
 
                     </div>
