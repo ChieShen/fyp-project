@@ -8,6 +8,14 @@ if ($_SESSION['role_id'] != 2) {
     header("Location: /FYP2025/SPAMS/client/pages/student/SProjectList.php");
     exit;
 }
+
+$breadcrumbs = [
+    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/lecturer/LProjectList.php'],
+    ['label' => 'Create Project', 'url' => '']
+];
+
+$crumbUrls = array_map(fn($crumb) => $crumb['url'], $breadcrumbs);
+$jsonUrls = htmlspecialchars(json_encode($crumbUrls), ENT_QUOTES, 'UTF-8');
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +33,7 @@ if ($_SESSION['role_id'] != 2) {
         <?php include '../../components/sidebar.php'; ?>
 
         <div class="createBox">
+            <nav class="breadcrumb-nav" data-crumbs="<?= $jsonUrls ?>" hidden></nav>
             <div class="titleBar">
                 <h1>Create Project</h1>
             </div>

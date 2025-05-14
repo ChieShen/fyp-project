@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupMode
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/components/NavBar.php';
 
 session_start();
 if (!isset($_SESSION['userID'])) {
@@ -27,6 +28,8 @@ $groupModel = new GroupModel($conn);
 $userModel = new UserModel($conn);
 $taskModel = new TaskModel($conn);
 $userID = $_SESSION['userID'];
+
+$user = $userModel->getUserById($userID);
 
 $projectId = intval($_GET['projectID']);
 $project = $projectModel->findByProjectId($projectId);
@@ -55,6 +58,21 @@ foreach ($contributors as $contributor) {
 }
 $isSubmitted = $groupModel->getSubmitted($groupId);
 $isTaskDone = $taskModel->isTaskDone($taskId);
+
+if ($user['roleID'] == 2) {
+    $breadcrumbs = [
+        ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/lecturer/LProjectList.php'],
+        ['label' => $project['title'], 'url' => "/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID={$projectId}"],
+        ['label' => $group['groupName'], 'url' => "/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID={$projectId}&groupID={$groupId}"],
+        ['label' => $task['taskName'], 'url' => '']
+    ];
+} else {
+    $breadcrumbs = [
+        ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/student/SProjectList.php'],
+        ['label' => $project['title'], 'url' => "/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID={$projectId}&groupID={$groupId}"],
+        ['label' => $task['taskName'], 'url' => '']
+    ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -72,12 +90,14 @@ $isTaskDone = $taskModel->isTaskDone($taskId);
         <?php include '../../components/sidebar.php'; ?>
 
         <div class="contentBox">
+            <?php renderBreadcrumb($breadcrumbs) ?>
             <div class="taskDetails">
                 <div class="titleBar">
                     <h1><?php echo $task['taskName'] ?></h1>
                     <?php if ($leaderID === $userID && !$isSubmitted): ?>
                         <button id="editBtn">
-                            <a href="/FYP2025/SPAMS/client/pages/student/EditTask.php?taskID=<?= urlencode($taskId) ?>" class="editLink">
+                            <a href="/FYP2025/SPAMS/client/pages/student/EditTask.php?taskID=<?= urlencode($taskId) ?>"
+                                class="editLink">
                                 Edit Task
                             </a>
                         </button>

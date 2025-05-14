@@ -27,6 +27,15 @@ if (!empty($deadline)) {
     $dt = new DateTime($deadline);
     $deadlineFormatted = $dt->format('Y-m-d\TH:i');
 }
+
+$breadcrumbs = [
+    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/lecturer/LProjectList.php'],
+    ['label' => $project['title'], 'url' => "/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID={$projectID}"],
+    ['label' => 'Edit Project', 'url' => '']
+];
+
+$crumbUrls = array_map(fn($crumb) => $crumb['url'], $breadcrumbs);
+$jsonUrls = htmlspecialchars(json_encode($crumbUrls), ENT_QUOTES, 'UTF-8');
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +53,7 @@ if (!empty($deadline)) {
         <?php include '../../components/sidebar.php'; ?>
 
         <div class="createBox">
+            <nav class="breadcrumb-nav" data-crumbs="<?= $jsonUrls ?>" hidden></nav>
             <div class="titleBar">
                 <h1>Edit Project</h1>
                 <a href="/FYP2025/SPAMS/server/controllers/DeleteProjectController.php?projectID=<?= urldecode($projectID) ?>"

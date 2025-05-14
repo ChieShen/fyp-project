@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/components/NavBar.php';
 
 session_start();
 if (!isset($_SESSION['userID'])) {
@@ -33,6 +34,15 @@ if (!$project || !($groupModel->isUserInProject($userID, $projectId))) {
 $creator = $userModel->getUserById($project['createdBy']);
 $attachments = $projectModel->getAttachmentsByProjectId($projectId);
 $groupMembers = $groupModel->getMembersByGroup($groupId);
+
+$breadcrumbs = [
+    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/student/SProjectList.php'],
+    ['label' => $project['title'], 'url' => "/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID={$projectId}&groupID={$groupId}"],
+    ['label' => 'Create Task', 'url' => '']
+];
+
+$crumbUrls = array_map(fn($crumb) => $crumb['url'], $breadcrumbs);
+$jsonUrls = htmlspecialchars(json_encode($crumbUrls), ENT_QUOTES, 'UTF-8');
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +60,7 @@ $groupMembers = $groupModel->getMembersByGroup($groupId);
         <?php include '../../components/sidebar.php'; ?>
 
         <div class="createBox">
+            <nav class="breadcrumb-nav" data-crumbs="<?= $jsonUrls ?>" hidden></nav>
             <div class="titleBar">
                 <h1>New Task</h1>
             </div>
@@ -82,12 +93,10 @@ $groupMembers = $groupModel->getMembersByGroup($groupId);
                 </div>
 
                 <div class="buttons">
-                    <button type="button" id="cancel">
-                        <a
-                            href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>">
-                            Cancel
-                        </a>
-                    </button>
+                    <a
+                        href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>">
+                        <button type="button" id="cancel">Cancel</button>
+                    </a>
                     <button type="submit" id="create">Create</button>
                 </div>
 

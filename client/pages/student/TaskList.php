@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupMode
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/components/NavBar.php';
 
 session_start();
 if (!isset($_SESSION['userID'])) {
@@ -26,6 +27,8 @@ $project = $projectModel->findByProjectId($projectId);
 
 $groupId = intval($_GET['groupID']);
 $group = $groupModel->getGroupById($groupId);
+
+$user = $userModel->getUserById($userID);
 
 if (!$groupModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID) {
     header("Location: /FYP2025/SPAMS/client/Pages/student/SProjectList.php");
@@ -55,6 +58,19 @@ $membersData = array_values(array_map(function ($m) {
     ];
 }, $membersForJS));
 
+if($user['roleID'] == 2){
+    $breadcrumbs = [
+    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/lecturer/LProjectList.php'],
+    ['label' => $project['title'], 'url' => "/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID={$projectId}"],
+    ['label' => $group['groupName'], 'url' => '']
+];
+}
+else{
+    $breadcrumbs = [
+    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/student/SProjectList.php'],
+    ['label' => $project['title'], 'url' => '']
+];
+}
 ?>
 
 <!DOCTYPE html>
@@ -72,6 +88,7 @@ $membersData = array_values(array_map(function ($m) {
         <?php include '../../components/sidebar.php'; ?>
 
         <div class="contentBox">
+            <?php renderBreadcrumb($breadcrumbs) ?>
             <div class="projectDetails">
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>

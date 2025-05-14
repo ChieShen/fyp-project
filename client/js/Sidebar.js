@@ -2,10 +2,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentPath = window.location.pathname;
     const sidebarLinks = document.querySelectorAll('.sidebar a');
 
+    // Get breadcrumb paths from the nav[data-crumbs]
+    const breadcrumbNav = document.querySelector('nav.breadcrumb-nav');
+    let crumbPaths = [];
+
+    if (breadcrumbNav) {
+        try {
+            crumbPaths = JSON.parse(breadcrumbNav.dataset.crumbs || '[]');
+        } catch (e) {
+            console.error('Invalid breadcrumb data:', e);
+        }
+    }
+
     sidebarLinks.forEach(link => {
         const linkPath = new URL(link.href, window.location.origin).pathname;
 
-        if (currentPath.includes(linkPath)) {
+        if (
+            currentPath.includes(linkPath) ||
+            crumbPaths.some(path => path === linkPath)
+        ) {
             link.classList.add('active');
         }
     });
@@ -22,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 messageText: "Are you sure you want to logout?",
                 confirmText: "Logout",
                 onConfirm: () => {
-                     window.location.href = "/FYP2025/SPAMS/server/controllers/LogoutController.php";
+                    window.location.href = "/FYP2025/SPAMS/server/controllers/LogoutController.php";
                 }
             });
 

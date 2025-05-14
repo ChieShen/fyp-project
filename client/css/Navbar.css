@@ -1,0 +1,25 @@
+.breadcrumb-nav {
+    margin-bottom: 1em;
+}
+
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0;
+    font-size: 0.9rem;
+}
+
+.breadcrumb li a {
+    color: black;
+    text-decoration: none;
+}
+
+.breadcrumb li a:hover{
+    color: #04aa6d;
+}
+
+.breadcrumb li.active {
+    color: #04aa6d;
+    font-weight: bold;
+}

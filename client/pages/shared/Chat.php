@@ -57,6 +57,7 @@ $chats = $chatModel->getUserChatrooms($userID);
 
                     <div class="chatHalf">
                         <div class="chatTitle">
+                            <p class="title">Join a project group to start chatting!</p>
                         </div>
 
                         <div class="chatHistory">

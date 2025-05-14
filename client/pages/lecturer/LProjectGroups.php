@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupMode
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/client/components/NavBar.php';
 
 session_start();
 if (!isset($_SESSION['userID'])) {
@@ -34,6 +35,11 @@ $deadlineRaw = $project['deadline'];
 
 $deadline = new DateTime($deadlineRaw);
 $formattedDeadline = $deadline->format('Y-m-d h:i A');
+
+$breadcrumbs = [
+    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/lecturer/LProjectList.php'],
+    ['label' => $project['title'], 'url' => '']
+];
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +57,7 @@ $formattedDeadline = $deadline->format('Y-m-d h:i A');
         <?php include '../../components/sidebar.php'; ?>
 
         <div class="contentBox">
+            <?php renderBreadcrumb($breadcrumbs); ?>
             <div class="projectDetails">
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>

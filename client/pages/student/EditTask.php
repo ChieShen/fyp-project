@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/UserModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 
 session_start();
 
@@ -19,6 +20,7 @@ $taskId = $_GET['taskID'];
 $conn = (new Database())->connect();
 $taskModel = new TaskModel($conn);
 $groupModel = new GroupModel($conn);
+$projectModel = new ProjectModel($conn);
 
 $task = $taskModel->getTaskById($taskId);
 $taskContributors = $taskModel->getContributorsByTask($taskId);
@@ -27,6 +29,16 @@ $groupId = $task['groupID'];
 $groupMembers = $groupModel->getMembersByGroup($groupId);
 
 $projectId = $task['projectID'];
+$project = $projectModel->findByProjectId($projectId);
+
+$breadcrumbs = [
+    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/student/SProjectList.php'],
+    ['label' => $project['title'], 'url' => "/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID={$projectId}&groupID={$groupId}"],
+    ['label' => 'Edit Task', 'url' => '']
+];
+
+$crumbUrls = array_map(fn($crumb) => $crumb['url'], $breadcrumbs);
+$jsonUrls = htmlspecialchars(json_encode($crumbUrls), ENT_QUOTES, 'UTF-8');
 ?>
 
 <!DOCTYPE html>
@@ -44,6 +56,7 @@ $projectId = $task['projectID'];
         <?php include '../../components/sidebar.php'; ?>
 
         <div class="createBox">
+            <nav class="breadcrumb-nav" data-crumbs="<?= $jsonUrls ?>" hidden></nav>
             <div class="titleBar">
                 <h1>Edit Task</h1>
                 <button id="deleteBtn" data-taskid="<?= $taskId ?>"
