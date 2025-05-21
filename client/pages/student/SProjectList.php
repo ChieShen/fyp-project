@@ -16,7 +16,7 @@ $userModel = new UserModel($conn);
 $userID = $_SESSION['userID'];
 
 $user = $userModel->getUserById($userID);
-if ($user['roleID'] == 2){
+if ($user['roleID'] == 2) {
     header("Location: /FYP2025/SPAMS/client/pages/lecturer/LProjectList.php");
 }
 
@@ -45,13 +45,14 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
 
             <div class="listTable">
                 <div class="columnNameRow">
-                    <div class="columnName">Project Name</div>
-                    <div class="columnName">Group Name</div>
-                    <div class="columnName">Deadline</div>
-                    <div class="columnName">Created By</div>
-                    <div class="columnName">Progress</div>
-                    <div class="columnName">Status</div>
+                    <div class="columnName" data-column="title">Project Name <span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="groupName">Group Name <span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="deadline">Deadline <span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="createdBy">Created By <span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="progress">Progress <span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="status">Status <span class="sortIcon"></span></div>
                 </div>
+
 
                 <?php if (empty($projects)): ?>
                     <div class="dataRow">
@@ -59,17 +60,25 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
                     </div>
                 <?php else: ?>
                     <?php foreach ($projects as $proj): ?>
-                        <?php 
-                            $creator = $userModel->getUserById($proj['createdBy']);
-                            $submitted = ($proj['submitted'] == '1') ? "Submitted" : "Not Submitted";
-                            $progress = $groupModel->calculateProjectProgress($proj['projectID'], $proj['groupID']);
+                        <?php
+                        $creator = $userModel->getUserById($proj['createdBy']);
+                        $submitted = ($proj['submitted'] == '1') ? "Submitted" : "Not Submitted";
+                        $progress = $groupModel->calculateProjectProgress($proj['projectID'], $proj['groupID']);
+                        $deadlineRaw = $proj['deadline'];
+
+                        $deadline = new DateTime($deadlineRaw);
+                        $formattedDeadline = $deadline->format('Y-m-d h:i A');
                         ?>
                         <a href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($proj['projectID']) ?>&groupID=<?= urlencode($proj['groupID']) ?>"
-                            class="dataRowLink">
+                            class="dataRowLink" data-title="<?= htmlspecialchars($proj['title']) ?>"
+                            data-groupName="<?= htmlspecialchars($proj['groupName']) ?>"
+                            data-deadline="<?= htmlspecialchars($proj['deadline']) ?>"
+                            data-createdBy="<?= htmlspecialchars($creator['username']) ?>" data-progress="<?= $progress ?>"
+                            data-status="<?= $submitted ?>">
                             <div class="dataRow">
                                 <div class="data"><?= htmlspecialchars($proj['title']) ?></div>
                                 <div class="data"><?= htmlspecialchars($proj['groupName']) ?></div>
-                                <div class="data"><?= htmlspecialchars($proj['deadline']) ?></div>
+                                <div class="data"><?= htmlspecialchars($formattedDeadline) ?></div>
                                 <div class="data"><?= htmlspecialchars($creator['username']) ?></div>
                                 <div class="data">
                                     <div class="progress-container">

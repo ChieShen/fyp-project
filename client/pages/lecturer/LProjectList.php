@@ -46,11 +46,12 @@ $projects = $model->findByCreatedId($userId);
 
             <div class="listTable">
                 <div class="columnNameRow">
-                    <div class="columnName">Project Name</div>
-                    <div class="columnName">Deadline</div>
-                    <div class="columnName">Groups</div>
-                    <div class="columnName">Participants</div>
-                    <div class="columnName">Submitted Groups</div>
+                    <div class="columnName" data-column="title">Project Name<span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="deadline">Deadline<span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="groups">Groups<span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="participants">Participants<span class="sortIcon"></span></div>
+                    <div class="columnName" data-column="submittedGroups">Submitted Groups<span class="sortIcon"></span>
+                    </div>
                 </div>
                 <?php if ($projects): ?>
                     <?php foreach ($projects as $project): ?>
@@ -58,7 +59,12 @@ $projects = $model->findByCreatedId($userId);
                         $stats = $model->getProjectStats($project['projectID']);
                         ?>
                         <a class="dataRow"
-                            href="/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=<?= urlencode($project['projectID']) ?>">
+                            href="/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=<?= urlencode($project['projectID']) ?>"
+                            data-title="<?= htmlspecialchars(strtolower($project['title'])) ?>"
+                            data-deadline="<?= htmlspecialchars($project['deadline']) ?>"
+                            data-groups="<?= (int) $project['numGroup'] ?>"
+                            data-participants="<?= (int) $stats['participants'] ?>"
+                            data-submittedgroups="<?= (int) $stats['submittedGroups'] ?>">
                             <div class="data"><?= htmlspecialchars($project['title']) ?></div>
                             <div class="data"><?= date("d/m/Y h:i A", strtotime($project['deadline'])) ?></div>
                             <div class="data"><?= htmlspecialchars($project['numGroup']) ?></div>
