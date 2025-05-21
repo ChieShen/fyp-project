@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 
 session_start();
 if (!isset($_SESSION['userID'])) {
@@ -8,9 +9,19 @@ if (!isset($_SESSION['userID'])) {
     exit();
 }
 
+$conn = (new Database())->connect();
+
 $userID = $_SESSION['userID'];
 $projectID = intval($_POST['projectID']);
 $groupID = intval($_POST['groupID']);
+
+$projectModel = new ProjectModel($conn);
+$project = $projectModel->findByProjectId($projectID);
+
+// Check if the submission is late
+$currentTime = new DateTime();
+$deadlineTime = new DateTime($project['deadline']);
+$isLate = $currentTime > $deadlineTime;
 
 if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
     die("File upload error.");
@@ -18,6 +29,9 @@ if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
 
 // Safe file naming logic
 $originalName = basename($_FILES['file']['name']);
+if ($isLate) {
+    $originalName = "(LATE)_" . $originalName;
+}
 $safeName = time() . "_" . preg_replace('/[^a-zA-Z0-9\._-]/', '_', $originalName);
 
 $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$groupID}";
@@ -28,9 +42,8 @@ if (!file_exists($uploadDir)) {
 $targetPath = $uploadDir . '/' . $safeName;
 
 if (move_uploaded_file($_FILES['file']['tmp_name'], $targetPath)) {
-    $conn = (new Database())->connect();
     $groupModel = new GroupModel($conn);
-    $groupModel->setSubmitted($groupID,true);
+    $groupModel->setSubmitted($groupID, true);
 
     $relativePath = "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$groupID}/{$safeName}";
     $groupModel->saveSubmission($projectID, $groupID, $relativePath, $safeName, $originalName);

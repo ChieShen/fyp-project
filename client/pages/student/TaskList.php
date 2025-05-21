@@ -58,18 +58,27 @@ $membersData = array_values(array_map(function ($m) {
     ];
 }, $membersForJS));
 
-if($user['roleID'] == 2){
+if ($user['roleID'] == 2) {
     $breadcrumbs = [
-    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/lecturer/LProjectList.php'],
-    ['label' => $project['title'], 'url' => "/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID={$projectId}"],
-    ['label' => $group['groupName'], 'url' => '']
-];
+        ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/lecturer/LProjectList.php'],
+        ['label' => $project['title'], 'url' => "/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID={$projectId}"],
+        ['label' => $group['groupName'], 'url' => '']
+    ];
+} else {
+    $breadcrumbs = [
+        ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/student/SProjectList.php'],
+        ['label' => $project['title'], 'url' => '']
+    ];
 }
-else{
-    $breadcrumbs = [
-    ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/student/SProjectList.php'],
-    ['label' => $project['title'], 'url' => '']
-];
+
+$currentTime = new DateTime();
+$deadlineTime = new DateTime($project['deadline']);
+$isLate = $currentTime > $deadlineTime;
+
+if ($isSubmitted) {
+    $submission = $groupModel->getSubmissionByGroup($projectId, $groupId);
+    $displayName = htmlspecialchars($submission['displayName']);
+    $fileName = htmlspecialchars($submission['submissionName']);
 }
 ?>
 
@@ -93,8 +102,7 @@ else{
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>
                     <?php if ($showBtn): ?>
-                        <button id="transferBtn" data-group-id="<?= $groupId ?>"
-                            data-current-leader="<?= $leaderID ?>"
+                        <button id="transferBtn" data-group-id="<?= $groupId ?>" data-current-leader="<?= $leaderID ?>"
                             data-members='<?= htmlspecialchars(json_encode($membersData), ENT_QUOTES, 'UTF-8') ?>'>
                             Transfer Role
                         </button>
@@ -108,6 +116,11 @@ else{
 
                 <p class="label">Created By:</p>
                 <a href="" class="creator"><?= htmlspecialchars($creator['username']) ?></a><br><br>
+
+                <p class="label">Deadline:</p>
+                <p class="details">
+                    <?= date("d/m/Y h:i A", strtotime($project['deadline'])) ?>
+                </p><br><br>
 
                 <p class="label">Attached File(s):</p>
                 <?php if (!empty($attachments)): ?>
@@ -242,7 +255,11 @@ else{
             <?php if ($showBtn): ?>
                 <form action="/FYP2025/SPAMS/server/controllers/SubmissionController.php" method="post"
                     enctype="multipart/form-data" class="submission">
-                    <h1>Submission</h1>
+                    <?php if ($isLate): ?>
+                        <h1>Submission (Late)</h1>
+                    <?php else: ?>
+                        <h1>Submission</h1>
+                    <?php endif; ?>
                     <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
                     <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
                     <div class="submissionBar">
@@ -257,6 +274,21 @@ else{
                         <button id="submission" type="submit">Submit</button>
                     </div>
                 </form>
+            <?php endif; ?>
+
+            <?php if ($isSubmitted): ?>
+                <div class="submissionDownload">
+                    <div class="titleBar">
+                        <h1>Submission</h1>
+                    </div>
+                    <div class="downloadBar">
+                        <p class="label"><?= htmlspecialchars($displayName) ?></p>
+                        <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=submission&file=<?= urlencode($fileName) ?>&name=<?= urlencode($displayName) ?>&projectID=<?= $projectId ?>&groupID=<?= $groupId ?>"
+                            class="downloadLink" download>
+                            <button class="download">Download</button>
+                        </a>
+                    </div>
+                </div>
             <?php endif; ?>
         </div>
 

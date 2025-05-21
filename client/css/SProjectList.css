@@ -185,3 +185,8 @@ body {
 .sortIcon.desc {
     transform: rotate(180deg);
 }
+
+.overdue-deadline {
+    color: red;
+    font-weight: bold;
+}

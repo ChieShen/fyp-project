@@ -64,10 +64,16 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
                         $creator = $userModel->getUserById($proj['createdBy']);
                         $submitted = ($proj['submitted'] == '1') ? "Submitted" : "Not Submitted";
                         $progress = $groupModel->calculateProjectProgress($proj['projectID'], $proj['groupID']);
-                        $deadlineRaw = $proj['deadline'];
 
-                        $deadline = new DateTime($deadlineRaw);
+                        $timezone = new DateTimeZone('Asia/Kuala_Lumpur');
+                        
+                        $deadline = new DateTime($proj['deadline'], $timezone);
                         $formattedDeadline = $deadline->format('Y-m-d h:i A');
+
+                        $now = new DateTime('now', $timezone);
+
+                        $isOverdue = ($now > $deadline) && ($proj['submitted'] != '1');
+                        $deadlineClass = $isOverdue ? 'overdue-deadline' : '';
                         ?>
                         <a href="/FYP2025/SPAMS/client/pages/student/TaskList.php?projectID=<?= urlencode($proj['projectID']) ?>&groupID=<?= urlencode($proj['groupID']) ?>"
                             class="dataRowLink" data-title="<?= htmlspecialchars($proj['title']) ?>"
@@ -78,7 +84,7 @@ $projects = $groupModel->getUserGroupsWithProjects($userID);
                             <div class="dataRow">
                                 <div class="data"><?= htmlspecialchars($proj['title']) ?></div>
                                 <div class="data"><?= htmlspecialchars($proj['groupName']) ?></div>
-                                <div class="data"><?= htmlspecialchars($formattedDeadline) ?></div>
+                                <div class="data <?= $deadlineClass ?>"><?= htmlspecialchars($formattedDeadline) ?></div>
                                 <div class="data"><?= htmlspecialchars($creator['username']) ?></div>
                                 <div class="data">
                                     <div class="progress-container">

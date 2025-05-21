@@ -72,7 +72,7 @@ body {
     margin-top: 20px;
 }
 
-.submission{
+.submission {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -140,7 +140,7 @@ body {
     transform: scale(1.1)
 }
 
-#addBtn{
+#addBtn {
     height: 40px;
     width: 150px;
     margin-right: 1%;
@@ -157,12 +157,12 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-#addBtn:hover{
+#addBtn:hover {
     background-color: #45a049;
     transform: scale(1.1);
 }
 
-#addBtn a{
+#addBtn a {
     text-decoration: none;
     color: white;
 }
@@ -204,7 +204,7 @@ body {
     transition: transform 0.3s ease;
 }
 
-.dataRowLink{
+.dataRowLink {
     color: black;
     text-decoration: none;
     display: flex;
@@ -221,29 +221,29 @@ body {
     width: 25%;
 }
 
-.dataRow:hover{
-    transform:scale(1.01);
+.dataRow:hover {
+    transform: scale(1.01);
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-.data.ongoing{
+.data.ongoing {
     color: #0099ff;
 }
 
-.data.done{
+.data.done {
     color: #04aa6d;
 }
 
-.data.notStarted{
+.data.notStarted {
     color: red;
     font-weight: bold;
 }
 
-.downloadColumn{
+.downloadColumn {
     padding: 5px 5px 5px 5px;
 }
 
-.download{
+.download {
     height: 40px;
     width: 120px;
     font-size: 16px;
@@ -258,17 +258,17 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-.download:hover{
+.download:hover {
     background-color: #007acc;
     transform: scale(1.1)
 }
 
-.downloadLink{
+.downloadLink {
     text-decoration: none;
     color: white;
 }
 
-#downloadAll{
+#downloadAll {
     height: 40px;
     width: 300px;
     margin: 30px auto auto auto;
@@ -284,17 +284,17 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-#downloadAll:hover{
+#downloadAll:hover {
     background-color: #007acc;
     transform: scale(1.1)
 }
 
-.submission h1{
+.submission h1 {
     padding-left: 1%;
     margin-top: 20px;
 }
 
-.submissionBar{
+.submissionBar {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -305,21 +305,21 @@ body {
     height: 50px;
 }
 
-.icon{
+.icon {
     width: 40px;
     height: 40px;
     cursor: pointer;
 }
 
-.icon:hover{
+.icon:hover {
     transform: scale(1.1);
 }
 
-.submission span{
+.submission span {
     padding-left: 1%;
 }
 
-#submission{
+#submission {
     height: 40px;
     width: 120px;
     margin-left: auto;
@@ -336,7 +336,33 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-#submission:hover{
+#submission:hover {
     background-color: #45a049;
     transform: scale(1.1);
+}
+
+.submissionDownload {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    flex-grow: 1;
+    transition: width 0.3s ease, margin-left 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    padding-bottom: 20px;
+    margin-top: 20px;
+}
+
+.downloadBar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.downloadBar a{
+    margin-left: auto;
+    margin-right: 5%;
 }

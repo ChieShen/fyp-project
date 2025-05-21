@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("DOMContentLoaded", () => {
     const headers = document.querySelectorAll(".columnName");
     const listBox = document.querySelector(".listTable");
-    let currentSort = { column: "deadline", direction: 1 };
+    let currentSort = { column: "deadline", direction: -1 };
 
     function sortRows(column, direction) {
         const rows = Array.from(document.querySelectorAll(".dataRow"));
