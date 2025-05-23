@@ -260,10 +260,11 @@ if ($isSubmitted) {
                     <?php else: ?>
                         <h1>Submission</h1>
                     <?php endif; ?>
+                    <p id="fileError" style="color: red; margin-left: 1%;"></p>
                     <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
                     <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
                     <div class="submissionBar">
-                        <input type="file" id="fileInput" name="file" style="display: none;" />
+                        <input type="file" id="fileInput" name="file" accept=".pdf" style="display: none;" />
 
                         <label for="fileInput">
                             <img class="icon" src="/FYP2025/SPAMS/client/assets/images/attach file.png">

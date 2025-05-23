@@ -65,3 +65,45 @@ document.addEventListener("DOMContentLoaded", () => {
         window.history.replaceState({}, '', url);
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form.submission");
+    const fileInput = document.getElementById("fileInput");
+    const fileNameSpan = document.getElementById("fileName");
+    const fileError = document.getElementById("fileError");
+
+    fileInput.addEventListener("change", function () {
+        if (fileInput.files.length > 0) {
+            fileNameSpan.textContent = fileInput.files[0].name;
+            fileError.textContent = ""; // clear previous errors
+        } else {
+            fileNameSpan.textContent = "No file selected";
+        }
+    });
+
+    form.addEventListener("submit", function (e) {
+        const file = fileInput.files[0];
+        fileError.textContent = "";
+
+        if (!file) {
+            e.preventDefault();
+            fileError.textContent = "Please select a file before submitting.";
+            return;
+        }
+
+        const allowedTypes = ["application/pdf"];
+        const maxSize = 20 * 1024 * 1024; // 20MB in bytes
+
+        if (!allowedTypes.includes(file.type)) {
+            e.preventDefault();
+            fileError.textContent = "Only PDF files are allowed.";
+            return;
+        }
+
+        if (file.size > maxSize) {
+            e.preventDefault();
+            fileError.textContent = "File size cannot exceed 20MB.";
+            return;
+        }
+    });
+});
