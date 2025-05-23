@@ -204,6 +204,34 @@ switch ($type) {
         unlink($tempPath);
         exit;
 
+    case 'studentsList':
+        $projectID = intval($_GET['projectID']);
+        $project = $projectModel->findByProjectId($projectID);
+        $projectName = $project['title'];
+
+        $safeProjectName = preg_replace('/[^a-zA-Z0-9-_]/', '_', $projectName);
+
+        $groupModel = new GroupModel($conn);
+        $groups = $groupModel->getGroupsByProject($projectID);
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $safeProjectName . '_student_list.csv"');
+
+        $output = fopen("php://output", "w");
+        fputcsv($output, ['Group Name', 'Full Name', 'Username (Student ID)']);
+
+        foreach ($groups as $group) {
+            $members = $groupModel->getMembersByGroup($group['groupID']);
+            foreach ($members as $member) {
+                $fullname = $member['firstName'] . ' ' . $member['lastName'];
+                fputcsv($output, [$group['groupName'], $fullname, $member['username']]);
+            }
+        }
+
+        fclose($output);
+        exit;
+
+
     default:
         http_response_code(400);
         exit('Invalid file type.');

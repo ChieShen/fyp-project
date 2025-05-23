@@ -40,6 +40,16 @@ $breadcrumbs = [
     ['label' => 'Projects', 'url' => '/FYP2025/SPAMS/client/pages/lecturer/LProjectList.php'],
     ['label' => $project['title'], 'url' => '']
 ];
+
+$haveParticipants = false;
+
+foreach ($groups as $grp) {
+    $members = $groupModel->getMembersByGroup($grp['groupID']);
+    if (!empty($members)) {
+        $haveParticipants = true;
+        break;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -61,10 +71,17 @@ $breadcrumbs = [
             <div class="projectDetails">
                 <div class="titleBar">
                     <h1><?php echo $project['title'] ?></h1>
-                        <a href="/FYP2025/SPAMS/client/pages/lecturer/EditProject.php?projectID=<?= urldecode($projectId) ?>"
-                            class="editLink">
-                            <button id="editBtn">Edit</button>
+                    <?php if ($haveParticipants): ?>
+                        <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=studentsList&projectID=<?= urlencode($projectId) ?>" class="downloadListLink">
+                            <button class="downloadList">
+                                Downlod Student List (CSV)
+                            </button>
                         </a>
+                    <?php endif; ?>
+                    <a href="/FYP2025/SPAMS/client/pages/lecturer/EditProject.php?projectID=<?= urldecode($projectId) ?>"
+                        class="editLink">
+                        <button id="editBtn">Edit</button>
+                    </a>
                 </div><br>
 
                 <p class="label">Project Description:</p>
@@ -170,14 +187,30 @@ $breadcrumbs = [
                     </div>
 
                     <div class="groupSubmission">
-                        <p class="label">Submission:</p>
+                        <?php
+                        $submissionLabel = "Not Submitted";
+                        $labelStyle = "";
+                        if ($submission) {
+                            $submittedAt = new DateTime($submission['submissionTime']);
+                            $submittedTimeFormatted = $submittedAt->format('Y-m-d h:i A');
+
+                            if ($submittedAt > $deadline) {
+                                $submissionLabel = "Late Submission ({$submittedTimeFormatted})";
+                                $labelStyle = 'style="color: red;"';
+                            } else {
+                                $submissionLabel = "Submission ({$submittedTimeFormatted})";
+                            }
+                        }
+                        ?>
+
+                        <p class="label" <?= $labelStyle ?>><?= $submissionLabel ?></p>
                         <div class="submissionBar">
                             <?php if ($submission): ?>
                                 <?php
                                 $fileName = htmlspecialchars($submission['submissionName']);
                                 $displayName = htmlspecialchars($submission['displayName']);
                                 ?>
-                                <p class="files"><?= htmlspecialchars($submission['displayName']) ?></p>
+                                <p class="files"><?= $displayName ?></p>
                                 <button class="download">
                                     <a class="downloadLink"
                                         href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=submission&file=<?= urlencode($fileName) ?>&name=<?= urlencode($displayName) ?>&projectID=<?= $projectId ?>&groupID=<?= $grp['groupID'] ?>">
@@ -186,12 +219,13 @@ $breadcrumbs = [
                                 </button>
                             <?php endif; ?>
                         </div>
+
                     </div>
                 </div>
             <?php endforeach; ?>
 
             <?php if ($hasSubmission): ?>
-                <button id="downloadAll">
+                <button class="downloadAll">
                     <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=allSubmissions&projectID=<?= $projectId ?>"
                         class="downloadLink">
                         Download All Submissions

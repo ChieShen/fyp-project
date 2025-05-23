@@ -223,3 +223,32 @@ function validateForm(event) {
 
     return isValid;
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const deleteBtn = document.getElementById("deleteProjectBtn");
+
+    if (deleteBtn) {
+        deleteBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const projectID = deleteBtn.getAttribute("data-project-id");
+            const title = deleteBtn.getAttribute("data-project-title");
+
+            showMessageBox({
+                titleText: "Delete Project",
+                messageText: `Are you sure you want to delete the project "${title}"? This action cannot be undone.`,
+                confirmText: "Confirm",
+                cancelText: "Cancel",
+                onConfirm: () => {
+                    window.location.href = `/FYP2025/SPAMS/server/controllers/DeleteProjectController.php?projectID=${encodeURIComponent(projectID)}`;
+                }
+            });
+
+            // Clean up URL query if needed
+            const url = new URL(window.location.href);
+            url.searchParams.delete("type");
+            window.history.replaceState({}, '', url);
+        });
+    }
+});

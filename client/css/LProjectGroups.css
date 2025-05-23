@@ -249,26 +249,26 @@ body {
     transition: width 1s ease-in-out;
 }
 
-.leader{
+.leader {
     color: #0099ff;
 }
 
-.member{
+.member {
     color: #04aa6d;
 }
 
-.groupSubmission{
+.groupSubmission {
     margin-top: 20px;
 }
 
-.submissionBar{
+.submissionBar {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
 }
 
-.download{
+.download {
     height: 40px;
     width: 120px;
     margin-right: 1%;
@@ -285,12 +285,12 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-.download:hover{
+.download:hover {
     background-color: #007acc;
     transform: scale(1.1)
 }
 
-#downloadAll{
+.downloadAll {
     height: 40px;
     width: 300px;
     margin: 30px auto auto auto;
@@ -306,7 +306,7 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-#downloadAll:hover{
+.downloadAll:hover {
     background-color: #007acc;
     transform: scale(1.1)
 }
@@ -321,8 +321,35 @@ body {
     color: black;
 }
 
-.editLink{
+.editLink {
     color: white;
     text-decoration: none;
     margin-right: 1%;
+}
+
+.downloadList {
+    height: 40px;
+    width: 300px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #0099ff;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.downloadList:hover {
+    background-color: #007acc;
+    transform: scale(1.1)
+}
+
+.downloadListLink {
+    margin-left: auto;
+    margin-right: 10px;
+    text-decoration: none;
+    color: white;
 }

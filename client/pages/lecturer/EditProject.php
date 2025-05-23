@@ -56,10 +56,11 @@ $jsonUrls = htmlspecialchars(json_encode($crumbUrls), ENT_QUOTES, 'UTF-8');
             <nav class="breadcrumb-nav" data-crumbs="<?= $jsonUrls ?>" hidden></nav>
             <div class="titleBar">
                 <h1>Edit Project</h1>
-                <a href="/FYP2025/SPAMS/server/controllers/DeleteProjectController.php?projectID=<?= urldecode($projectID) ?>"
-                    class="deleteLink">
-                    <button class="deleteBtn">Delete</button>
-                </a>
+                <button class="deleteBtn" id="deleteProjectBtn" data-project-id="<?= $projectID ?>"
+                    data-project-title="<?= htmlspecialchars($title) ?>">
+                    Delete
+                </button>
+
             </div>
 
             <form action="/FYP2025/SPAMS/server/controllers/EditProjectController.php" method="post"
@@ -98,7 +99,8 @@ $jsonUrls = htmlspecialchars(json_encode($crumbUrls), ENT_QUOTES, 'UTF-8');
 
                 <div class="buttons">
                     <button type="button" id="cancel">
-                        <a href="/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=<?= urldecode($projectID) ?>" class="cancelLink">
+                        <a href="/FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=<?= urldecode($projectID) ?>"
+                            class="cancelLink">
                             Cancel
                         </a>
                     </button>
