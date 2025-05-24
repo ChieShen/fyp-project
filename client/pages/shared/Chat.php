@@ -29,9 +29,22 @@ $chats = $chatModel->getUserChatrooms($userID);
     <link rel="icon" type="image/png" href="/FYP2025/SPAMS/client/assets/images/logo.png">
 </head>
 
+<div id="messageContextMenu" style="display: none;">
+    <ul>
+        <li id="editMsg">Edit</li>
+        <li id="deleteMsg">Delete</li>
+        <li id="pinMsg">Pin</li>
+    </ul>
+</div>
+
 <body>
     <div class="page">
         <?php include '../../components/sidebar.php'; ?>
+
+        <div id="pinnedMessagesBox" style="display: none;" class="pinnedBox">
+            <h3>Pinned Messages</h3>
+            <ul id="pinnedList"></ul>
+        </div>
 
         <div class="contentBox">
             <div class="chatBox">

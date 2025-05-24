@@ -13,10 +13,25 @@ $userID = $_SESSION['userID'];
 
 $messages = $chatModel->getMessages($chatID);
 
-$data = [];
+$pinnedMessages = $chatModel->getPinnedMessages($chatID); // Get all pinned messages (change from getPinnedMessage)
+
+$response = [
+    "pinnedMessages" => [],
+    "messages" => []
+];
+
+if ($pinnedMessages) {
+    foreach ($pinnedMessages as $pinned) {
+        $response["pinnedMessages"][] = [
+            "messageID" => $pinned['messageID'],
+            "content" => $pinned['content']
+        ];
+    }
+}
 
 foreach ($messages as $msg) {
-    $data[] = [
+    $response["messages"][] = [
+        'messageID' => $msg['messageID'], 
         'name' => $msg['firstName'] . ' ' . $msg['lastName'],
         'content' => $msg['content'],
         'isSender' => $msg['senderID'] == $userID,
@@ -24,4 +39,4 @@ foreach ($messages as $msg) {
 }
 
 header('Content-Type: application/json');
-echo json_encode($data);
+echo json_encode($response);

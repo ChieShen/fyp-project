@@ -220,3 +220,47 @@ textarea {
     background-color: #d9d9d9;
     min-height: 30px;
 }
+
+#messageContextMenu {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#messageContextMenu ul {
+    list-style: none;
+    padding: 8px;
+    margin: 0;
+}
+
+#messageContextMenu li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.pinnedBox {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 999;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.pinnedBox ul {
+    list-style: none;
+    padding: 0;
+}
+.pinnedBox li {
+    padding: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+.pinnedBox li:hover {
+    background-color: #f0f0f0;
+}

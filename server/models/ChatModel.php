@@ -112,4 +112,46 @@ class ChatModel
         return $result->num_rows > 0;
     }
 
+    // Set a message as pinned (and unpin others)
+    public function setPinnedMessage($chatID, $messageID)
+    {
+        // Unpin all existing pinned messages in the chat
+        $this->removePinnedMessage($chatID);
+
+        // Pin the selected message
+        $stmt = $this->conn->prepare("UPDATE message SET isPinned = 1 WHERE chatID = ? AND messageID = ?");
+        $stmt->bind_param("ii", $chatID, $messageID);
+        return $stmt->execute();
+    }
+
+    // Get the currently pinned message for a chat
+    public function getPinnedMessages($chatID)
+    {
+        $stmt = $this->conn->prepare("SELECT messageID, content FROM message WHERE chatID = ? AND isPinned = 1");
+        $stmt->bind_param("i", $chatID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $pinnedMessages = [];
+        while ($row = $result->fetch_assoc()) {
+            $pinnedMessages[] = $row;
+        }
+        return $pinnedMessages;
+    }
+
+    // Remove all pinned messages in a chat
+    public function removePinnedMessage($chatID)
+    {
+        $stmt = $this->conn->prepare("UPDATE message SET isPinned = 0 WHERE chatID = ?");
+        $stmt->bind_param("i", $chatID);
+        return $stmt->execute();
+    }
+
+    // Unpin a specific pinned message in a chat
+    public function unsetPinnedMessage($chatID, $messageID)
+    {
+        $stmt = $this->conn->prepare("UPDATE message SET isPinned = 0 WHERE chatID = ? AND messageID = ?");
+        $stmt->bind_param("ii", $chatID, $messageID);
+        return $stmt->execute();
+    }
 }
