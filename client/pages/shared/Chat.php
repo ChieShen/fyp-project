@@ -54,6 +54,19 @@ $chats = $chatModel->getUserChatrooms($userID);
 
                 <div class="divider">
                     <div class="chatList">
+                        <div class="searchBox">
+                            <div class="searchContainer">
+                                <input type="text" placeholder="Search..." class="searchInput" />
+                                <button class="searchButton">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="searchIcon" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
                         <ul class="chatSelection">
                             <?php foreach ($chats as $index => $chat): ?>
                                 <li>

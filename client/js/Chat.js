@@ -134,6 +134,12 @@ document.querySelectorAll(".chatLink").forEach(link => {
         document.querySelectorAll('.chatLink').forEach(link => link.classList.remove('active'));
         this.classList.add('active');
 
+        chatTitle.textContent = this.textContent.trim();
+
+        document.querySelectorAll('.chatSelection li').forEach(item => {
+            item.style.display = 'block';
+        });
+
         loadMessages(currentChatID);
     });
 });
@@ -250,3 +256,17 @@ function displayPinnedMessages(pinnedMessages) {
         pinnedList.appendChild(li);
     });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.querySelector('.searchInput');
+    const chatItems = document.querySelectorAll('.chatSelection li');
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+
+        chatItems.forEach(item => {
+            const chatName = item.textContent.toLowerCase();
+            item.style.display = chatName.includes(query) ? 'block' : 'none';
+        });
+    });
+});

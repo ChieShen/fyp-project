@@ -290,3 +290,56 @@ textarea {
     background-color: #cc0000;
     transform: scale(1.1);
 }
+
+.searchBox {
+    padding-bottom: 4px;
+    padding-top: 3px;
+    border-bottom: 2px solid #d9d9d9;
+    padding-left: calc(1% * (100 / 30));
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    max-width: 300px;
+    width: 100%;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.searchContainer:focus-within {
+    border-color: #007BFF;
+}
+
+.searchInput {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background-color: transparent;
+}
+
+.searchButton {
+    padding: 0 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.searchButton:hover {
+    color: #007BFF;
+}
+
+.searchIcon {
+    width: 20px;
+    height: 20px;
+}
