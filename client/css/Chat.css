@@ -93,6 +93,7 @@ body {
     padding-bottom: 15px;
     border-bottom: 2px solid #d9d9d9;
     border-top: 2px solid #d9d9d9;
+    cursor: pointer;
 }
 
 .title {
@@ -208,6 +209,7 @@ textarea {
     border-radius: 30px;
     background-color: #e6f9ff;
     min-height: 30px;
+    cursor: pointer;
 }
 
 .otherMsgContent {
@@ -241,26 +243,50 @@ textarea {
 }
 
 .pinnedBox {
-    position: absolute;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
     background: white;
     border: 1px solid #ccc;
     padding: 10px;
     z-index: 999;
     max-height: 300px;
+    width: 500px;
     overflow-y: auto;
 }
+
 .pinnedBox ul {
     list-style: none;
     padding: 0;
 }
+
 .pinnedBox li {
     padding: 5px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
+
 .pinnedBox li:hover {
     background-color: #f0f0f0;
+}
+
+.unpinButton {
+    height: 30px;
+    width: 100px;
+    margin-right: 5%;
+    margin-left: auto;
+    font-size: 16px;
+    background-color: red;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.unpinButton:hover {
+    background-color: #cc0000;
+    transform: scale(1.1);
 }

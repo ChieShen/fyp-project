@@ -202,6 +202,17 @@ document.getElementById("pinMsg").addEventListener("click", () => {
 
 // Show pinned box on title click
 chatTitle.addEventListener("click", () => {
+    // Get position and size of the chatTitle div
+    const rect = chatTitle.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+    // Position the pinned box
+    pinnedBox.style.position = "absolute";
+    pinnedBox.style.top = `${rect.top + rect.height + scrollTop}px`;
+    pinnedBox.style.left = `${rect.left + scrollLeft}px`;
+
+    // Toggle display
     pinnedBox.style.display = pinnedBox.style.display === "none" ? "block" : "none";
 });
 
@@ -231,7 +242,8 @@ function displayPinnedMessages(pinnedMessages) {
         // Unpin button
         const unpinBtn = document.createElement("button");
         unpinBtn.textContent = "Unpin";
-        unpinBtn.style.marginLeft = "10px";
+        //unpinBtn.style.marginLeft = "10px";
+        unpinBtn.className = "unpinButton"
         unpinBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             selectedMessageID = msg.messageID;
@@ -241,7 +253,5 @@ function displayPinnedMessages(pinnedMessages) {
         li.appendChild(unpinBtn);
         pinnedList.appendChild(li);
     });
-
-    pinnedBox.style.display = "block";
 }
 

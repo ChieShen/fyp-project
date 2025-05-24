@@ -42,7 +42,7 @@ $chats = $chatModel->getUserChatrooms($userID);
         <?php include '../../components/sidebar.php'; ?>
 
         <div id="pinnedMessagesBox" style="display: none;" class="pinnedBox">
-            <h3>Pinned Messages</h3>
+            <p style="font-weight: bold;">Pinned Messages</p>
             <ul id="pinnedList"></ul>
         </div>
 
