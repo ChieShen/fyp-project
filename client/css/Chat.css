@@ -154,6 +154,7 @@ textarea {
 .chatSelection li {
     cursor: pointer;
     list-style-type: none;
+    word-break: break-word;
 }
 
 .chatSelection li:hover {

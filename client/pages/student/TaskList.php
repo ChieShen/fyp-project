@@ -115,7 +115,15 @@ if ($isSubmitted) {
                 </p><br><br>
 
                 <p class="label">Created By:</p>
-                <a href="" class="creator"><?= htmlspecialchars($creator['username']) ?></a><br><br>
+                <?php if ($creator['userID'] == $userID): ?>
+                    <p class="details"><?= htmlspecialchars($creator['username']) ?></p>
+                <?php else: ?>
+                    <a class="details"
+                        href="/FYP2025/SPAMS/server/controllers/PrivateChatController.php?userID=<?= $userID ?>&targetID=<?= urlencode($creator['userID']) ?>">
+                        <?= htmlspecialchars($creator['username']) ?> (Click to Message)
+                    </a>
+                <?php endif; ?>
+                <br><br>
 
                 <p class="label">Deadline:</p>
                 <p class="details">
@@ -138,10 +146,18 @@ if ($isSubmitted) {
                 <p class="label"><?= htmlspecialchars($group['groupName']) ?>:</p>
                 <?php foreach ($members as $member): ?>
                     <p class="details">
-                        <?php if ($member['userID'] == $leaderID): ?>
-                            <?= htmlspecialchars($member['firstName'] . ' ' . $member['lastName']) ?> (Leader)
+                        <?php
+                        $name = htmlspecialchars($member['firstName'] . ' ' . $member['lastName']);
+                        $isLeader = ($member['userID'] == $leaderID);
+                        $label = $isLeader ? " (Leader)" : "";
+                        ?>
+                        <?php if ($member['userID'] == $userID): ?>
+                            <?= $name . $label ?>
                         <?php else: ?>
-                            <?= htmlspecialchars($member['firstName'] . ' ' . $member['lastName']) ?>
+                            <a class="details"
+                                href="/FYP2025/SPAMS/server/controllers/PrivateChatController.php?userID=<?= $userID ?>&targetID=<?= urlencode($member['userID']) ?>">
+                                <?= $name . $label ?> (Click to Message)
+                            </a>
                         <?php endif; ?>
                     </p>
                 <?php endforeach; ?>

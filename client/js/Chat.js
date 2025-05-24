@@ -22,12 +22,28 @@ function isUserNearBottom() {
 
 // Auto-load the first chat on page load
 window.addEventListener("DOMContentLoaded", () => {
-    const firstLink = document.querySelector(".chatLink");
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlChatID = urlParams.get("chatID");
+    const urlUserID = urlParams.get("userID");
+
+    let firstLink = null;
+
+    if (urlChatID && urlUserID) {
+        firstLink = document.querySelector(`.chatLink[data-chatid="${urlChatID}"]`);
+        userID = urlUserID;
+        currentChatID = urlChatID;
+    } else {
+        firstLink = document.querySelector(".chatLink");
+        if (firstLink) {
+            userID = firstLink.dataset.userid;
+            currentChatID = firstLink.dataset.chatid;
+        }
+    }
+
     if (firstLink) {
-        userID = firstLink.dataset.userid;
-        currentChatID = firstLink.dataset.chatid;
         chatTitle.textContent = firstLink.textContent.trim();
-        firstLink.classList.add('active');
+        document.querySelectorAll('.chatLink').forEach(link => link.classList.remove('active'));
+        firstLink.classList.add("active");
         loadMessages(currentChatID);
     }
 });

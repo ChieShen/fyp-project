@@ -46,14 +46,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Add to group
     $groupModel->assignUserToGroup($groupID, $userID, $isLeader);
 
-    if($chatModel->chatroomExists($chatName)){
-        $chatID = $chatModel->getChatIDByName($chatName);
-    }
-    else{
-        $chatID = $chatModel->createChatroom($chatName);
+    // Check if chatroom already exists for this group
+    $chatID = $chatModel->getChatIDByGroupID($groupID);
+
+    if (!$chatID) {
+        $chatID = $chatModel->createGroupChatroom($chatName, $groupID);
     }
 
-    $chatModel->addUserToChatroom($chatID,$userID);
+    $chatModel->addUserToChatroom($chatID, $userID);
 
     header("Location: /FYP2025/SPAMS/client/pages/student/SProjectList.php");
     exit();

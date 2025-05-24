@@ -9,17 +9,6 @@ class ChatModel
         $this->conn = $conn;
     }
 
-    // Create a chatroom
-    public function createChatroom($name)
-    {
-        $stmt = $this->conn->prepare("INSERT INTO chatroom (name) VALUES (?)");
-        $stmt->bind_param("s", $name);
-        if ($stmt->execute()) {
-            return $this->conn->insert_id; // Return the newly inserted chatID
-        }
-        return false; // Or null, depending on your preference
-    }
-
     // Add user to a chatroom
     public function addUserToChatroom($chatID, $userID)
     {
@@ -154,4 +143,64 @@ class ChatModel
         $stmt->bind_param("ii", $chatID, $messageID);
         return $stmt->execute();
     }
+
+    public function getChatIDByGroupID($groupID)
+    {
+        $stmt = $this->conn->prepare("SELECT chatID FROM chatroom WHERE groupID = ?");
+        $stmt->execute([$groupID]);
+        return $stmt->fetchColumn();
+    }
+
+    public function createGroupChatroom($chatName, $groupID)
+    {
+        $stmt = $this->conn->prepare("
+        INSERT INTO chatroom (chatName, groupID, isGroupChat)
+        VALUES (?, ?, 1)
+    ");
+        $stmt->execute([$chatName, $groupID]);
+        return $this->conn->lastInsertId();
+    }
+
+    public function privateChatExists($user1ID, $user2ID)
+    {
+        $query = "
+        SELECT chatID
+        FROM roommember
+        WHERE userID IN (?, ?)
+        GROUP BY chatID
+        HAVING COUNT(DISTINCT userID) = 2
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("ii", $user1ID, $user2ID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            return $row['chatID'];
+        }
+
+        return null; // No private chat found
+    }
+
+    public function createPrivateChatroom($user1ID, $user2ID)
+    {
+        $chatName = "PrivateChat_" . min($user1ID, $user2ID) . "_" . max($user1ID, $user2ID);
+
+        $stmt = $this->conn->prepare("
+        INSERT INTO chatroom (name, groupID, isGroupChat)
+        VALUES (?, NULL, 0)
+    ");
+        $stmt->bind_param("s", $chatName);
+        $stmt->execute();
+        $chatID = $this->conn->insert_id;
+
+        // Add both users to the chatroom
+        $this->addUserToChatroom($chatID, $user1ID);
+        $this->addUserToChatroom($chatID, $user2ID);
+
+        return $chatID;
+    }
+
 }
