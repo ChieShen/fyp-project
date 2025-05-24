@@ -11,6 +11,14 @@ const chatTitle = document.querySelector(".chatTitle .title");
 const contextMenu = document.getElementById("messageContextMenu");
 const pinnedBox = document.getElementById("pinnedMessagesBox");
 const pinnedList = document.getElementById("pinnedList");
+const sendMessageButton = document.getElementById("sendMessage");
+
+let pinnedMessageIDs = [];
+
+function isUserNearBottom() {
+    const threshold = 100; // px from bottom
+    return chatHistory.scrollHeight - chatHistory.scrollTop - chatHistory.clientHeight < threshold;
+}
 
 // Auto-load the first chat on page load
 window.addEventListener("DOMContentLoaded", () => {
@@ -30,20 +38,13 @@ textarea.addEventListener('input', function () {
     this.style.height = this.scrollHeight + 'px';
 });
 
-// Scroll to bottom on load
-window.addEventListener('load', function () {
-    if (chatHistory) {
-        chatHistory.scrollTop = chatHistory.scrollHeight;
-    }
-});
-
-let pinnedMessageIDs = [];
-
 function loadMessages(chatID) {
     if (!chatID) return;
     fetch(`/FYP2025/SPAMS/server/controllers/LoadMessagesController.php?chatID=${chatID}`)
         .then(res => res.json())
         .then(data => {
+            const shouldScroll = isUserNearBottom();
+
             chatHistory.innerHTML = "";
 
             pinnedMessageIDs = data.pinnedMessages.map(m => m.messageID);
@@ -56,9 +57,9 @@ function loadMessages(chatID) {
                 msgDiv.id = `message-${msg.messageID}`;
 
                 msgDiv.innerHTML = `
-                    <span class="${msg.isSender ? "userName" : "otherName"}">${msg.name}</span>
-                    <span class="${msg.isSender ? "userMsgContent" : "otherMsgContent"}">${msg.content}</span>
-                `;
+        <span class="${msg.isSender ? "userName" : "otherName"}">${msg.name}</span>
+        <span class="${msg.isSender ? "userMsgContent" : "otherMsgContent"}">${msg.content}</span>
+    `;
 
                 if (msg.isSender) {
                     msgDiv.addEventListener("contextmenu", function (e) {
@@ -70,7 +71,10 @@ function loadMessages(chatID) {
                 chatHistory.appendChild(msgDiv);
             });
 
-            chatHistory.scrollTop = chatHistory.scrollHeight;
+            if (shouldScroll) {
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
+
         });
 }
 
@@ -79,10 +83,7 @@ function showContextMenu(x, y, messageID, content) {
     selectedMessageContent = content;
 
     const pinMenu = document.getElementById("pinMsg");
-
-    // Use the global pinnedMessageIDs to check if message is pinned
     const isPinned = pinnedMessageIDs.includes(messageID);
-
     pinMenu.textContent = isPinned ? "Unpin" : "Pin";
 
     contextMenu.style.top = y + "px";
@@ -90,8 +91,6 @@ function showContextMenu(x, y, messageID, content) {
     contextMenu.style.display = "block";
 }
 
-
-// Handle message submission
 messageForm.addEventListener("submit", function (e) {
     e.preventDefault();
     const content = textarea.value.trim();
@@ -99,10 +98,6 @@ messageForm.addEventListener("submit", function (e) {
 
     if (isEditing) {
         handleMessageAction("edit", { content });
-        isEditing = false;
-        document.getElementById("sendMessage").textContent = "Send";
-        textarea.value = "";
-        textarea.style.height = '30px';
         return;
     }
 
@@ -152,7 +147,6 @@ window.addEventListener("click", () => {
     contextMenu.style.display = "none";
 });
 
-// Message actions
 function handleMessageAction(action, extraData = {}) {
     const payload = {
         action,
@@ -171,12 +165,15 @@ function handleMessageAction(action, extraData = {}) {
             if (data.success) {
                 if (action === "edit") {
                     textarea.value = "";
-                    document.getElementById("sendMessage").textContent = "Send";
+                    textarea.style.height = "30px";
+                    sendMessageButton.textContent = "Send";
                     isEditing = false;
                 }
+
                 if (action === "pin" || action === "unpin") {
                     displayPinnedMessages(data.pinnedMessages || []);
                 }
+
                 loadMessages(currentChatID);
             }
         });
@@ -187,36 +184,36 @@ document.getElementById("editMsg").addEventListener("click", () => {
     textarea.value = selectedMessageContent;
     textarea.focus();
     isEditing = true;
-    document.getElementById("sendMessage").textContent = "Update";
+    sendMessageButton.textContent = "Update";
+    contextMenu.style.display = "none";
 });
 
 // Delete message
 document.getElementById("deleteMsg").addEventListener("click", () => {
     handleMessageAction("delete");
+    contextMenu.style.display = "none";
 });
 
-// Pin message
+// Pin/unpin message
 document.getElementById("pinMsg").addEventListener("click", () => {
-    handleMessageAction("pin");
+    const isPinned = pinnedMessageIDs.includes(selectedMessageID);
+    handleMessageAction(isPinned ? "unpin" : "pin");
+    contextMenu.style.display = "none";
 });
 
-// Show pinned box on title click
+// Toggle pinned message box on chat title click
 chatTitle.addEventListener("click", () => {
-    // Get position and size of the chatTitle div
     const rect = chatTitle.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
-    // Position the pinned box
     pinnedBox.style.position = "absolute";
     pinnedBox.style.top = `${rect.top + rect.height + scrollTop}px`;
     pinnedBox.style.left = `${rect.left + scrollLeft}px`;
-
-    // Toggle display
     pinnedBox.style.display = pinnedBox.style.display === "none" ? "block" : "none";
 });
 
-// Display multiple pinned messages
+// Show pinned messages list
 function displayPinnedMessages(pinnedMessages) {
     pinnedList.innerHTML = "";
 
@@ -225,12 +222,13 @@ function displayPinnedMessages(pinnedMessages) {
         return;
     }
 
+    pinnedMessageIDs = pinnedMessages.map(m => m.messageID);
+
     pinnedMessages.forEach(msg => {
         const li = document.createElement("li");
         li.textContent = msg.content;
         li.dataset.messageid = msg.messageID;
 
-        // Scroll to message on click
         li.addEventListener("click", () => {
             const target = document.getElementById(`message-${msg.messageID}`);
             if (target) {
@@ -239,11 +237,9 @@ function displayPinnedMessages(pinnedMessages) {
             }
         });
 
-        // Unpin button
         const unpinBtn = document.createElement("button");
         unpinBtn.textContent = "Unpin";
-        //unpinBtn.style.marginLeft = "10px";
-        unpinBtn.className = "unpinButton"
+        unpinBtn.className = "unpinButton";
         unpinBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             selectedMessageID = msg.messageID;
@@ -254,4 +250,3 @@ function displayPinnedMessages(pinnedMessages) {
         pinnedList.appendChild(li);
     });
 }
-
