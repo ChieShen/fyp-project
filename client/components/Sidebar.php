@@ -30,13 +30,13 @@ $username = $user['firstName'] . ' ' . $user['lastName'];
 
         </li>
         <li>
-            <a href="/FYP2025/SPAMS/client/pages/shared/Chat.php">
+            <a href="/FYP2025/SPAMS/client/pages/Shared/Chat.php">
                 <img class="icon" src="/FYP2025/SPAMS/client/assets/images/messageicon.png" title="Chats">
                 <span>Chats</span>
             </a>
         </li>
         <li>
-            <a href="/FYP2025/SPAMS/client/pages/shared/Profile.php">
+            <a href="/FYP2025/SPAMS/client/pages/Shared/Profile.php">
                 <img class="icon" src="/FYP2025/SPAMS/client/assets/images/account icon.png" title="Profile">
                 <span><?= htmlspecialchars($username) ?></span>
             </a>

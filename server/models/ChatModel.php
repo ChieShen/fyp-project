@@ -41,13 +41,27 @@ class ChatModel
     // Get all chatrooms for a user
     public function getUserChatrooms($userID)
     {
-        $stmt = $this->conn->prepare("SELECT c.chatID, c.name
-                                      FROM chatroom c
-                                      JOIN roommember rm ON c.chatID = rm.chatID
-                                      WHERE rm.userID = ?");
-        $stmt->bind_param("i", $userID);
+        $stmt = $this->conn->prepare("
+        SELECT 
+            c.chatID,
+            c.isGroupChat,
+            IF(c.isGroupChat = 0,
+                (SELECT CONCAT(u.firstName, ' ', u.lastName)
+                 FROM roommember rm2
+                 JOIN user u ON rm2.userID = u.userID
+                 WHERE rm2.chatID = c.chatID AND rm2.userID != ? LIMIT 1),
+                c.name
+            ) AS name
+        FROM chatroom c
+        JOIN roommember rm ON c.chatID = rm.chatID
+        WHERE rm.userID = ?
+    ");
+
+        $stmt->bind_param("ii", $userID, $userID);
         $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $result = $stmt->get_result();
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     // Get members of a chatroom
