@@ -85,34 +85,11 @@ class ChatModel
         return $stmt->get_result()->num_rows > 0;
     }
 
-    public function getChatIDByName($name)
-    {
-        $stmt = $this->conn->prepare("SELECT chatID FROM chatroom WHERE name = ?");
-        $stmt->bind_param("s", $name);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($row = $result->fetch_assoc()) {
-            return $row['chatID'];
-        }
-        return null; // Chatroom not found
-    }
-
     public function removeUserFromChatroom($chatID, $userID)
     {
         $stmt = $this->conn->prepare("DELETE FROM roommember WHERE chatID = ? AND userID = ?");
         $stmt->bind_param("ii", $chatID, $userID);
         return $stmt->execute();
-    }
-
-    public function chatroomExists($name)
-    {
-        $stmt = $this->conn->prepare("SELECT 1 FROM chatroom WHERE name = ? LIMIT 1");
-        $stmt->bind_param("s", $name);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        return $result->num_rows > 0;
     }
 
     // Set a message as pinned (and unpin others)

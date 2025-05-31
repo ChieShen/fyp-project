@@ -40,7 +40,7 @@ $group = $groupModel->getGroupById($groupId);
 $taskId = intval($_GET['taskID']);
 $task = $taskModel->getTaskById($taskId);
 
-if (!$groupModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID) {
+if (!$projectModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID) {
     header("Location: /FYP2025/SPAMS/Client/Pages/student/SProjectList.php");
     exit();
 }

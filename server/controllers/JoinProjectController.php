@@ -33,7 +33,7 @@ if ($project) {
     $projectID = (int) $project['projectID'];
 
     // Check if user is already in a group in this project
-    if ($groupModel->isUserInProject($userID, $projectID)) {
+    if ($projectModel->isUserInProject($userID, $projectID)) {
         echo json_encode(['success' => false, 'message' => 'You have already joined this project.']);
     } else {
         echo json_encode([

@@ -176,20 +176,6 @@ class GroupModel
         return $result ? (int) $result['projectID'] : null;
     }
 
-    public function isUserInProject(int $userID, int $projectID): bool
-    {
-        $stmt = $this->conn->prepare("
-            SELECT gm.userID FROM groupmember gm
-            JOIN projectgroups pg ON gm.groupID = pg.groupID
-            WHERE gm.userID = ? AND pg.projectID = ?
-        ");
-        $stmt->bind_param("ii", $userID, $projectID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stmt->close();
-        return $result->num_rows > 0;
-    }
-
     public function getUserGroupsWithProjects(int $userID): array
     {
         $query = "

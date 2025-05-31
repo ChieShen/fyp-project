@@ -33,7 +33,7 @@ if ($project['createdBy'] != $_SESSION['userID']) {
     exit;
 }
 
-$chatID = $chatModel->getChatIDByName($chatName);
+$chatID = $chatModel->getChatIDByGroupID($groupID);
 $chatModel->removeUserFromChatroom($chatID,$userID);
 
 $success = $groupModel->removeUserFromGroup($groupID, $userID);

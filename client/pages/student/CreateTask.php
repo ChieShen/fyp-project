@@ -26,7 +26,7 @@ $project = $projectModel->findByProjectId($projectId);
 $groupId = intval($_GET['groupID']);
 $group = $groupModel->getGroupById($groupId);
 
-if (!$project || !($groupModel->isUserInProject($userID, $projectId))) {
+if (!$project || !($projectModel->isUserInProject($userID, $projectId))) {
     header("Location: /FYP2025/SPAMS/Client/Pages/student/SProjectList.php");
     exit();
 }

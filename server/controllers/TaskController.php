@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/config/Database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/GroupModel.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/ProjectModel.php';
 
 session_start();
 
@@ -14,6 +15,7 @@ if (!isset($_SESSION['userID'])) {
 $conn = (new Database())->connect();
 $taskModel = new TaskModel($conn);
 $groupModel = new GroupModel($conn);
+$projectModel = new ProjectModel($conn);
 
 $userID = $_SESSION['userID'];
 
@@ -27,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = intval($_POST['status'] ?? 0);
     $contributors = $_POST['contributors'] ?? [];
 
-    if (!$groupModel->isUserInProject($userID, $projectID)) {
+    if (!$projectModel->isUserInProject($userID, $projectID)) {
         header("Location: /FYP2025/SPAMS/client/pages/student/SProjectList.php");
         exit();
     }
@@ -70,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $groupID = intval($_POST['groupID'] ?? 0);
 
         // Verify that user is in the project
-        if ($groupModel->isUserInProject($userID, $projectID)) {
+        if ($projectModel->isUserInProject($userID, $projectID)) {
             $taskModel->updateTaskStatus($taskID, $newStatus);
         }
 

@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check if user is already in a group for this project
     $projectID = $groupModel->getProjectIdByGroupId($groupID);
-    if ($groupModel->isUserInProject($userID, $projectID)) {
+    if ($projectModel->isUserInProject($userID, $projectID)) {
         die("You are already in a group for this project.");
     }
 

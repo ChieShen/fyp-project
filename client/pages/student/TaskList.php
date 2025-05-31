@@ -30,7 +30,7 @@ $group = $groupModel->getGroupById($groupId);
 
 $user = $userModel->getUserById($userID);
 
-if (!$groupModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID) {
+if (!$projectModel->isUserInProject($userID, $projectId) && $project['createdBy'] != $userID) {
     header("Location: /FYP2025/SPAMS/client/Pages/student/SProjectList.php");
     exit();
 }
