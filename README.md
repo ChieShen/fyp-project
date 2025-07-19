@@ -5,6 +5,7 @@ Steps to install:
 1. Make sure xampp is installed and download the zip file.
 2. Rename the folder to FYP2025.
 3. Arrange the directory as follow:
+'''
 .../xampp/htdocs/FYP2025
    └───SPAMS
     ├───client
@@ -25,6 +26,7 @@ Steps to install:
     │   ├───models
     │   └───uploads
     └───uploads
+'''
 4. Import the SQL file in phpmyadmin.
 5. Switch on the Apache and MySQL module in xampp.
 6. Place this link in your browser: http://localhost/FYP2025/SPAMS/client/index.php
