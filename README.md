@@ -2,10 +2,32 @@
 # Student Project Allocation and Management System (SPAMS)
 
 Steps to install:
-1. Make sure xampp is installed.
-2. Arrange the directory as follow:
-3. Switch on the Apache and MySQL module in xampp.
-4. Place this link in your browser: http://localhost/FYP2025/SPAMS/client/index.php
+1. Make sure xampp is installed and download the zip file.
+2. Rename the folder to FYP2025.
+3. Arrange the directory as follow:
+.../xampp/htdocs/FYP2025
+   └───SPAMS
+    ├───client
+    │   ├───assets
+    │   │   ├───fonts
+    │   │   └───images
+    │   ├───components
+    │   ├───css
+    │   ├───js
+    │   └───pages
+    │       ├───lecturer
+    │       ├───shared
+    │       └───student
+    ├───server
+    │   ├───config
+    │   ├───controllers
+    │   ├───middleware
+    │   ├───models
+    │   └───uploads
+    └───uploads
+4. Import the SQL file in phpmyadmin.
+5. Switch on the Apache and MySQL module in xampp.
+6. Place this link in your browser: http://localhost/FYP2025/SPAMS/client/index.php
 
 Login Page:
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/63fb2bea-ff3c-4f21-8c81-5eae8328f979" />
