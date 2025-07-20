@@ -301,6 +301,7 @@ textarea {
 
 .searchContainer {
     display: flex;
+    flex-direction: row;
     align-items: center;
     max-width: 300px;
     width: 100%;
@@ -317,15 +318,16 @@ textarea {
 
 .searchInput {
     flex: 1;
-    padding: 10px 15px;
+    padding: 10px;
     border: none;
     outline: none;
     font-size: 16px;
     background-color: transparent;
+    min-width: 0;
 }
 
 .searchButton {
-    padding: 0 15px;
+    padding-right:15px;
     background: none;
     border: none;
     cursor: pointer;

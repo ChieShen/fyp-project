@@ -106,6 +106,13 @@
     padding-left: 10px;
 }
 
+.sidebar ul li {
+    max-height: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .sidebar.collapsed {
     width: 60px;
     background-color: transparent;
@@ -161,4 +168,9 @@
 
 .sidebar.collapsed a:hover .icon{
     filter: brightness(1);
+}
+
+/* Disable transitions temporarily */
+.no-transition {
+    transition: none !important;
 }

@@ -57,13 +57,31 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const sidebar = document.getElementById("sidebar");
+document.addEventListener("DOMContentLoaded", () => {
+    const sidebar   = document.getElementById("sidebar");
     const toggleBtn = document.getElementById("toggleBtn");
-    const page = document.querySelector(".page");
+    const page      = document.querySelector(".page");
+
+    // Apply temporary class to suppress animations
+    sidebar.classList.add("no-transition");
+    page.classList.add("no-transition");
+
+    const saved = sessionStorage.getItem("sidebarCollapsed");
+    if (saved === "true") {
+        sidebar.classList.add("collapsed");
+        page.classList.add("sidebar-collapsed");
+    }
+
+    // Remove the no-transition class after a tick (to allow rendering)
+    setTimeout(() => {
+        sidebar.classList.remove("no-transition");
+        page.classList.remove("no-transition");
+    }, 50); // small delay ensures rendering finishes
 
     toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("collapsed");
+        const isCollapsed = sidebar.classList.toggle("collapsed");
         page.classList.toggle("sidebar-collapsed");
+
+        sessionStorage.setItem("sidebarCollapsed", isCollapsed);
     });
 });
