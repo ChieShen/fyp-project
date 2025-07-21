@@ -22,9 +22,7 @@ Steps to install:
     ├───server
     │   ├───config
     │   ├───controllers
-    │   ├───middleware
-    │   ├───models
-    │   └───uploads
+    │   └───models
     └───uploads
 ```
 4. Import the SQL file in phpmyadmin.
