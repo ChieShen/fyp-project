@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $joinCode = $projectModel->generateUniqueJoinCode();
     $groupModel = new GroupModel($conn);
 
+    //Save project into database
     $projectID = $projectModel->save([
         'createdBy' => $createdBy,
         'title' => $projectName,
@@ -36,17 +37,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'numGroup' => $groupCount
     ]);
 
+    //Create the Number of Groups as defined
     for ($i = 1; $i <= $groupCount; $i++) {
         $groupName = "Group $i";
         $groupModel->createGroup($projectID, $groupName);
     }
 
-    // Save uploaded files
+    // Create directory
     $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/uploads/attachments/' . $createdBy . '/' . $projectID . '/';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
 
+    //Save uploaded files
     foreach ($_FILES['files']['tmp_name'] as $index => $tmpName) {
         $originalName = basename($_FILES['files']['name'][$index]);
         $safeName = time() . "_" . preg_replace('/[^a-zA-Z0-9\._-]/', '_', $originalName);
@@ -57,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    //Redirect user back to project list page
     header("Location: /FYP2025/SPAMS/client/pages/lecturer/LProjectList.php");
     exit();
 }

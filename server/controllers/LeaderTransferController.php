@@ -29,7 +29,7 @@ try {
     $projectId = $groupModel->getProjectIdByGroupId($groupID);
     $project = $projectModel->findByProjectId($projectId);
 
-    // Check if current user is the leader
+    // Check if current user is the leader or the creator of the project
     $leaderID = $groupModel->getLeaderId($groupID);
     if (($leaderID !== $currentUserID) && (!$project['createdBy'] == $currentUserID) ) {
         http_response_code(403);

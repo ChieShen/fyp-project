@@ -9,6 +9,7 @@ class GroupModel
         $this->conn = $conn;
     }
 
+    //Create group using project id and group name
     public function createGroup(int $projectID, string $groupName): int
     {
         $stmt = $this->conn->prepare("INSERT INTO projectgroups (projectID, groupName) VALUES (?, ?)");
@@ -19,6 +20,7 @@ class GroupModel
         return $groupId;
     }
 
+    //Get groups by project id
     public function getGroupsByProject(int $projectID): array
     {
         $stmt = $this->conn->prepare("SELECT * FROM projectgroups WHERE projectID = ?");
@@ -35,6 +37,7 @@ class GroupModel
         return $groups;
     }
 
+    //Get group using group id
     public function getGroupById(int $groupID): ?array
     {
         $stmt = $this->conn->prepare("SELECT * FROM projectgroups WHERE groupID = ?");
@@ -46,6 +49,7 @@ class GroupModel
         return $group ?: null;
     }
 
+    //Add user to group
     public function assignUserToGroup(int $groupID, int $userID, bool $isLeader = false): bool
     {
         $stmt = $this->conn->prepare("INSERT INTO groupmember (groupID, userID, isLeader) VALUES (?, ?, ?)");
@@ -56,6 +60,7 @@ class GroupModel
         return $result;
     }
 
+    //Remove user from group
     public function removeUserFromGroup(int $groupID, int $userID): bool
     {
         $stmt = $this->conn->prepare("DELETE FROM groupmember WHERE groupID = ? AND userID = ?");
@@ -65,6 +70,7 @@ class GroupModel
         return $result;
     }
 
+    //Get all members in the group using group id
     public function getMembersByGroup(int $groupID): array
     {
         $stmt = $this->conn->prepare("
@@ -85,6 +91,7 @@ class GroupModel
         return $members;
     }
 
+    //Calculate the number of members inside the group
     public function countMembersInGroup(int $groupID): int
     {
         $stmt = $this->conn->prepare("SELECT COUNT(*) as count FROM groupmember WHERE groupID = ?");
@@ -95,6 +102,7 @@ class GroupModel
         return (int) $result['count'];
     }
 
+    //Delete group using group id
     public function deleteGroup(int $groupID): bool
     {
         // Step 1: Get projectID for the group
@@ -134,6 +142,7 @@ class GroupModel
         return true;
     }
 
+    //Update group info
     public function updateGroup(int $groupID, string $groupName): bool
     {
         $stmt = $this->conn->prepare("UPDATE projectgroups SET groupName = ? WHERE groupID = ?");
@@ -143,6 +152,7 @@ class GroupModel
         return $result;
     }
 
+    //Transfer leadership of group
     public function transferLeadership(int $groupID, int $newLeaderID): bool
     {
         // Reset all to non-leaders
@@ -156,6 +166,7 @@ class GroupModel
         return $result;
     }
 
+    //Get leader user id using group id
     public function getLeaderId(int $groupID): ?int
     {
         $stmt = $this->conn->prepare("SELECT userID FROM groupmember WHERE groupID = ? AND isLeader = 1");
@@ -166,6 +177,7 @@ class GroupModel
         return $result ? (int) $result['userID'] : null;
     }
 
+    //Get project id using group id
     public function getProjectIdByGroupId(int $groupID): ?int
     {
         $stmt = $this->conn->prepare("SELECT projectID FROM projectgroups WHERE groupID = ?");
@@ -176,6 +188,7 @@ class GroupModel
         return $result ? (int) $result['projectID'] : null;
     }
 
+    //Get all the projects the user is registered with using user id
     public function getUserGroupsWithProjects(int $userID): array
     {
         $query = "
@@ -208,6 +221,7 @@ class GroupModel
         return $projects;
     }
 
+    //Get the project group the user is in using user id and project id
     public function getUserGroupInProject(int $userID, int $projectID): ?array
     {
         $query = "
@@ -225,6 +239,7 @@ class GroupModel
         return $group ?: null;
     }
 
+    //Set group submission status as submitted
     public function setSubmitted(int $groupID, bool $submitted): bool
     {
         $stmt = $this->conn->prepare("UPDATE projectgroups SET submitted = ? WHERE groupID = ?");
@@ -235,6 +250,7 @@ class GroupModel
         return $result;
     }
 
+    //Check if the group have made their submission
     public function getSubmitted(int $groupID): ?bool
     {
         $stmt = $this->conn->prepare("SELECT submitted FROM projectgroups WHERE groupID = ?");
@@ -245,6 +261,7 @@ class GroupModel
         return isset($result['submitted']) ? (bool) $result['submitted'] : null;
     }
 
+    //Calulate project progress based on task status
     public function calculateProjectProgress($projectID, $groupID)
     {
         require_once $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/server/models/TaskModel.php';
@@ -265,6 +282,7 @@ class GroupModel
         return round(($completed / $total) * 100);
     }
 
+    //Update submission database
     public function saveSubmission(int $projectID, int $groupID, string $fileURL, string $submissionName, string $displayName): bool
     {
         $stmt = $this->conn->prepare("
@@ -277,6 +295,7 @@ class GroupModel
         return $result;
     }
 
+    //Get submission made by a group
     public function getSubmissionByGroup(int $projectID, int $groupID): ?array
     {
         $stmt = $this->conn->prepare("
@@ -293,6 +312,7 @@ class GroupModel
         return $submission ?: null;
     }
 
+    //Get all submissions by project
     public function getAllSubmissionsByProject(int $projectID): array
     {
         $stmt = $this->conn->prepare("
@@ -313,6 +333,7 @@ class GroupModel
         return $submissions;
     }
 
+    //Delete directory helper function
     private function deleteDirectory(string $dir): void
     {
         if (!is_dir($dir)) {

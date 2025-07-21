@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION['role_id'] = $user['roleID'];
         $_SESSION['userID'] = $user['userID'];
 
-        // ✅ Redirect based on roleID
+        //Redirect based on roleID
         switch ($user['roleID']) {
             case 1:
                 header("Location: ../../client/pages/student/SProjectList.php");

@@ -27,11 +27,12 @@ if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
     die("File upload error.");
 }
 
-// Safe file naming logic
 $originalName = basename($_FILES['file']['name']);
+//Check if submission is late
 if ($isLate) {
     $originalName = "(LATE)_" . $originalName;
 }
+// Safe file naming logic
 $safeName = time() . "_" . preg_replace('/[^a-zA-Z0-9\._-]/', '_', $originalName);
 
 $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$groupID}";
@@ -41,6 +42,7 @@ if (!file_exists($uploadDir)) {
 
 $targetPath = $uploadDir . '/' . $safeName;
 
+//Update submission database and save submitted files
 if (move_uploaded_file($_FILES['file']['tmp_name'], $targetPath)) {
     $groupModel = new GroupModel($conn);
     $groupModel->setSubmitted($groupID, true);

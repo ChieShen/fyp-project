@@ -46,7 +46,6 @@ switch ($action) {
     case 'pin':
         $success = $chatModel->setPinnedMessage($chatID, $messageID);
         if ($success) {
-            // Return all pinned messages, not just one
             $pinnedMessages = $chatModel->getPinnedMessages($chatID);
             echo json_encode([
                 'success' => true,

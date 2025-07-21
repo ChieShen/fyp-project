@@ -28,6 +28,7 @@ if (!file_exists($uploadDir)) {
 
 $targetPath = $uploadDir . '/' . $safeName;
 
+//Update task status, save file, and update database
 if (move_uploaded_file($_FILES['file']['tmp_name'], $targetPath)) {
     $conn = (new Database())->connect();
     $taskModel = new TaskModel($conn);

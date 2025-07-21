@@ -52,6 +52,7 @@ class UserModel
         return $user;
     }
 
+    //Get user details by user id
     public function getUserById($id)
     {
         $sql = "SELECT * FROM user WHERE userID = ?";

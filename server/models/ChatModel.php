@@ -85,6 +85,7 @@ class ChatModel
         return $stmt->get_result()->num_rows > 0;
     }
 
+    //Remove user from chat room
     public function removeUserFromChatroom($chatID, $userID)
     {
         $stmt = $this->conn->prepare("DELETE FROM roommember WHERE chatID = ? AND userID = ?");
@@ -135,6 +136,7 @@ class ChatModel
         return $stmt->execute();
     }
 
+    //Get group chat id using group id
     public function getChatIDByGroupID($groupID)
     {
         $stmt = $this->conn->prepare("SELECT chatID FROM chatroom WHERE groupID = ?");
@@ -142,6 +144,7 @@ class ChatModel
         return $stmt->fetchColumn();
     }
 
+    //Create group chat
     public function createGroupChatroom($chatName, $groupID)
     {
         $stmt = $this->conn->prepare("
@@ -152,6 +155,7 @@ class ChatModel
         return $this->conn->lastInsertId();
     }
 
+    //Check if private chat already exists
     public function privateChatExists($user1ID, $user2ID)
     {
         $query = "
@@ -175,6 +179,7 @@ class ChatModel
         return null; // No private chat found
     }
 
+    //Create private message chat room
     public function createPrivateChatroom($user1ID, $user2ID)
     {
         $chatName = "PrivateChat_" . min($user1ID, $user2ID) . "_" . max($user1ID, $user2ID);

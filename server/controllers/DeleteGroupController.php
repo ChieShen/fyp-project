@@ -16,6 +16,7 @@ if (!isset($_POST['groupId'])) {
 $groupID = (int) $_POST['groupId'];
 $userID = $_SESSION['userID'] ?? null;
 
+//Check if user is logged in
 if (!$userID) {
     echo json_encode(['success' => false, 'message' => 'Not logged in']);
     exit;

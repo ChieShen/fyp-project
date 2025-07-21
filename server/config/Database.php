@@ -6,6 +6,7 @@ class Database {
     private $pass = '';
     private $conn;
 
+    //Connect to Database
     public function connect(): mysqli {
         $this->conn = new mysqli($this->host, $this->user, $this->pass, $this->db);
 

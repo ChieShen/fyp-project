@@ -86,6 +86,7 @@ class TaskModel
         return $result;
     }
 
+    //Delete directory helper function
     private function deleteDirectory($dir)
     {
         if (!is_dir($dir))
@@ -169,6 +170,7 @@ class TaskModel
         return isset($result['status']) && $result['status'] == 2;
     }
 
+    //Calculate the total tasks that is assigned to the user in that project group
     public function countAssignedTasksByUserAndGroup($userID, $projectID, $groupID)
     {
         $stmt = $this->conn->prepare("
@@ -183,6 +185,7 @@ class TaskModel
         return $result['total'] ?? 0;
     }
 
+    //Calculate how many tasks the user has completed in the project group
     public function countCompletedTasksByUserAndGroup($userID, $projectID, $groupID)
     {
         $stmt = $this->conn->prepare("
@@ -197,6 +200,7 @@ class TaskModel
         return $result['completed'] ?? 0;
     }
 
+    //Get the latest file uploads made to a task
     public function getLatestUpload($taskID, $userID)
     {
         $stmt = $this->conn->prepare("

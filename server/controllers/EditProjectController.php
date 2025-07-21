@@ -20,14 +20,14 @@ $conn = (new Database())->connect();
 $projectModel = new ProjectModel($conn);
 $project = $projectModel->findByProjectId($projectID);
 
-// ✅ Update the project details
+//Update the project details
 $updateSuccess = $projectModel->update($projectID, $title, $description, $deadline, $project['maxMem'], $project['numGroup']);
 if (!$updateSuccess) {
     http_response_code(500);
     exit('Failed to update project details.');
 }
 
-// ✅ Handle removed files
+//Handle removed files
 if (!empty($_POST['removeFiles'])) {
     foreach ($_POST['removeFiles'] as $fileID) {
         $attachment = $projectModel->getAttachmentById($fileID);
@@ -44,6 +44,7 @@ if (!empty($_POST['removeFiles'])) {
 
 $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/FYP2025/SPAMS/uploads/attachments/' . $userID . '/' . $projectID . '/';
 
+//Add attachments
 foreach ($_FILES['files']['name'] as $index => $originalName) {
     $tmpName = $_FILES['files']['tmp_name'][$index];
     $size = $_FILES['files']['size'][$index];
@@ -60,6 +61,6 @@ foreach ($_FILES['files']['name'] as $index => $originalName) {
 }
 
 
-// ✅ Redirect back to the project view page
+//Redirect back to the project view page
 header("Location: /FYP2025/SPAMS/client/pages/lecturer/LProjectGroups.php?projectID=$projectID");
 exit();

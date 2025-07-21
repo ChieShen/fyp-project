@@ -9,6 +9,7 @@ class ProjectModel
         $this->conn = $conn;
     }
 
+    //Create project
     public function save($data)
     {
         $stmt = $this->conn->prepare(
@@ -29,6 +30,7 @@ class ProjectModel
         return $stmt->insert_id;
     }
 
+    //Get project by project id
     public function findByProjectId(int $projectId): ?array
     {
         $stmt = $this->conn->prepare("SELECT * FROM project WHERE projectID = ?");
@@ -41,6 +43,7 @@ class ProjectModel
         return $project ?: null;
     }
 
+    //Get projects by creator id
     public function findByCreatedId(int $userId): array
     {
         $stmt = $this->conn->prepare("SELECT * FROM project WHERE createdBy = ?");
@@ -57,6 +60,7 @@ class ProjectModel
         return $projects;
     }
 
+    //Delete project
     public function delete(int $projectID): bool
     {
         $stmt = $this->conn->prepare("DELETE FROM project WHERE projectID = ?");
@@ -66,7 +70,7 @@ class ProjectModel
         return $result;
     }
 
-
+    //Update project
     public function update(
         int $projectID,
         string $title,
@@ -84,6 +88,7 @@ class ProjectModel
         return $result;
     }
 
+    //Save project attachments
     public function saveFile($projectID, $filename, $displayName, $uploader)
     {
         $stmt = $this->conn->prepare(
@@ -93,6 +98,7 @@ class ProjectModel
         $stmt->execute();
     }
 
+    //Check if join code already used by other project
     public function isJoinCodeExists(string $joinCode): bool
     {
         $stmt = $this->conn->prepare("SELECT COUNT(*) as count FROM project WHERE joinCode = ?");
@@ -103,6 +109,7 @@ class ProjectModel
         return $result['count'] > 0;
     }
 
+    //Generate unique join code
     public function generateUniqueJoinCode(): string
     {
         do {
@@ -111,6 +118,7 @@ class ProjectModel
         return $joinCode;
     }
 
+    //Generate random join code helper function
     private function generateJoinCode(): string
     {
         $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -119,6 +127,7 @@ class ProjectModel
         return implode('', array_slice($charsArray, 0, 6));
     }
 
+    //Search project using join code
     public function findByJoinCode(string $joinCode): ?array
     {
         $stmt = $this->conn->prepare("SELECT * FROM project WHERE joinCode = ?");
@@ -130,6 +139,8 @@ class ProjectModel
 
         return $project ?: null;
     }
+
+    //Get attachments using project id
     public function getAttachmentsByProjectId(int $projectId): array
     {
         $stmt = $this->conn->prepare("SELECT * FROM attachment WHERE projectID = ?");
@@ -146,6 +157,7 @@ class ProjectModel
         return $attachments;
     }
 
+    //Get statistics of project using project id
     public function getProjectStats(int $projectId): array
     {
         // Get number of participants
@@ -227,6 +239,7 @@ class ProjectModel
         return $result;
     }
 
+    //Check if user is already registered in this project
     public function isUserInProject(int $userID, int $projectID): bool
     {
         $stmt = $this->conn->prepare("
