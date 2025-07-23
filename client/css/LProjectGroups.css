@@ -5,7 +5,6 @@
     font-style: normal;
 }
 
-/* Base styles for HTML and Body */
 html,
 body {
     margin: 0;
@@ -13,8 +12,8 @@ body {
     height: 100%;
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
-    background-color: #f4f7f6; /* Lighter background for the page */
-    color: #333; /* Default text color */
+    background-color: #f4f7f6;
+    color: #333;
 }
 
 /* Overall page layout */
@@ -24,43 +23,39 @@ body {
     justify-content: flex-start;
     width: 100%;
     min-height: 100vh;
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    overflow-x: hidden;
 }
 
-/* Main content area box */
 .contentBox {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin: 20px; /* Consistent margin around the content box */
-    margin-left: 220px; /* Space for sidebar */
-    border-radius: 10px; /* Softer rounded corners */
-    background-color: transparent; /* Content box itself is transparent */
-    flex-grow: 1; /* Allows content box to take available space */
-    transition: margin-left 0.3s ease; /* Smooth transition for sidebar collapse */
-    padding-bottom: 30px; /* Padding at the bottom */
-    max-width: calc(100% - 240px); /* Adjust max-width dynamically */
+    margin: 20px;
+    margin-left: 220px;
+    border-radius: 10px;
+    background-color: transparent;
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+    padding-bottom: 30px;
+    max-width: calc(100% - 240px);
 }
 
-/* Adjust content box when sidebar is collapsed */
 .page.sidebar-collapsed .contentBox {
     margin-left: 80px;
     max-width: calc(100% - 100px);
 }
 
-/* Styling for the project details section */
 .projectDetails {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     border-radius: 10px;
     background-color: white;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Soft shadow */
-    padding-bottom: 30px; /* Padding at the bottom */
-    padding: 20px 30px; /* General padding inside the box */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding-bottom: 30px;
+    padding: 20px 30px;
 }
 
-/* Styling for individual group sections */
 .groups {
     display: flex;
     flex-direction: column;
@@ -69,16 +64,15 @@ body {
     background-color: white;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     padding-bottom: 20px;
-    margin-top: 20px; /* Space between project details and first group */
-    padding: 20px 30px; /* General padding inside the box */
+    margin-top: 20px;
+    padding: 20px 30px;
 }
 
-/* Title bar within project details and groups */
 .titleBar {
     display: flex;
     flex-direction: row;
-    padding-bottom: 15px; /* Space below title */
-    border-bottom: 1px solid #e0e0e0; /* Separator line */
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
     margin-bottom: 20px;
     align-items: center;
 }
@@ -90,7 +84,6 @@ body {
     font-weight: 600;
 }
 
-/* Buttons common styles */
 #editBtn,
 .downloadList,
 .download,
@@ -104,18 +97,17 @@ body {
     font-weight: 600;
     color: white;
     border: none;
-    border-radius: 8px; /* Softer corners */
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    flex-shrink: 0; /* Prevent buttons from shrinking */
+    flex-shrink: 0;
 }
 
-/* Specific button colors and hovers */
 #editBtn {
-    background-color: #ffc107; /* Warning yellow */
-    margin-left: auto; /* Push to the right */
-    width: 100px; /* Fixed width */
+    background-color: #ffc107;
+    margin-left: auto;
+    width: 100px;
 }
 
 #editBtn:hover {
@@ -125,10 +117,10 @@ body {
 }
 
 .downloadList {
-    background-color: #007bff; /* Primary blue */
+    background-color: #007bff; 
     width: 240px;
     margin-left: auto;
-    margin-right: 15px; /* Space between download list and edit button */
+    margin-right: 15px; 
 }
 
 .downloadList:hover {
@@ -138,9 +130,9 @@ body {
 }
 
 .deleteBtn {
-    background-color: #dc3545; /* Danger red */
+    background-color: #dc3545;
     width: 100px;
-    margin-left: auto; /* Push to the right */
+    margin-left: auto; 
 }
 
 .deleteBtn:hover {
@@ -161,7 +153,7 @@ body {
 }
 
 .transferBtn {
-    background-color: #17a2b8; /* Info blue/cyan */
+    background-color: #17a2b8; 
     width: 100px;
 }
 
@@ -174,7 +166,7 @@ body {
 .download {
     background-color: #007bff;
     width: 120px;
-    margin-left: auto; /* Push to the right */
+    margin-left: auto; 
 }
 
 .download:hover {
@@ -186,8 +178,8 @@ body {
 .downloadAll {
     background-color: #007bff;
     width: 250px;
-    margin: 20px auto 0 auto; /* Center the button below groups */
-    display: block; /* Make it a block element to center with margin: auto */
+    margin: 20px auto 0 auto; 
+    display: block; 
 }
 
 .downloadAll:hover {
@@ -196,27 +188,26 @@ body {
     box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
 }
 
-/* Text labels and details */
 .label {
-    padding-left: 0; /* Align with content box padding */
+    padding-left: 0; 
     font-weight: 600;
     color: #495057;
-    margin-bottom: 8px; /* Space below label */
+    margin-bottom: 8px; 
 }
 
 .details {
-    padding-left: 0; /* Align with content box padding */
-    word-break: break-word; /* Allow long words to break */
-    margin-bottom: 20px; /* Space below details */
+    padding-left: 0;
+    word-break: break-word; 
+    margin-bottom: 20px; 
     color: #6c757d;
 }
 
 .files {
     padding-left: 0;
     text-decoration: none;
-    color: #007bff; /* Primary link color */
-    margin-bottom: 10px; /* Space between files */
-    display: block; /* Make each file a block to stack */
+    color: #007bff; 
+    margin-bottom: 10px; 
+    display: block; 
 }
 
 .files:hover {
@@ -224,23 +215,22 @@ body {
     color: #0056b3;
 }
 
-/* Member table styling */
 .memberTable {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin-top: 20px;
-    border: 1px solid #e9ecef; /* Light border for the table */
+    border: 1px solid #e9ecef;
     border-radius: 8px;
-    overflow: hidden; /* Ensures rounded corners on children */
+    overflow: hidden; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .columnNameRow {
     display: flex;
-    background-color: #e9f5ff; /* Light blue header background */
-    padding: 12px 15px; /* More padding for header cells */
-    border-bottom: 1px solid #d1e7fd; /* Header bottom border */
+    background-color: #e9f5ff; 
+    padding: 12px 15px; 
+    border-bottom: 1px solid #d1e7fd;
     font-weight: 600;
     color: #004085;
 }
@@ -248,31 +238,31 @@ body {
 .columnName {
     text-align: left;
     padding: 0 10px;
-    width: 20%; /* Distribute columns evenly */
-    flex-shrink: 0; /* Prevent from shrinking */
+    width: 20%; 
+    flex-shrink: 0;
     display: flex;
     align-items: center;
 }
 
 .columnName:last-child {
-    width: 15%; /* Adjust width for action column */
+    width: 15%; 
 }
 
 .dataRow {
     display: flex;
     align-items: center;
-    padding: 10px 15px; /* Padding for data rows */
+    padding: 10px 15px;
     background-color: white;
-    border-bottom: 1px solid #eee; /* Separator for rows */
+    border-bottom: 1px solid #eee;
     transition: background-color 0.2s ease;
 }
 
 .dataRow:hover {
-    background-color: #f8f9fa; /* Slight highlight on hover */
+    background-color: #f8f9fa; 
 }
 
 .dataRow:last-child {
-    border-bottom: none; /* No border for the last row */
+    border-bottom: none;
 }
 
 .data {
@@ -286,7 +276,7 @@ body {
 }
 
 .data:last-child {
-    width: 15%; /* Match column header */
+    width: 15%; 
 }
 
 .progress-container {
@@ -311,26 +301,24 @@ body {
     box-shadow: inset 0 -1px 2px rgba(0,0,0,0.15);
 }
 
-/* Role styling */
 .leader {
     font-weight: 600;
-    color: #007bff; /* Primary blue for leader */
+    color: #007bff; 
 }
 
 .member {
     font-weight: 500;
-    color: #28a745; /* Success green for member */
+    color: #28a745; 
 }
 
-/* Group submission section */
 .groupSubmission {
-    margin-top: 25px; /* Space above submission section */
+    margin-top: 25px;
     padding-top: 15px;
-    border-top: 1px solid #eee; /* Separator from member table */
+    border-top: 1px solid #eee;
 }
 
 .groupSubmission .label {
-    margin-bottom: 15px; /* More space below submission label */
+    margin-bottom: 15px;
 }
 
 .submissionBar {
@@ -338,15 +326,14 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    gap: 15px; /* Space between file name and download button */
+    gap: 15px;
 }
 
 .submissionBar .files {
-    margin-bottom: 0; /* Reset margin for inline display */
-    flex-grow: 1; /* Allow filename to take available space */
+    margin-bottom: 0;
+    flex-grow: 1;
 }
 
-/* Link styles */
 .groupLink {
     text-decoration: none;
     color: #2c3e50;

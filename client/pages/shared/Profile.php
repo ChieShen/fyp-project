@@ -41,25 +41,25 @@ $lName = $user['lastName'];
 
                 <div class="contentBox">
                     <label for="fName">First Name</label>
-                    <p id="fNameError" style="color: red; margin-left:5%;"></p>
+                    <p id="fNameError" style="color: red; "></p>
                     <input type="text" id="fName" name="fName" placeholder="First Name"
                         value="<?= htmlspecialchars($fName) ?>"><br><br>
 
                     <label for="lName">Last Name</label>
-                    <p id="lNameError" style="color: red; margin-left:5%;"></p>
+                    <p id="lNameError" style="color: red; "></p>
                     <input type="text" id="lName" name="lName" placeholder="Last Name"
                         value="<?= htmlspecialchars($lName) ?>"><br><br>
 
-                    <label for="curPass">New Password</label>
-                    <p id="curPassError" style="color: red; margin-left:5%;"></p>
+                    <label for="curPass">Current Password</label>
+                    <p id="curPassError" style="color: red; "></p>
                     <input type="password" id="curPass" name="curPass" placeholder="Current Password"><br><br>
 
                     <label for="newPass">New Password</label>
-                    <p id="newPassError" style="color: red; margin-left:5%;"></p>
+                    <p id="newPassError" style="color: red; "></p>
                     <input type="password" id="newPass" name="newPass" placeholder="New Password"><br><br>
 
                     <label for="conPass">Confirm Password</label>
-                    <p id="conPassError" style="color: red; margin-left:5%;"></p>
+                    <p id="conPassError" style="color: red; "></p>
                     <input type="password" id="conPass" name="conPass" placeholder="Confirm Password"><br>
 
                     <?php

@@ -157,7 +157,7 @@ body {
 }
 
 .columnName.selected {
-    background-color: #e0f2fe;
+    color: #007bff;
 }
 
 .columnName.selected .sortIcon {

@@ -11,10 +11,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         input.addEventListener('focusout', () => {
             validateInput(input, errorId, errorMessage);
+            // Only trigger username availability check if it's the username field and not empty
+            if (id === 'username' && input.value.trim() !== '') {
+                checkUsernameAvailability();
+            }
         });
 
         input.addEventListener('input', () => {
             clearError(input, errorId);
+            // Only trigger username availability check if it's the username field and not empty
+            if (id === 'username' && input.value.trim() !== '') {
+                checkUsernameAvailability();
+            }
         });
     });
 
@@ -27,11 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmPassword.addEventListener('focusout', validateConfirmPassword);
     confirmPassword.addEventListener('input', validateConfirmPassword);
-
-    const usernameInput = document.getElementById('username');
-    usernameInput.addEventListener('focusout', checkUsernameAvailability);
-    usernameInput.addEventListener('input', checkUsernameAvailability);
-
 });
 
 // Validation functions
@@ -85,6 +88,12 @@ function clearError(input, errorElementId) {
 function checkUsernameAvailability() {
     const username = document.getElementById('username').value.trim();
     const errorElement = document.getElementById('usernameError');
+
+    // ADDED: Do not proceed if username is empty
+    if (username === '') {
+        clearError(document.getElementById('username'), 'usernameError'); // Ensure no previous "taken" error remains
+        return Promise.resolve(false); // Treat as invalid for submission if empty
+    }
 
     return fetch('/FYP2025/SPAMS/server/controllers/SignUpController.php?action=checkUsername&username=' + encodeURIComponent(username))
         .then(response => response.json())
@@ -171,8 +180,15 @@ async function validateForm(event) {
         confirmError.textContent = 'Passwords do not match';
     }
 
-    // 🔁 Username check via AJAX
-    const usernameAvailable = await checkUsernameAvailability();
+    // Modified: Only perform username availability check if username field is NOT empty and local validation for username passes
+    let usernameAvailable = true; // Assume true if no check is performed or if valid
+    if (username.value.trim() !== '' && isValid) { // Make sure username is not empty and other validations are good so far
+        usernameAvailable = await checkUsernameAvailability();
+    } else if (username.value.trim() === '') {
+        // If username is empty, ensure usernameAvailable is false so form doesn't submit
+        usernameAvailable = false;
+    }
+
     if (!usernameAvailable) {
         isValid = false;
     }

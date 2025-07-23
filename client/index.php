@@ -15,10 +15,10 @@
         <h1>Login</h1><br>
         <form action="../server/controllers/LoginController.php" method="post" onsubmit="validateForm(event)">
             <label for="username">Username/StudentID</label>
-            <p id="usernameError" style="color: red; margin-left:5%;"></p>
+            <p id="usernameError" style="color: red;"></p>
             <input type="text" id="username" name="username" placeholder="Username/StudentID"><br><br>
             <label for="password">Password</label>
-            <p id="passwordError" style="color: red; margin-left:5%;"></p>
+            <p id="passwordError" style="color: red;"></p>
             <input type="password" id="password" name="password" placeholder="Password"><br><br>
 
             <?php if (isset($_GET['error'])): ?>
