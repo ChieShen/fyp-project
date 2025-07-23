@@ -5,260 +5,332 @@
     font-style: normal;
 }
 
+/* Base styles for HTML and Body */
 html,
 body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Inter;
+    font-family: 'Inter', sans-serif;
     box-sizing: border-box;
+    background-color: #f4f7f6; /* Lighter background for the page */
+    color: #333; /* Default text color */
 }
 
-body {
-    background-color: #f2f2f2;
-}
-
+/* Overall page layout */
 .page {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
+/* Main content area box */
 .contentBox {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin: 2% 2% 2% 1%;
-    border: none;
-    border-radius: 5px;
-    background-color: transparent;
-    min-height: 90%;
-    min-width: 500px;
-    margin-left: 220px;
-    flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    padding-bottom: 50px;
+    margin: 20px; /* Consistent margin around the content box */
+    margin-left: 220px; /* Space for sidebar */
+    border-radius: 10px; /* Softer rounded corners */
+    background-color: transparent; /* Content box itself is transparent */
+    flex-grow: 1; /* Allows content box to take available space */
+    transition: margin-left 0.3s ease; /* Smooth transition for sidebar collapse */
+    padding-bottom: 30px; /* Padding at the bottom */
+    max-width: calc(100% - 240px); /* Adjust max-width dynamically */
 }
 
+/* Adjust content box when sidebar is collapsed */
 .page.sidebar-collapsed .contentBox {
     margin-left: 80px;
+    max-width: calc(100% - 100px);
 }
 
+/* Styling for the project details section */
 .projectDetails {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: white;
-    flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    padding-bottom: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Soft shadow */
+    padding-bottom: 30px; /* Padding at the bottom */
+    padding: 20px 30px; /* General padding inside the box */
 }
 
+/* Styling for individual group sections */
 .groups {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: white;
-    flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     padding-bottom: 20px;
-    margin-top: 20px;
+    margin-top: 20px; /* Space between project details and first group */
+    padding: 20px 30px; /* General padding inside the box */
 }
 
+/* Title bar within project details and groups */
 .titleBar {
     display: flex;
-    justify-content: space-between;
-    text-align: left;
-    padding-left: 1%;
-    margin-top: 20px;
+    flex-direction: row;
+    padding-bottom: 15px; /* Space below title */
+    border-bottom: 1px solid #e0e0e0; /* Separator line */
+    margin-bottom: 20px;
     align-items: center;
 }
 
-#editBtn {
-    width: 120px;
+.titleBar h1 {
+    font-size: 1.8em;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Buttons common styles */
+#editBtn,
+.downloadList,
+.download,
+.downloadAll,
+.removeBtn,
+.transferBtn,
+.deleteBtn {
     height: 40px;
-    margin-right: 1%;
-    margin-left: auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #ffc107;
+    padding: 0 20px;
+    font-size: 0.95em;
+    font-weight: 600;
     color: white;
-    padding: 0px 15px 0px 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* Softer corners */
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+}
+
+/* Specific button colors and hovers */
+#editBtn {
+    background-color: #ffc107; /* Warning yellow */
+    margin-left: auto; /* Push to the right */
+    width: 100px; /* Fixed width */
 }
 
 #editBtn:hover {
     background-color: #e0a800;
-    transform: scale(1.1)
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.25);
 }
 
-.label {
-    padding-left: 1%;
-    font-weight: bold;
+.downloadList {
+    background-color: #007bff; /* Primary blue */
+    width: 240px;
+    margin-left: auto;
+    margin-right: 15px; /* Space between download list and edit button */
 }
 
-.details {
-    padding-left: 1%;
-    padding-right: 1%;
-    word-break: break-word;
-}
-
-.files {
-    padding-left: 1%;
-    text-decoration: none;
-    color: blue;
+.downloadList:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
 }
 
 .deleteBtn {
-    width: 120px;
-    height: 40px;
-    margin-right: 1%;
-    margin-left: auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: red;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    background-color: #dc3545; /* Danger red */
+    width: 100px;
+    margin-left: auto; /* Push to the right */
 }
 
 .deleteBtn:hover {
-    background-color: #cc0000;
-    transform: scale(1.1)
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(220, 53, 69, 0.25);
 }
 
 .removeBtn {
-    height: 40px;
+    background-color: #dc3545;
     width: 100px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: red;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .removeBtn:hover {
-    background-color: #cc0000;
-    transform: scale(1.1)
+    background-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
 }
 
 .transferBtn {
-    height: 40px;
+    background-color: #17a2b8; /* Info blue/cyan */
     width: 100px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #ffc107;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .transferBtn:hover {
-    background-color: #e0a800;
-    transform: scale(1.1)
+    background-color: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(23, 162, 184, 0.2);
 }
 
+.download {
+    background-color: #007bff;
+    width: 120px;
+    margin-left: auto; /* Push to the right */
+}
+
+.download:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
+}
+
+.downloadAll {
+    background-color: #007bff;
+    width: 250px;
+    margin: 20px auto 0 auto; /* Center the button below groups */
+    display: block; /* Make it a block element to center with margin: auto */
+}
+
+.downloadAll:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
+}
+
+/* Text labels and details */
+.label {
+    padding-left: 0; /* Align with content box padding */
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px; /* Space below label */
+}
+
+.details {
+    padding-left: 0; /* Align with content box padding */
+    word-break: break-word; /* Allow long words to break */
+    margin-bottom: 20px; /* Space below details */
+    color: #6c757d;
+}
+
+.files {
+    padding-left: 0;
+    text-decoration: none;
+    color: #007bff; /* Primary link color */
+    margin-bottom: 10px; /* Space between files */
+    display: block; /* Make each file a block to stack */
+}
+
+.files:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+/* Member table styling */
 .memberTable {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     width: 100%;
+    margin-top: 20px;
+    border: 1px solid #e9ecef; /* Light border for the table */
+    border-radius: 8px;
+    overflow: hidden; /* Ensures rounded corners on children */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .columnNameRow {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 20px 15px auto 15px;
-    background-color: #e6f9ff;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #d9d9d9;
+    background-color: #e9f5ff; /* Light blue header background */
+    padding: 12px 15px; /* More padding for header cells */
+    border-bottom: 1px solid #d1e7fd; /* Header bottom border */
+    font-weight: 600;
+    color: #004085;
 }
 
 .columnName {
     text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 5px;
-    width: 20%;
+    padding: 0 10px;
+    width: 20%; /* Distribute columns evenly */
+    flex-shrink: 0; /* Prevent from shrinking */
+    display: flex;
+    align-items: center;
+}
+
+.columnName:last-child {
+    width: 15%; /* Adjust width for action column */
 }
 
 .dataRow {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 5px 15px auto 15px;
+    align-items: center;
+    padding: 10px 15px; /* Padding for data rows */
     background-color: white;
-    border-bottom: 1px solid #d9d9d9;
-    border-radius: 5px;
-    transition: transform 0.3s ease;
+    border-bottom: 1px solid #eee; /* Separator for rows */
+    transition: background-color 0.2s ease;
+}
+
+.dataRow:hover {
+    background-color: #f8f9fa; /* Slight highlight on hover */
+}
+
+.dataRow:last-child {
+    border-bottom: none; /* No border for the last row */
 }
 
 .data {
     display: flex;
-    text-align: left;
     align-items: center;
-    justify-content: left;
-    padding: 5px 5px 5px 5px;
+    justify-content: flex-start;
+    padding: 0 10px;
     width: 20%;
+    word-break: break-word;
+    color: #495057;
+}
+
+.data:last-child {
+    width: 15%; /* Match column header */
 }
 
 .progress-container {
-    width: 60%;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    height: 20px;
+    width: 70%;
+    background-color: #e9ecef;
+    border-radius: 15px;
+    height: 18px;
     overflow: hidden;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: inset 0 0 5px #aaa;
+    margin-left: 30px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .progress-bar {
     height: 100%;
-    width: 0%;
-    background-color: #aaff80;
-    text-align: center;
-    line-height: 20px;
-    color: black;
-    font-weight: bold;
-    transition: width 1s ease-in-out;
+    background: linear-gradient(to right, #6dd5ed, #2196F3);
+    text-align: right;
+    line-height: 18px;
+    color: white;
+    font-size: 0.8em;
+    padding-right: 5px;
+    transition: width 0.8s ease-out;
+    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.15);
 }
 
+/* Role styling */
 .leader {
-    color: #0099ff;
+    font-weight: 600;
+    color: #007bff; /* Primary blue for leader */
 }
 
 .member {
-    color: #04aa6d;
+    font-weight: 500;
+    color: #28a745; /* Success green for member */
 }
 
+/* Group submission section */
 .groupSubmission {
-    margin-top: 20px;
+    margin-top: 25px; /* Space above submission section */
+    padding-top: 15px;
+    border-top: 1px solid #eee; /* Separator from member table */
+}
+
+.groupSubmission .label {
+    margin-bottom: 15px; /* More space below submission label */
 }
 
 .submissionBar {
@@ -266,90 +338,31 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    gap: 15px; /* Space between file name and download button */
 }
 
-.download {
-    height: 40px;
-    width: 120px;
-    margin-right: 1%;
-    margin-left: auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #0099ff;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+.submissionBar .files {
+    margin-bottom: 0; /* Reset margin for inline display */
+    flex-grow: 1; /* Allow filename to take available space */
 }
 
-.download:hover {
-    background-color: #007acc;
-    transform: scale(1.1)
-}
-
-.downloadAll {
-    height: 40px;
-    width: 300px;
-    margin: 30px auto auto auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #0099ff;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-}
-
-.downloadAll:hover {
-    background-color: #007acc;
-    transform: scale(1.1)
-}
-
-.downloadLink {
-    text-decoration: none;
-    color: white;
-}
-
+/* Link styles */
 .groupLink {
     text-decoration: none;
-    color: black;
+    color: #2c3e50;
+    transition: color 0.2s ease;
 }
 
-.editLink {
-    color: white;
-    text-decoration: none;
-    margin-right: 1%;
-}
-
-.downloadList {
-    height: 40px;
-    width: 300px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #0099ff;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-}
-
-.downloadList:hover {
-    background-color: #007acc;
-    transform: scale(1.1)
+.groupLink:hover {
+    color: #007bff;
 }
 
 .downloadListLink {
     margin-left: auto;
-    margin-right: 10px;
+    margin-right: 0px;
+}
+
+.downloadLink{
     text-decoration: none;
     color: white;
 }

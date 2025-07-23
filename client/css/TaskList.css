@@ -5,17 +5,18 @@
     font-style: normal;
 }
 
-html,
-body {
+* {
     margin: 0;
     padding: 0;
-    height: 100%;
-    font-family: Inter;
+    font-family: 'Inter', sans-serif;
     box-sizing: border-box;
 }
 
+html,
 body {
-    background-color: #f2f2f2;
+    height: 100%;
+    background-color: #f4f7f6;
+    color: #333;
 }
 
 .page {
@@ -23,276 +24,278 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .contentBox {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    margin: 2% 2% 2% 1%;
-    border: none;
-    border-radius: 5px;
-    background-color: transparent;
-    min-height: 90%;
-    min-width: 500px;
+    margin: 20px;
     margin-left: 220px;
     flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    padding-bottom: 50px;
+    transition: margin-left 0.3s ease;
+    padding-bottom: 30px;
+    min-width: 500px;
 }
 
 .page.sidebar-collapsed .contentBox {
     margin-left: 80px;
 }
 
-.projectDetails {
+.projectDetails,
+.groups,
+.submission,
+.submissionDownload {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
-    flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    padding-bottom: 50px;
-    padding-left: 1%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 25px 30px;
+    margin-bottom: 20px;
 }
 
 .groups {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
-    flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
     padding-bottom: 20px;
-    margin-top: 20px;
-    padding-left: 1%;
-    padding-right: 1%;
-}
-
-.submission {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
-    flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    padding-bottom: 20px;
-    margin-top: 20px;
 }
 
 .titleBar {
     display: flex;
     justify-content: space-between;
-    text-align: left;
-    margin-top: 20px;
     align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.titleBar h1 {
+    font-size: 2.2em;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 600;
 }
 
 .label {
-    font-weight: bold;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+    font-size: 0.95em;
 }
 
 .details {
     text-decoration: none;
-    color: black;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 15px;
 }
 
-.creator {
-    padding-left: 1%;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-    text-align: left;
+.details:last-of-type {
+    margin-bottom: 0;
 }
 
 .files {
     text-decoration: none;
-    color: blue;
+    color: #007bff;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.files:hover {
+    text-decoration: underline;
+}
+
+#transferBtn,
+#addBtn,
+.download,
+#submission,
+#downloadAll {
+    height: 45px;
+    font-size: 1em;
+    font-weight: 600;
+    color: white;
+    padding: 0 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 #transferBtn {
-    height: 40px;
-    width: 150px;
-    margin-right: 1%;
-    margin-left: auto;
-    font-size: 16px;
-    font-weight: bold;
     background-color: #ffc107;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
 }
 
 #transferBtn:hover {
     background-color: #e0a800;
-    transform: scale(1.1)
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
 }
 
-#addBtn {
-    height: 40px;
-    width: 150px;
-    margin-left: auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #04aa6d;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+#transferBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(255, 193, 7, 0.2);
 }
 
-#addBtn:hover {
-    background-color: #45a049;
-    transform: scale(1.1);
+#addBtn,
+#submission {
+    background-color: #28a745;
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
 }
 
 #addBtn a {
     text-decoration: none;
     color: white;
+    display: block;
+    height: 100%;
+    line-height: 45px; /* Vertically align text */
 }
 
-.memberTable {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
+#addBtn:hover,
+#submission:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
 }
 
-.columnNameRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 20px 0 auto 0;
-    background-color: #e6f9ff;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #d9d9d9;
+#addBtn:active,
+#submission:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
 }
 
-.columnName {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 5px;
-    width: 20%;
+.download,
+#downloadAll {
+    background-color: #007bff;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
-.dataRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 5px 0 auto 0;
-    background-color: white;
-    border-bottom: 1px solid #d9d9d9;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+.download:hover,
+#downloadAll:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
 }
 
-.dataRowLink {
-    color: black;
-    text-decoration: none;
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-}
-
-.data {
-    display: flex;
-    text-align: left;
-    align-items: center;
-    justify-content: left;
-    padding: 5px 5px 5px 5px;
-    width: 25%;
-}
-
-.dataRow:hover {
-    transform: scale(1.01);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-}
-
-.data.ongoing {
-    color: #0099ff;
-}
-
-.data.done {
-    color: #04aa6d;
-}
-
-.data.notStarted {
-    color: red;
-    font-weight: bold;
-}
-
-.downloadColumn {
-    padding: 5px 5px 5px 5px;
-}
-
-.download {
-    height: 40px;
-    width: 120px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #0099ff;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-}
-
-.download:hover {
-    background-color: #007acc;
-    transform: scale(1.1)
+.download:active,
+#downloadAll:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
 }
 
 .downloadLink {
     text-decoration: none;
     color: white;
+    display: block;
+    height: 100%;
+    line-height: 45px; /* Vertically align text */
 }
 
 #downloadAll {
-    height: 40px;
-    width: 300px;
-    margin: 30px auto auto auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #0099ff;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    width: auto;
+    margin: 30px auto 0 auto;
+    padding: 0 30px;
 }
 
-#downloadAll:hover {
-    background-color: #007acc;
-    transform: scale(1.1)
+
+.memberTable {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.columnNameRow {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.2fr 1fr 1.2fr;
+    background-color: #f8f8f8;
+    padding: 15px 20px;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.columnName {
+    display: flex;
+    align-items: center;
+    user-select: none;
+    padding: 0 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative;
+}
+
+.dataRowLink {
+    text-decoration: none;
+    color: inherit;
+    display: contents;
+}
+
+.dataRow {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.2fr 1fr 1.2fr;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.dataRow:last-child {
+    border-bottom: none;
+}
+
+.dataRow:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #f0f8ff;
+    color: #007bff;
+}
+
+.data {
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 50px;
+    white-space: nowrap;
+}
+
+.dataRow .data[colspan="5"] {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-style: italic;
+    color: #777;
+    padding: 20px;
+}
+
+.data.ongoing {
+    color: #ffc107;
+    font-weight: 500;
+}
+
+.data.done {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.data.notStarted {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.downloadColumn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
 }
 
 .submission h1 {
-    padding-left: 1%;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    padding-left: 0;
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 
 .submissionBar {
@@ -300,70 +303,45 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    background-color: #d9d9d9;
-    border-radius: 5px;
-    margin: 0 1% auto 1%;
-    height: 50px;
-}
-
-.icon {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-}
-
-.icon:hover {
-    transform: scale(1.1);
+    background-color: #e9ecef;
+    border-radius: 8px;
+    padding: 5px 15px;
+    height: 55px;
 }
 
 .submission span {
-    padding-left: 1%;
+    flex-grow: 1;
+    color: #555;
 }
 
 #submission {
-    height: 40px;
-    width: 120px;
     margin-left: auto;
-    margin-right: 1%;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #04aa6d;
-    color: white;
-    padding: 0px 15px 0px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    margin-right: 0;
 }
 
-#submission:hover {
-    background-color: #45a049;
-    transform: scale(1.1);
+.submissionDownload .titleBar {
+    margin-top: 0;
 }
 
-.submissionDownload {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
-    flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    padding-bottom: 20px;
-    margin-top: 20px;
-}
-
-.downloadBar{
+.downloadBar {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 20px;
+    justify-content: space-between;
+    margin-top: 10px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 10px 20px;
+    min-height: 60px;
 }
 
-.downloadBar a{
+.downloadBar .label {
+    margin-bottom: 0;
+    margin-right: 15px;
+    color: #333;
+}
+
+.downloadBar a {
     margin-left: auto;
-    margin-right: 5%;
+    margin-right: 0;
 }

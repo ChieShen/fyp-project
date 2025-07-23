@@ -14,15 +14,17 @@
 
 .sidebar {
     width: 200px;
-    background-color: #333;
+    background: linear-gradient(to bottom, #2c3e50, #34495e);
     color: white;
     height: 100vh;
-    transition: width 0.3s ease, background-color 0.3s ease;
+    transition: width 0.3s ease, background 0.3s ease;
     position: fixed;
     top: 0;
     left: 0;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
 }
 
 .btnContainer{
@@ -53,8 +55,8 @@
 .menu-icon {
     width: 30px;
     height: 30px;
-    filter: brightness(0) invert(1); /* makes icon white */
-    transition: transform 0.3s ease, filter 0.3s ease; /* Added transform to transition */
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease, filter 0.3s ease;
     transform-origin: center center;
     transform: rotate(90deg);
 }
@@ -95,15 +97,18 @@
     padding: 15px 20px;
     border-radius: 5px;
     align-items: center;
+    margin-bottom: 5px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .sidebar a:hover {
-    background-color: #575757;
-    width: 101%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
 }
 
 .sidebar span{
     padding-left: 10px;
+    flex-grow: 1;
 }
 
 .sidebar ul li {
@@ -115,7 +120,8 @@
 
 .sidebar.collapsed {
     width: 60px;
-    background-color: transparent;
+    background: linear-gradient(to bottom, #2c3e50, #34495e);
+    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar.collapsed li span {
@@ -128,7 +134,6 @@
 }
 
 .sidebar.collapsed .menu-icon {
-    filter: brightness(0.5); /* darkens icon */
     transform: rotate(180deg);
 }
 
@@ -142,35 +147,21 @@
 
 .sidebar.collapsed a{
     padding-left: 10px;
-}
-
-.sidebar.collapsed .icon{
-    filter: brightness(0.1);
+    justify-content: center;
 }
 
 .sidebar a.active {
-    background-color: #04aa6d;
+    background: linear-gradient(to right, #009664, #04aa6d);
     font-weight: bold;
     border-radius: 5px;
+    box-shadow: inset 3px 0 0 #f0f0f0;
 }
 
-.sidebar.collapsed .active{
-    background-color: transparent;
-}
-
-.sidebar.collapsed a.active{
+.sidebar.collapsed .active {
     background-color: #04aa6d;
+    box-shadow: none;
 }
 
-.sidebar.collapsed a.active .icon{
-    filter: brightness(1);
-}
-
-.sidebar.collapsed a:hover .icon{
-    filter: brightness(1);
-}
-
-/* Disable transitions temporarily */
 .no-transition {
     transition: none !important;
 }

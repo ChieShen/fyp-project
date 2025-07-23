@@ -152,7 +152,11 @@ if ($user['roleID'] == 2) {
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <div class="dataRow">No files uploded yet</div>
+                        <div class="dataRow">
+                            <div class="data">
+                                No files uploaded yet
+                            </div>
+                        </div>
                     <?php endif; ?>
 
                 </div>

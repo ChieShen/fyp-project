@@ -73,18 +73,18 @@ $jsonUrls = htmlspecialchars(json_encode($crumbUrls), ENT_QUOTES, 'UTF-8');
                 <input type="hidden" name="taskID" value="<?= htmlspecialchars($taskId) ?>">
                 <div class="contentBox">
                     <label for="taskName">Task Name</label>
-                    <p id="tNameError" style="color: red; margin-left:5%;"></p>
+                    <p id="tNameError" style="color: red;"></p>
                     <input type="text" id="taskName" name="taskName" placeholder="Task Name"
                         value="<?= htmlspecialchars($task['taskName']) ?>"><br><br>
 
                     <label for="taskDesc">Task Description</label>
-                    <p id="tDescError" style="color: red; margin-left:5%;"></p>
+                    <p id="tDescError" style="color: red;"></p>
                     <textarea id="taskDesc" name="taskDesc"
                         placeholder="Brief Description"><?= htmlspecialchars($task['description']) ?></textarea><br><br>
                 </div>
 
                 <label>Contributor(s)</label>
-                <p id="contribError" style="color: red; margin-left:5%;"></p>
+                <p id="contribError" style="color: red;"></p>
                 <div class="contributorList">
                     <?php foreach ($groupMembers as $member): ?>
                         <?php

@@ -5,17 +5,18 @@
     font-style: normal;
 }
 
-html,
-body {
+* {
     margin: 0;
     padding: 0;
-    height: 100%;
-    font-family: Inter;
+    font-family: 'Inter', sans-serif;
     box-sizing: border-box;
 }
 
+html,
 body {
-    background-color: #f2f2f2;
+    height: 100%;
+    background-color: #f4f7f6;
+    color: #333;
 }
 
 .page {
@@ -23,23 +24,22 @@ body {
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .listBox {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    margin: 2% 2% 2% 1%;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
-    min-height: 90%;
-    min-width: 80%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin: 20px;
     margin-left: 220px;
     flex-grow: 1;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-    padding-bottom: 50px;
+    transition: margin-left 0.3s ease, box-shadow 0.3s ease;
+    padding-bottom: 30px;
+    min-height: calc(100vh - 40px);
 }
 
 .page.sidebar-collapsed .listBox {
@@ -49,144 +49,182 @@ body {
 .titleBar {
     display: flex;
     justify-content: space-between;
-    text-align: left;
-    padding-left: 1%;
-    margin-top: 20px;
     align-items: center;
+    padding: 25px 30px 15px 30px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.titleBar h1 {
+    font-size: 2.2em;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 600;
 }
 
 #joinProject {
-    height: 40px;
-    margin-right: 1%;
-    margin-left: auto;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #04aa6d;
+    height: 45px;
+    font-size: 1em;
+    font-weight: 600;
+    background-color: #007bff;
     color: white;
-    padding: 0px 15px 0px 15px;
+    padding: 0 25px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
 }
 
 #joinProject:hover {
-    background-color: #45a049;
-    transform: scale(1.1)
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+}
+
+#joinProject:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
 }
 
 .listTable {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .columnNameRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 20px 15px auto 15px;
-    background-color: #e6f9ff;
+    display: grid;
+    padding: 0 30px;
+    grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr 1.5fr 0.8fr;
+    background-color: #f8f8f8;
+    font-weight: 600;
+    color: #555;
     border-bottom: 1px solid #d9d9d9;
-    transition: background-color 0.2s ease;
 }
 
 .columnName {
-    text-align: left;
-    font-weight: bold;
-    padding: 10px 5px 10px 5px;
-    width: 16%;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 15px 0px;
+    position: relative;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.columnName:hover{
-    background-color: #dff6fb;
+.columnName:hover {
+    background-color: #eef2f7;
+    color: #007bff;
+}
+
+.sortIcon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    opacity: 0.3;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    visibility: hidden;
+    background-image: none;
+}
+
+.columnName.selected .sortIcon,
+.columnName:hover .sortIcon {
+    visibility: visible;
+    opacity: 0.6;
+}
+
+.sortIcon.asc {
+    border-bottom: 5px solid #007bff;
+    transform: translateY(-50%) rotate(0deg);
+    opacity: 1;
+}
+
+.sortIcon.desc {
+    border-bottom: 5px solid #007bff;
+    transform: translateY(-50%) rotate(180deg);
+    opacity: 1;
+}
+
+.columnName.selected {
+    color: #007bff;
 }
 
 .dataRowLink {
     text-decoration: none;
-    color: black;
+    color: inherit;
+    display: contents;
 }
 
 .dataRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 5px 15px auto 15px;
+    display: grid;
+    padding: 12px 30px;
+    grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr 1.5fr 0.8fr;
+    border-bottom: 1px solid #eee;
     background-color: white;
-    border-bottom: 1px solid #d9d9d9;
-    border-radius: 5px;
+    border-radius: 0px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
 }
 
-.dataRow:hover {
-    transform: scale(1.01);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+.dataRow:last-child {
+    border-bottom: none;
+}
+
+.dataRowLink:hover .dataRow {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #f0f8ff;
+    color: #007bff;
 }
 
 .data {
-    text-align: left;
+    display: flex;
     align-items: center;
-    padding: 5px 5px 5px 5px;
-    width: 16%;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dataRow .data[colspan="5"] {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-style: italic;
+    color: #777;
+    padding: 20px;
 }
 
 .progress-container {
-    width: 80%;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    height: 20px;
+    width: 90%;
+    background-color: #e9ecef;
+    border-radius: 15px;
+    height: 18px;
     overflow: hidden;
-    margin-left: 3%;
-    box-shadow: inset 0 0 5px #aaa;
+    margin-left: 0;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .progress-bar {
     height: 100%;
-    width: 0%;
-    background-color: #aaff80;
-    text-align: center;
-    line-height: 20px;
-    color: black;
-    font-weight: bold;
-    transition: width 1s ease-in-out;
-}
-
-.columnName.selected {
-    background-color: #cceeff;
-}
-
-.sortIcon {
-    display: inline-block;
-    margin-right: 5%;
-    margin-left: auto;
-    width: 10px;
-    height: 10px;
-    background-image: url("/FYP2025/SPAMS/client/assets/images/triangle.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    visibility: hidden;
-    transition: transform 0.2s ease;
-}
-
-.columnName.selected .sortIcon {
-    visibility: visible;
-}
-
-.sortIcon.asc {
-    transform: rotate(0deg);
-}
-
-.sortIcon.desc {
-    transform: rotate(180deg);
+    background: linear-gradient(to right, #6dd5ed, #2196F3);
+    text-align: right;
+    line-height: 18px;
+    color: white;
+    font-size: 0.8em;
+    padding-right: 5px;
+    transition: width 0.8s ease-out;
+    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.15);
 }
 
 .overdue-deadline {
-    color: red;
+    color: #dc3545; /* Bootstrap red for error/warning */
     font-weight: bold;
 }
