@@ -47,13 +47,14 @@ switch ($type) {
 
     case 'task':
         $projectID = intval($_GET['projectID'] ?? 0);
+        $groupID = intval($_GET['groupID'] ?? 0);
         $taskID = intval($_GET['taskID'] ?? 0);
         $userID = intval($_GET['userID'] ?? 0);
         if (!$projectID || !$taskID || !$userID) {
             http_response_code(400);
             exit('Missing project, task, or user ID.');
         }
-        $filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$taskID}/{$userID}/{$filename}";
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$groupID}/{$taskID}/{$userID}/{$filename}";
         $displayName = $displayName ?: $filename;
         break;
 

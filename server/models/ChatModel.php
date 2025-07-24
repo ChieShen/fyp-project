@@ -140,19 +140,23 @@ class ChatModel
     public function getChatIDByGroupID($groupID)
     {
         $stmt = $this->conn->prepare("SELECT chatID FROM chatroom WHERE groupID = ?");
-        $stmt->execute([$groupID]);
-        return $stmt->fetchColumn();
+        $stmt->bind_param("i", $groupID);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $result ? (int) $result['chatID'] : null;
     }
+
 
     //Create group chat
     public function createGroupChatroom($chatName, $groupID)
     {
         $stmt = $this->conn->prepare("
-        INSERT INTO chatroom (chatName, groupID, isGroupChat)
+        INSERT INTO chatroom (name, groupID, isGroupChat)
         VALUES (?, ?, 1)
     ");
         $stmt->execute([$chatName, $groupID]);
-        return $this->conn->lastInsertId();
+        return $this->conn->insert_id;
     }
 
     //Check if private chat already exists

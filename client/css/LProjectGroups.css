@@ -353,3 +353,7 @@ body {
     text-decoration: none;
     color: white;
 }
+
+.editLink{
+    margin-left: auto;
+}
