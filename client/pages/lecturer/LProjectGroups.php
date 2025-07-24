@@ -74,7 +74,7 @@ foreach ($groups as $grp) {
                     <?php if ($haveParticipants): ?>
                         <a href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=studentsList&projectID=<?= urlencode($projectId) ?>" class="downloadListLink">
                             <button class="downloadList">
-                                Downlod Student List (CSV)
+                                Download Student List (CSV)
                             </button>
                         </a>
                     <?php endif; ?>

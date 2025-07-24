@@ -240,7 +240,7 @@ if ($isSubmitted) {
                                     <div class="downloadColumn">
                                         <button class="download">
                                             <a class="downloadLink"
-                                                href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=latestUploadsByTask&projectID=<?= urlencode($projectId) ?>&taskID=<?= urlencode($task['taskID']) ?>"
+                                                href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=latestUploadsByTask&projectID=<?= urlencode($projectId) ?>&taskID=<?= urlencode($task['taskID']) ?>&groupID=<?= urlencode($task['groupID']) ?>"
                                                 download>
                                                 Download
                                             </a>

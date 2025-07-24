@@ -144,7 +144,7 @@ if ($user['roleID'] == 2) {
                                 <div class="data"><?= date('d/m/Y H:i', strtotime($file['uploadedAt'])) ?></div>
                                 <div class="data">
                                     <a
-                                        href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=task&projectID=<?= urlencode($projectId) ?>&taskID=<?= urlencode($taskId) ?>&userID=<?= urlencode($file['userID']) ?>&file=<?= urlencode($file['fileName']) ?>&name=<?= urlencode($file['displayName']) ?>">
+                                        href="/FYP2025/SPAMS/server/controllers/DownloadController.php?type=task&projectID=<?= urlencode($projectId) ?>&groupID=<?= urlencode($groupId) ?>&taskID=<?= urlencode($taskId) ?>&userID=<?= urlencode($file['userID']) ?>&file=<?= urlencode($file['fileName']) ?>&name=<?= urlencode($file['displayName']) ?>">
                                         <button class="download">Download</button>
                                     </a>
 

@@ -128,7 +128,7 @@ switch ($type) {
                 $latestFile = $taskModel->getLatestUpload($task['taskID'], $contributor['userID']);
                 if ($latestFile) {
                     $user = $userModel->getUserById($contributor['userID']);
-                    $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$task['taskID']}/{$contributor['userID']}/{$latestFile['fileName']}";
+                    $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$groupID}/{$task['taskID']}/{$contributor['userID']}/{$latestFile['fileName']}";
                     if (file_exists($file)) {
                         $safeName = "Task_{$task['taskName']}_{$user['firstName']}_{$user['lastName']}_{$latestFile['displayName']}";
                         $zip->addFile($file, $safeName);
@@ -154,6 +154,7 @@ switch ($type) {
     case 'latestUploadsByTask':
         $projectID = intval($_GET['projectID'] ?? 0);
         $taskID = intval($_GET['taskID'] ?? 0);
+        $groupID = intval($_GET['groupID'] ?? 0);
 
         if (!$projectID || !$taskID) {
             http_response_code(400);
@@ -183,7 +184,7 @@ switch ($type) {
             $latestFile = $taskModel->getLatestUpload($taskID, $contributor['userID']);
             if ($latestFile) {
                 $user = $userModel->getUserById($contributor['userID']);
-                $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$taskID}/{$contributor['userID']}/{$latestFile['fileName']}";
+                $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/tasks/{$projectID}/{$groupID}/{$taskID}/{$contributor['userID']}/{$latestFile['fileName']}";
                 if (file_exists($file)) {
                     $safeName = "{$user['firstName']}_{$user['lastName']}_{$latestFile['displayName']}";
                     $zip->addFile($file, $safeName);
