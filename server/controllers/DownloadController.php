@@ -81,7 +81,7 @@ switch ($type) {
             if ($submission) {
                 $file = $_SERVER['DOCUMENT_ROOT'] . "/FYP2025/SPAMS/uploads/submissions/{$projectID}/{$grp['groupID']}/{$submission['submissionName']}";
                 if (file_exists($file)) {
-                    $safeName = "Group_{$grp['groupID']}_{$submission['displayName']}";
+                    $safeName = "Group_{$grp['groupName']}_{$submission['displayName']}";
                     $zip->addFile($file, $safeName);
                 }
             }

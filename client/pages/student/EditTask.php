@@ -71,6 +71,7 @@ $jsonUrls = htmlspecialchars(json_encode($crumbUrls), ENT_QUOTES, 'UTF-8');
                 <input type="hidden" name="projectID" value="<?= htmlspecialchars($projectId) ?>">
                 <input type="hidden" name="groupID" value="<?= htmlspecialchars($groupId) ?>">
                 <input type="hidden" name="taskID" value="<?= htmlspecialchars($taskId) ?>">
+                <input type="hidden" name="status" value="<?= htmlspecialchars($task['status']) ?>">
                 <div class="contentBox">
                     <label for="taskName">Task Name</label>
                     <p id="tNameError" style="color: red;"></p>
