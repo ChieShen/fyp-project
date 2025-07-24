@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $signupSuccess = $userModel->createUser($username, $role, $fname,$lname, $password);
 
     if ($signupSuccess) {
-        $_SESSION['signup_success'] = "Account created successfully! Redirecting to Login Page...";
+        $_SESSION['signup_success'] = "Account created successfully! Click the Confirm button to proceed to the login page.";
         header("Location: ../../client/pages/shared/SignUp.php"); // Redirect to login
         exit;
     } else {

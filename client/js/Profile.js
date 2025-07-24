@@ -80,3 +80,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const closeBtn = document.getElementById("close");
+    closeBtn.addEventListener("click", () => {
+        document.getElementById("messageBox").style.display = "none";
+        document.getElementById("messageBoxWrapper").style.display = "none";
+        document.getElementById("projectCodeError").textContent = "";
+
+        // Optional: clean the URL if using query params
+        const url = new URL(window.location.href);
+        url.searchParams.delete("type");
+        window.history.replaceState({}, '', url);
+    });
+
+    // Show session message if available
+    if (typeof sessionMessage !== 'undefined' && sessionMessage) {
+        showMessageBox({
+            type: sessionType,
+            titleText: sessionType === 'success' ? "Success" : "Error",
+            messageText: sessionMessage,
+            confirmText: "Confirm",
+            onConfirm: () => {
+                document.getElementById("messageBox").style.display = "none";
+                document.getElementById("messageBoxWrapper").style.display = "none";
+            }
+        });
+    }
+});

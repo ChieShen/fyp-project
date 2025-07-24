@@ -29,4 +29,4 @@ if ($result === true) {
     $_SESSION['edit_error'] = "Update failed";
 }
 
-header("Location: /FYP2025/SPAMS/client/pages/shared/Profile.php");
+header("Location: /FYP2025/SPAMS/client/pages/Shared/Profile.php");

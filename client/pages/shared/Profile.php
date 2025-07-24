@@ -37,7 +37,8 @@ $lName = $user['lastName'];
                 <h1>Profile</h1>
             </div>
 
-            <form action="/FYP2025/SPAMS/server/controllers/EditProfileController.php" method="post" onsubmit="validateForm(event)">
+            <form action="/FYP2025/SPAMS/server/controllers/EditProfileController.php" method="post"
+                onsubmit="validateForm(event)">
 
                 <div class="contentBox">
                     <label for="fName">First Name</label>
@@ -62,19 +63,13 @@ $lName = $user['lastName'];
                     <p id="conPassError" style="color: red; "></p>
                     <input type="password" id="conPass" name="conPass" placeholder="Confirm Password"><br>
 
-                    <?php
-                    if (isset($_SESSION['edit_error'])) {
-                        echo '<p style="color: red; text-align: center; font-size: 14px;">' . $_SESSION['edit_error'] . '
-                    <p><br>';
-                        unset($_SESSION['edit_error']);
-                    }
+                    <script>
+                        const sessionMessage = <?= json_encode($_SESSION['edit_success'] ?? $_SESSION['edit_error'] ?? null) ?>;
+                        const sessionType = <?= isset($_SESSION['edit_success']) ? json_encode('success') : (isset($_SESSION['edit_error']) ? json_encode('error') : 'null') ?>;
+                    </script>
 
-                    if (isset($_SESSION['edit_success'])) {
-                        echo '
-                    <p style="color: #04aa6d; text-align: center; font-size: 14px;">' . $_SESSION['edit_success'] . '
-                    <p><br>';
-                        unset($_SESSION['edit_success']);
-                    }
+                    <?php
+                        unset($_SESSION['edit_success'], $_SESSION['edit_error']);
                     ?>
 
                 </div>
