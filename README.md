@@ -30,21 +30,21 @@ Steps to install:
 6. Place this link in your browser: http://localhost/FYP2025/SPAMS/client/index.php
 
 Login Page:
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/63fb2bea-ff3c-4f21-8c81-5eae8328f979" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3580b0cc-173d-4ac6-98c7-150b8ef45c17" />
 
 Sign Up Page:
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9b746f2c-611f-48b0-897a-ded50b6b1bc7" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/58089188-a1f2-4665-ab21-d9e98f42c8fe" />
 
 Student Project List Page:
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ee8faef1-f5ce-4d90-abd2-c6a2a9cdbfb9" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/58274da6-bc57-47a7-9a0d-b85cc4e769b9" />
 
 Lecturer Project List Page:
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/52906a3c-db43-42bf-8e7d-af450686aa23" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e5f25d9f-181d-4c3f-b64f-de61d88eab3c" />
 
 Student Project Details Page:
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5a409d1b-f2f6-4b52-91a8-e176b4bb0c8f" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/27d572c3-6867-4c5c-bb97-08c387a20026" />
 
 Lecturer Project Details Page:
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8fa61922-71ea-41bd-966f-08af2a946fcd" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a5afbdd5-d97f-4db1-8f61-6d843b3b738d" />
 
 
